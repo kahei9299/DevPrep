@@ -110,9 +110,9 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 - [x] Container resource limits enforced in all runners (512 MB, 1 CPU, 256 PIDs).
 - [x] Containers cannot make network requests (`NetworkMode: 'none'`).
 - [x] Container capabilities dropped (`CapDrop: ['ALL']`, `no-new-privileges`).
-- [x] Container cleanup enhanced (process kill, /tmp cleanup between reuses).
+- [x] Container cleanup enhanced (/tmp and file cleanup between reuses).
 - [x] Offline preparation script created (`scripts/prepare-offline.sh`).
-- [x] Offline verification script created (`scripts/verify-offline.sh`).
+- [x] Offline readiness smoke test created (`scripts/verify-offline.sh`).
 - [x] Security changes documented in [ADR-0003](docs/adr/0003-docker-security-hardening.md).
 - [x] Docker socket exposure analysed in [docs/feasibility/docker-socket-analysis.md](docs/feasibility/docker-socket-analysis.md).
 - [x] M2 verification framework created with fixture-based loading.
@@ -121,14 +121,15 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 - [x] Existing unit tests pass (`npm test` — 241/241 passing, including 10 new security tests).
 - [x] Type checking passes (`npm run check` — 32 pre-existing errors from upstream Cojudge, 0 from M1 changes).
 - [x] Production build succeeds (`npm run build` — CSS warnings only, pre-existing).
-- [ ] M0.1 judge verification passes (78/78 via `verify-judge.mjs`) — requires Docker runtime.
-- [ ] Security-specific integration tests pass — requires Docker runtime.
+- [x] M0.1 judge verification passes (78/78 via `verify-judge.mjs`).
+- [x] Security integration tests pass (13/13 via `tests/judge/security-verification.mjs`).
+- [x] Offline readiness smoke test passes (9/9 via `scripts/verify-offline.sh`).
+- [ ] True offline verification (host network disconnected) — requires manual test.
 
-**Required evidence:**
-- Docker container inspect showing resource limits.
-- Unit test, type check, and build results.
-- Judge verification test results.
-- Security test results.
+**Evidence:**
+- Runtime verification report: [docs/feasibility/m1-runtime-verification-report.md](docs/feasibility/m1-runtime-verification-report.md).
+- Container inspect: all 7 HostConfig properties confirmed.
+- Runtime test matrix: [docs/feasibility/runtime-test-matrix.csv](docs/feasibility/runtime-test-matrix.csv).
 
 ---
 
