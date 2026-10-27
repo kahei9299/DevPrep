@@ -2,7 +2,7 @@
 
 This is the authoritative development milestone tracker for DevPrep. Each milestone defines a discrete deliverable with acceptance criteria and required evidence.
 
-**Current milestone:** M0.1
+**Current milestone:** M1
 
 ---
 
@@ -27,14 +27,15 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 - [x] `npm install` and `npm run build` succeed.
 - [x] All 231 unit tests pass (`npm test`).
 - [x] Implementation recommendation issued ([docs/feasibility/implementation-recommendation.md](docs/feasibility/implementation-recommendation.md)).
-- [ ] **Outstanding:** Full runtime judge verification not completed (Docker daemon was unavailable).
+- [x] Full runtime judge verification completed — 78/78 tests passed (tracked under M0.1).
 
 **Evidence:**
 - Feasibility reports in [docs/feasibility/](docs/feasibility/).
 - Unit test result: 231/231 passing.
 - Build: clean success with CSS warnings only.
+- Runtime verification: 60/60 correct accepted, 15/15 wrong rejected, timeout and errors detected.
 
-**Blockers:** None remaining for this milestone's static scope. Runtime verification tracked under M0.1.
+**Blockers:** None.
 
 ---
 
@@ -42,7 +43,7 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 
 **Objective:** Verify representative problems actually execute correctly across Python, C++, and Java using the Docker-based judge.
 
-**Status:** Pending — blocked until Docker Desktop is started.
+**Status:** Complete.
 
 **Scope:**
 - Start Docker Desktop and confirm daemon connectivity.
@@ -58,27 +59,28 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 
 **Acceptance criteria:**
 
-- [ ] Docker daemon accessible.
-- [ ] Required images pulled successfully.
-- [ ] At least 20 problems tested across 3 languages (60+ test runs).
-- [ ] Correct solutions accepted in all tested cases.
-- [ ] Incorrect solutions rejected in all tested cases.
-- [ ] Timeout correctly detected for at least one problem.
-- [ ] Error reporting includes meaningful messages.
-- [ ] Results documented in [docs/feasibility/judge-test-results.md](docs/feasibility/judge-test-results.md).
-- [ ] All failures analysed and categorised (judge bug vs content bug vs runner bug).
+- [x] Docker daemon accessible (Docker Desktop 4.73.0, Engine 29.4.3).
+- [x] Required images pulled successfully (`python:3.11-slim`, `gcc:13`, `alpine/java:22-jdk`).
+- [x] At least 20 problems tested across 3 languages (78 test runs: 60 correct + 15 wrong + 3 error handling).
+- [x] Correct solutions accepted in all tested cases (60/60).
+- [x] Incorrect solutions rejected in all tested cases (15/15).
+- [x] Timeout correctly detected (Python `time.sleep(60)` → timeout after ~32s).
+- [x] Error reporting includes meaningful messages (C++ and Java compilation errors with compiler output).
+- [x] Results documented in [docs/feasibility/judge-test-results.md](docs/feasibility/judge-test-results.md).
+- [x] All failures analysed and categorised — 0 judge bugs found; all initial failures were test script issues.
 
-**Required evidence:**
-- Execution logs or screenshots for each tested problem.
-- Pass/fail matrix: problem x language x verdict.
-- List of any bugs found with reproduction steps.
+**Evidence:**
+- Runtime test matrix: [docs/feasibility/runtime-test-matrix.csv](docs/feasibility/runtime-test-matrix.csv).
+- Automated verification script: [scripts/verify-judge.mjs](scripts/verify-judge.mjs).
+- Full results in [docs/feasibility/judge-test-results.md](docs/feasibility/judge-test-results.md).
+- Verification plan for M2 expansion: [docs/feasibility/full-judge-verification-plan.md](docs/feasibility/full-judge-verification-plan.md).
 
-**Blockers:**
-- Docker Desktop not running (as of 2026-10-27). The daemon socket exists but is not accepting connections.
+**Blockers:** None.
 
-**Related:**
-- Test plan in [docs/feasibility/judge-test-results.md](docs/feasibility/judge-test-results.md).
-- Problem selection covers: arrays, two pointers, sliding window, stack, binary search, linked lists, trees, tries, heap, backtracking, graphs, DP, class-based, interactive, and multi-answer problems.
+**Key findings:**
+- Zero judge bugs in 20-problem sample across 3 languages.
+- Cojudge uses different type conventions from LeetCode (e.g., `int[][]` not `List<List<Integer>>`, int grids not char grids, wrapper functions for class problems). Solutions must match `metadata.json` → `starterCode`.
+- The Marker validation system works correctly for standard, class-based, multi-answer, and graph-clone problems.
 
 ---
 
