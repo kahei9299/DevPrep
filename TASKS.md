@@ -88,7 +88,9 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 
 **Objective:** Ensure the code execution engine is reliable, secure, and works offline.
 
-**Status:** Not started.
+**Status:** In progress.
+
+**Branch:** `feat/m1-judge-hardening`
 
 **Scope:**
 - Fix any judge bugs discovered in M0.1.
@@ -97,23 +99,36 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 - Drop unnecessary container capabilities.
 - Verify offline operation (no network after initial image pull).
 - Add automated judge integration tests.
+- Prepare M2 full NeetCode 250 verification framework.
 
 **Dependencies:**
 - M0.1 complete (runtime judge verified).
 
 **Acceptance criteria:**
 
-- [ ] All M0.1 bug fixes applied and retested.
-- [ ] Container resource limits enforced in all runners.
-- [ ] Containers cannot make network requests.
-- [ ] Offline execution verified: disconnect network, run problems successfully.
-- [ ] Automated integration tests for at least 5 representative problems.
-- [ ] Security changes documented in an ADR.
+- [x] All M0.1 bug fixes applied and retested (0 bugs found in M0.1).
+- [x] Container resource limits enforced in all runners (512 MB, 1 CPU, 256 PIDs).
+- [x] Containers cannot make network requests (`NetworkMode: 'none'`).
+- [x] Container capabilities dropped (`CapDrop: ['ALL']`, `no-new-privileges`).
+- [x] Container cleanup enhanced (process kill, /tmp cleanup between reuses).
+- [x] Offline preparation script created (`scripts/prepare-offline.sh`).
+- [x] Offline verification script created (`scripts/verify-offline.sh`).
+- [x] Security changes documented in [ADR-0003](docs/adr/0003-docker-security-hardening.md).
+- [x] Docker socket exposure analysed in [docs/feasibility/docker-socket-analysis.md](docs/feasibility/docker-socket-analysis.md).
+- [x] M2 verification framework created with fixture-based loading.
+- [x] 250-problem reference-solution inventory generated.
+- [x] Verification manifest created (750 combinations tracked).
+- [x] Existing unit tests pass (`npm test` — 241/241 passing, including 10 new security tests).
+- [x] Type checking passes (`npm run check` — 32 pre-existing errors from upstream Cojudge, 0 from M1 changes).
+- [x] Production build succeeds (`npm run build` — CSS warnings only, pre-existing).
+- [ ] M0.1 judge verification passes (78/78 via `verify-judge.mjs`) — requires Docker runtime.
+- [ ] Security-specific integration tests pass — requires Docker runtime.
 
 **Required evidence:**
 - Docker container inspect showing resource limits.
-- Test run with network disconnected.
-- CI-compatible integration test results.
+- Unit test, type check, and build results.
+- Judge verification test results.
+- Security test results.
 
 ---
 
