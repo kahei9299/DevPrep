@@ -8,6 +8,7 @@ This directory contains Architecture Decision Records (ADRs) for the DevPrep pro
 |---|---|---|---|
 | [0000](0000-template.md) | ADR Template | — | — |
 | [0001](0001-extend-cojudge.md) | Extend Cojudge rather than rewrite | Accepted | 2026-10-27 |
+| [0002](0002-retain-cojudge-runtime-versions.md) | Retain Cojudge's runtime versions for v1.0 | Accepted | 2026-10-27 |
 
 ## When to Create an ADR
 

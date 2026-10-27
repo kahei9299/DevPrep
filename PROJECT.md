@@ -43,7 +43,7 @@ These requirements define the minimum acceptable release. All must be satisfied.
 
 ### Code Execution
 
-- Python 3, C++17, and Java 17 support for all 250 problems.
+- Python 3.11, C++17 (GCC 13), and Java 22 (OpenJDK 22) support for all 250 problems.
 - Public test execution (sample tests visible to user).
 - Hidden test submission (full test suite, results reported).
 - Correct solutions accepted; incorrect solutions rejected.
