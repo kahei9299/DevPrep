@@ -27,7 +27,7 @@ Add a shared `HostConfig` to all container creation calls via `src/lib/server/co
 
 Applied to all 18 `docker.createContainer()` calls: 8 language runners, 8 playground runners, 1 marker runner, and 1 debug runner (with relaxed `NetworkMode`).
 
-Container cleanup between reuses enhanced: file artifacts and `/tmp` are removed first, then leftover processes (PID > 1, excluding the cleanup shell) are killed individually. The file cleanup runs before process killing so that a killed shell cannot prevent cleanup.
+Container cleanup between reuses enhanced to remove file artifacts and `/tmp` contents. Process killing was investigated but rejected: the container's entry point (`sh -lc 'tail -f /dev/null'`) creates `tail` as a child of the PID-1 shell, and killing child processes causes the shell to exit, stopping the container. Leftover processes are contained by resource limits (`NetworkMode: 'none'`, `CapDrop: ['ALL']`, PID/memory limits) and are destroyed when the container is eventually removed from the pool.
 
 ### Controls deferred
 

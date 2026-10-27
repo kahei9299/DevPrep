@@ -70,7 +70,7 @@ afterEach(async () => {
 });
 
 describe('ContainerPool.acquire (cleanup)', () => {
-	it('kills processes and cleans /tmp on reuse', async () => {
+	it('cleans /tmp and app files on reuse', async () => {
 		const container = createStubContainer('test-cleanup-1');
 		held.push(container);
 		let cleanupCmd = '';
@@ -91,8 +91,8 @@ describe('ContainerPool.acquire (cleanup)', () => {
 		await ContainerPool.release(IMAGE, container as any);
 		await ContainerPool.acquire(IMAGE);
 		expect(cleanupCmd).toContain('/tmp/*');
-		expect(cleanupCmd).toContain('kill -9');
 		expect(cleanupCmd).toContain('mkdir -p /app');
+		expect(cleanupCmd).not.toContain('kill');
 	});
 });
 
