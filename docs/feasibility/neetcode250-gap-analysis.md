@@ -102,10 +102,11 @@ All 250 NeetCode 250 problems are present in Cojudge's bundled content.
 
 | Metric | Min | Max | Median | Mean |
 |---|---|---|---|---|
-| Public tests per problem | 1 | 5 | 2 | 2.5 |
-| Hidden tests per problem | 20 | 35 | 31 | 30.4 |
+| Public tests per problem | 1 | 7 | 3 | 3.3 |
+| Hidden tests per problem | 9 | 82 | 32 | 38.6 |
+| Total hidden tests (all 250) | | | | 9,643 |
 
-The test case counts are uniform — most problems have 30-32 hidden tests and 2-3 public example tests.
+Most problems have 25-55 hidden tests. A few outliers have fewer (9) or more (82).
 
 ---
 
