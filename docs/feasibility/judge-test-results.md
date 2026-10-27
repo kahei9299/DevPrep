@@ -23,8 +23,8 @@ at unix:///Users/Ka_Hei_LIANG_from.TP/.docker/run/docker.sock
 The following 20 representative problems have been selected across all required categories. Once Docker is available, each will be tested with:
 
 1. A correct Python solution
-2. A correct C++17 solution
-3. A correct Java 17 solution
+2. A correct C++17 solution (GCC 13)
+3. A correct Java 22 solution (OpenJDK 22)
 4. An intentionally incorrect solution
 5. Edge case testing where applicable
 6. Timeout / error reporting verification
