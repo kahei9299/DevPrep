@@ -90,8 +90,9 @@ describe('ContainerPool.acquire (cleanup)', () => {
 		};
 		await ContainerPool.release(IMAGE, container as any);
 		await ContainerPool.acquire(IMAGE);
-		expect(cleanupCmd).toContain('kill -9 -1');
 		expect(cleanupCmd).toContain('/tmp/*');
+		expect(cleanupCmd).toContain('kill -9');
+		expect(cleanupCmd).toContain('mkdir -p /app');
 	});
 });
 

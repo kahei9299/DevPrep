@@ -145,7 +145,7 @@ class ContainerPool {
     private static async cleanContainer(container: Dockerode.Container): Promise<void> {
         try {
             const exec = await container.exec({
-                Cmd: ['sh', '-c', 'kill -9 -1 2>/dev/null || true; rm -rf /tmp/* 2>/dev/null || true; rm -f /app/*.java /app/*.py /app/*.cpp /app/*.cs /app/*.rs /app/*.go /app/*.class /app/Main /app/main /app/*.php /app/*.ts /app/*.js /app/*.o 2>/dev/null; mkdir -p /app'],
+                Cmd: ['sh', '-c', 'rm -rf /tmp/* 2>/dev/null || true; rm -f /app/*.java /app/*.py /app/*.cpp /app/*.cs /app/*.rs /app/*.go /app/*.class /app/Main /app/main /app/*.php /app/*.ts /app/*.js /app/*.o 2>/dev/null; mkdir -p /app; for p in /proc/[0-9]*/status; do pid=${p#/proc/}; pid=${pid%%/*}; [ "$pid" -gt 1 ] 2>/dev/null && [ "$pid" != "$$" ] && kill -9 "$pid" 2>/dev/null; done; true'],
                 AttachStdout: true,
                 AttachStderr: true
             });

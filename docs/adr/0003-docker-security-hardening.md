@@ -27,7 +27,7 @@ Add a shared `HostConfig` to all container creation calls via `src/lib/server/co
 
 Applied to all 18 `docker.createContainer()` calls: 8 language runners, 8 playground runners, 1 marker runner, and 1 debug runner (with relaxed `NetworkMode`).
 
-Container cleanup between reuses enhanced to kill background processes (`kill -9 -1`) and clean temporary files (`rm -rf /tmp/*`).
+Container cleanup between reuses enhanced: file artifacts and `/tmp` are removed first, then leftover processes (PID > 1, excluding the cleanup shell) are killed individually. The file cleanup runs before process killing so that a killed shell cannot prevent cleanup.
 
 ### Controls deferred
 
@@ -61,7 +61,7 @@ Each language runner could define its own limits (e.g., Java gets more memory). 
 **Negative:**
 
 - Memory metrics from `/usr/bin/time` are unavailable: `ensureTimeInstalled()` fails with no network (graceful fallback to plain `timeout` works; execution time is still measured via internal `:::TIME:::` markers).
-- Debug containers retain network access (acceptable trade-off for interactive debugging workflows).
+- Debug containers retain network access. `DebugRunner` installs debugger packages at runtime: GDB via `apt-get` for C++ and Delve via `go install` for Go (see `DebugRunner.ts` lines 442-453). These installs require network. Debug containers are only created during interactive debugging sessions (never for submission grading), are labelled `cojudge.debug=true`, and still receive all other security controls (resource limits, capability dropping, no-new-privileges). Risk: user code in a debug session can make network requests. Acceptable for single-user local use.
 
 ## Related
 
