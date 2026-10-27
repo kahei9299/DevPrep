@@ -1,0 +1,251 @@
+slug,title,difficulty,nc250_category,in_blind75,in_nc150,folder_exists,has_statement,has_metadata,python_starter,cpp_starter,java_starter,public_test_count,hidden_test_count,has_marker,has_solution,custom_validator,verification_status
+concatenation-of-array,"152. Concatenation of Array",Easy,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,2,32,Yes,Yes,Yes,present_complete
+contains-duplicate,"3. Contains Duplicate",Easy,arrays-hashing,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+valid-anagram,"53. Valid Anagram",Easy,arrays-hashing,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,25,Yes,Yes,Yes,present_complete
+two-sum,"1. Two Sum",Easy,arrays-hashing,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,31,Yes,Yes,Yes,present_complete
+longest-common-prefix,"153. Longest Common Prefix",Easy,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,2,32,Yes,Yes,Yes,present_complete
+group-anagrams,"54. Group Anagrams",Medium,arrays-hashing,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+remove-element,"154. Remove Element",Easy,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+majority-element,"155. Majority Element",Easy,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,2,32,Yes,Yes,Yes,present_complete
+design-hashset,"156. Design HashSet",Easy,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+design-hashmap,"157. Design HashMap",Easy,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+sort-an-array,"158. Sort an Array",Medium,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+sort-colors,"159. Sort Colors",Medium,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+top-k-frequent-elements,"75. Top K Frequent Elements",Medium,arrays-hashing,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+encode-and-decode-strings,"59. Encode and Decode Strings",Medium,arrays-hashing,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+range-sum-query-2d-immutable,"160. Range Sum Query 2D - Immutable",Medium,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+product-of-array-except-self,"4. Product of Array Except Self",Medium,arrays-hashing,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,30,Yes,Yes,Yes,present_complete
+valid-sudoku,"76. Valid Sudoku",Medium,arrays-hashing,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,62,Yes,Yes,Yes,present_complete
+longest-consecutive-sequence,"31. Longest Consecutive Sequence",Medium,arrays-hashing,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+best-time-to-buy-and-sell-stock-ii,"161. Best Time to Buy and Sell Stock II",Medium,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+majority-element-ii,"162. Majority Element II",Medium,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+subarray-sum-equals-k,"163. Subarray Sum Equals K",Medium,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+first-missing-positive,"164. First Missing Positive",Hard,arrays-hashing,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+reverse-string,"165. Reverse String",Easy,two-pointers,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+valid-palindrome,"56. Valid Palindrome",Easy,two-pointers,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,25,Yes,Yes,Yes,present_complete
+valid-palindrome-ii,"166. Valid Palindrome II",Easy,two-pointers,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+merge-strings-alternately,"167. Merge Strings Alternately",Easy,two-pointers,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+merge-sorted-array,"168. Merge Sorted Array",Easy,two-pointers,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+remove-duplicates-from-sorted-array,"169. Remove Duplicates from Sorted Array",Easy,two-pointers,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+two-sum-ii-input-array-is-sorted,"77. Two Sum II - Input Array Is Sorted",Medium,two-pointers,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,62,Yes,Yes,Yes,present_complete
+3sum,"9. 3Sum",Medium,two-pointers,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+4sum,"170. 4Sum",Medium,two-pointers,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+rotate-array,"171. Rotate Array",Medium,two-pointers,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+container-with-most-water,"10. Container With Most Water",Medium,two-pointers,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+boats-to-save-people,"172. Boats to Save People",Medium,two-pointers,,,Yes,Yes,Yes,Yes,Yes,Yes,3,31,Yes,Yes,Yes,present_complete
+trapping-rain-water,"78. Trapping Rain Water",Hard,two-pointers,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,61,Yes,Yes,Yes,present_complete
+contains-duplicate-ii,"173. Contains Duplicate II",Easy,sliding-window,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+best-time-to-buy-and-sell-stock,"2. Best Time to Buy and Sell Stock",Easy,sliding-window,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+longest-substring-without-repeating-characters,"50. Longest Substring Without Repeating Characters",Medium,sliding-window,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,6,32,Yes,Yes,Yes,present_complete
+longest-repeating-character-replacement,"51. Longest Repeating Character Replacement",Medium,sliding-window,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+permutation-in-string,"85. Permutation in String",Medium,sliding-window,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,52,Yes,Yes,Yes,present_complete
+minimum-size-subarray-sum,"174. Minimum Size Subarray Sum",Medium,sliding-window,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+find-k-closest-elements,"175. Find K Closest Elements",Medium,sliding-window,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+minimum-window-substring,"52. Minimum Window Substring",Hard,sliding-window,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+sliding-window-maximum,"86. Sliding Window Maximum",Hard,sliding-window,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,52,Yes,Yes,Yes,present_complete
+baseball-game,"176. Baseball Game",Easy,stack,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+valid-parentheses,"55. Valid Parentheses",Easy,stack,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,25,Yes,Yes,Yes,present_complete
+implement-stack-using-queues,"177. Implement Stack using Queues",Easy,stack,,,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+implement-queue-using-stacks,"178. Implement Queue using Stacks",Easy,stack,,,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+min-stack,"79. Min Stack",Medium,stack,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,62,Yes,Yes,Yes,present_complete
+evaluate-reverse-polish-notation,"80. Evaluate Reverse Polish Notation",Medium,stack,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,62,Yes,Yes,Yes,present_complete
+asteroid-collision,"179. Asteroid Collision",Medium,stack,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+daily-temperatures,"82. Daily Temperatures",Medium,stack,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,63,Yes,Yes,Yes,present_complete
+online-stock-span,"180. Online Stock Span",Medium,stack,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+car-fleet,"83. Car Fleet",Medium,stack,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,62,Yes,Yes,Yes,present_complete
+simplify-path,"181. Simplify Path",Medium,stack,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+decode-string,"182. Decode String",Medium,stack,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+maximum-frequency-stack,"183. Maximum Frequency Stack",Hard,stack,,,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+largest-rectangle-in-histogram,"84. Largest Rectangle in Histogram",Hard,stack,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,61,Yes,Yes,Yes,present_complete
+generate-parentheses,"81. Generate Parentheses",Medium,stack,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,50,Yes,Yes,Yes,present_complete
+binary-search,"87. Binary Search",Easy,binary-search,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,51,Yes,Yes,Yes,present_complete
+search-insert-position,"184. Search Insert Position",Easy,binary-search,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+guess-number-higher-or-lower,"374. Guess Number Higher or Lower",Easy,binary-search,,,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+sqrtx,"186. Sqrt(x)",Easy,binary-search,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+search-a-2d-matrix,"88. Search a 2D Matrix",Medium,binary-search,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,51,Yes,Yes,Yes,present_complete
+koko-eating-bananas,"89. Koko Eating Bananas",Medium,binary-search,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,51,Yes,Yes,Yes,present_complete
+capacity-to-ship-packages-within-d-days,"187. Capacity To Ship Packages Within D Days",Medium,binary-search,,,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+find-minimum-in-rotated-sorted-array,"7. Find Minimum in Rotated Sorted Array",Medium,binary-search,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+search-in-rotated-sorted-array,"8. Search in Rotated Sorted Array",Medium,binary-search,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+search-in-rotated-sorted-array-ii,"188. Search in Rotated Sorted Array II",Medium,binary-search,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+time-based-key-value-store,"90. Time Based Key-Value Store",Medium,binary-search,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,51,Yes,Yes,Yes,present_complete
+split-array-largest-sum,"189. Split Array Largest Sum",Hard,binary-search,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+median-of-two-sorted-arrays,"91. Median of Two Sorted Arrays",Hard,binary-search,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,51,Yes,Yes,Yes,present_complete
+find-in-mountain-array,"1095. Find in Mountain Array",Hard,binary-search,,,Yes,Yes,Yes,Yes,Yes,Yes,4,35,Yes,Yes,Yes,present_complete
+reverse-linked-list,"40. Reverse Linked List",Easy,linked-list,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,7,30,Yes,Yes,Yes,present_complete
+merge-two-sorted-lists,"42. Merge Two Sorted Lists",Easy,linked-list,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+linked-list-cycle,"41. Detect Cycle in a Linked List",Easy,linked-list,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,31,Yes,Yes,Yes,present_complete
+reorder-list,"45. Reorder List",Medium,linked-list,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,7,30,Yes,Yes,Yes,present_complete
+remove-nth-node-from-end-of-list,"44. Remove Nth Node From End Of List",Medium,linked-list,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+copy-list-with-random-pointer,"92. Copy List with Random Pointer",Medium,linked-list,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,54,Yes,Yes,Yes,present_complete
+add-two-numbers,"93. Add Two Numbers",Medium,linked-list,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,54,Yes,Yes,Yes,present_complete
+find-the-duplicate-number,"94. Find the Duplicate Number",Medium,linked-list,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+reverse-linked-list-ii,"191. Reverse Linked List II",Medium,linked-list,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+design-circular-queue,"192. Design Circular Queue",Medium,linked-list,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+lru-cache,"95. LRU Cache",Medium,linked-list,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,55,Yes,Yes,Yes,present_complete
+lfu-cache,"193. LFU Cache",Hard,linked-list,,,Yes,Yes,Yes,Yes,Yes,Yes,4,31,Yes,Yes,Yes,present_complete
+merge-k-sorted-lists,"43. Merge K Sorted Lists",Hard,linked-list,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+reverse-nodes-in-k-group,"96. Reverse Nodes in k-Group",Hard,linked-list,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+binary-tree-inorder-traversal,"194. Binary Tree Inorder Traversal",Easy,trees,,,Yes,Yes,Yes,Yes,Yes,Yes,5,31,Yes,Yes,Yes,present_complete
+binary-tree-preorder-traversal,"195. Binary Tree Preorder Traversal",Easy,trees,,,Yes,Yes,Yes,Yes,Yes,Yes,5,31,Yes,Yes,Yes,present_complete
+binary-tree-postorder-traversal,"196. Binary Tree Postorder Traversal",Easy,trees,,,Yes,Yes,Yes,Yes,Yes,Yes,4,31,Yes,Yes,Yes,present_complete
+invert-binary-tree,"62. Invert/Flip Binary Tree",Easy,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,31,Yes,Yes,Yes,present_complete
+maximum-depth-of-binary-tree,"60. Maximum Depth of Binary Tree",Easy,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,6,32,Yes,Yes,Yes,present_complete
+diameter-of-binary-tree,"97. Diameter of Binary Tree",Easy,trees,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+balanced-binary-tree,"98. Balanced Binary Tree",Easy,trees,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+same-tree,"61. Same Tree",Easy,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,30,Yes,Yes,Yes,present_complete
+subtree-of-another-tree,"66. Subtree of Another Tree",Easy,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+lowest-common-ancestor-of-a-binary-search-tree,"70. Lowest Common Ancestor of BST",Medium,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,2,33,Yes,Yes,Yes,present_complete
+insert-into-a-binary-search-tree,"197. Insert into a Binary Search Tree",Medium,trees,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+delete-node-in-a-bst,"198. Delete Node in a BST",Medium,trees,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+binary-tree-level-order-traversal,"64. Binary Tree Level Order Traversal",Medium,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,31,Yes,Yes,Yes,present_complete
+binary-tree-right-side-view,"99. Binary Tree Right Side View",Medium,trees,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+construct-quad-tree,"199. Construct Quad Tree",Medium,trees,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+count-good-nodes-in-binary-tree,"100. Count Good Nodes in Binary Tree",Medium,trees,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+validate-binary-search-tree,"68. Validate Binary Search Tree",Medium,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+kth-smallest-element-in-a-bst,"69. Kth Smallest Element in a BST",Medium,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,30,Yes,Yes,Yes,present_complete
+construct-binary-tree-from-preorder-and-inorder-traversal,"67. Construct Binary Tree from Preorder and Inorder Traversal",Medium,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+house-robber-iii,"200. House Robber III",Medium,trees,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+delete-leaves-with-a-given-value,"201. Delete Leaves With a Given Value",Medium,trees,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+binary-tree-maximum-path-sum,"63. Binary Tree Maximum Path Sum",Hard,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,31,Yes,Yes,Yes,present_complete
+serialize-and-deserialize-binary-tree,"72. Serialize and Deserialize Binary Tree",Hard,trees,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,30,Yes,Yes,Yes,present_complete
+kth-largest-element-in-a-stream,"101. Kth Largest Element in a Stream",Easy,heap,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+last-stone-weight,"102. Last Stone Weight",Easy,heap,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,52,Yes,Yes,Yes,present_complete
+k-closest-points-to-origin,"103. K Closest Points to Origin",Medium,heap,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,52,Yes,Yes,Yes,present_complete
+kth-largest-element-in-an-array,"104. Kth Largest Element in an Array",Medium,heap,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,51,Yes,Yes,Yes,present_complete
+task-scheduler,"105. Task Scheduler",Medium,heap,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+design-twitter,"106. Design Twitter",Medium,heap,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+single-threaded-cpu,"202. Single-Threaded CPU",Medium,heap,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+reorganize-string,"203. Reorganize String",Medium,heap,,,Yes,Yes,Yes,Yes,Yes,Yes,5,30,Yes,Yes,Yes,present_complete
+longest-happy-string,"204. Longest Happy String",Medium,heap,,,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+car-pooling,"205. Car Pooling",Medium,heap,,,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+find-median-from-data-stream,"74. Find Median from Data Stream",Hard,heap,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+ipo,"206. IPO",Hard,heap,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+sum-of-all-subset-xor-totals,"207. Sum of All Subset XOR Totals",Easy,backtracking,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+subsets,"107. Subsets",Medium,backtracking,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,51,Yes,Yes,Yes,present_complete
+combination-sum,"108. Combination Sum",Medium,backtracking,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+combination-sum-ii,"109. Combination Sum II",Medium,backtracking,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,52,Yes,Yes,Yes,present_complete
+combinations,"208. Combinations",Medium,backtracking,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+permutations,"110. Permutations",Medium,backtracking,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+subsets-ii,"111. Subsets II",Medium,backtracking,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+permutations-ii,"209. Permutations II",Medium,backtracking,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+word-search,"49. Word Search",Medium,backtracking,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+palindrome-partitioning,"112. Palindrome Partitioning",Medium,backtracking,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+letter-combinations-of-a-phone-number,"113. Letter Combinations of a Phone Number",Medium,backtracking,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+matchsticks-to-square,"210. Matchsticks to Square",Medium,backtracking,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+partition-to-k-equal-sum-subsets,"211. Partition to K Equal Sum Subsets",Medium,backtracking,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+n-queens,"114. N-Queens",Hard,backtracking,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,50,Yes,Yes,Yes,present_complete
+n-queens-ii,"212. N-Queens II",Hard,backtracking,,,Yes,Yes,Yes,Yes,Yes,Yes,3,9,Yes,Yes,Yes,present_complete
+word-break-ii,"213. Word Break II",Hard,backtracking,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+implement-trie-prefix-tree,"65. Implement Trie (Prefix Tree)",Medium,tries,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+design-add-and-search-words-data-structure,"71. Design Add and Search Words Data Structure",Medium,tries,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+extra-characters-in-a-string,"214. Extra Characters in a String",Medium,tries,,,Yes,Yes,Yes,Yes,Yes,Yes,2,32,Yes,Yes,Yes,present_complete
+word-search-ii,"73. Word Search II",Hard,tries,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+island-perimeter,"215. Island Perimeter",Easy,graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+verifying-an-alien-dictionary,"216. Verifying an Alien Dictionary",Easy,graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+find-the-town-judge,"217. Find the Town Judge",Easy,graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+number-of-islands,"30. Number of Islands",Medium,graphs,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+max-area-of-island,"115. Max Area of Island",Medium,graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+clone-graph,"27. Clone Graph",Medium,graphs,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,32,Yes,Yes,Yes,present_complete
+walls-and-gates,"116. Walls and Gates",Medium,graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+rotting-oranges,"117. Rotting Oranges",Medium,graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+pacific-atlantic-water-flow,"29. Pacific Atlantic Water Flow",Medium,graphs,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+surrounded-regions,"118. Surrounded Regions",Medium,graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+open-the-lock,"218. Open the Lock",Medium,graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+course-schedule,"28. Course Schedule",Medium,graphs,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+course-schedule-ii,"119. Course Schedule II",Medium,graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,54,Yes,Yes,Yes,present_complete
+graph-valid-tree,"33. Graph Valid Tree",Medium,graphs,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+course-schedule-iv,"219. Course Schedule IV",Medium,graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+number-of-connected-components-in-an-undirected-graph,"34. Number of Connected Components in an Undirected Graph",Medium,graphs,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+redundant-connection,"120. Redundant Connection",Medium,graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+accounts-merge,"220. Accounts Merge",Medium,graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+evaluate-division,"221. Evaluate Division",Medium,graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+minimum-height-trees,"222. Minimum Height Trees",Medium,graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+word-ladder,"121. Word Ladder",Hard,graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+path-with-minimum-effort,"223. Path With Minimum Effort",Medium,advanced-graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+network-delay-time,"124. Network Delay Time",Medium,advanced-graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,55,Yes,Yes,Yes,present_complete
+reconstruct-itinerary,"122. Reconstruct Itinerary",Hard,advanced-graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+min-cost-to-connect-all-points,"123. Min Cost to Connect All Points",Medium,advanced-graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+swim-in-rising-water,"125. Swim in Rising Water",Hard,advanced-graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,54,Yes,Yes,Yes,present_complete
+alien-dictionary,"32. Alien Dictionary",Hard,advanced-graphs,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+cheapest-flights-within-k-stops,"126. Cheapest Flights Within K Stops",Medium,advanced-graphs,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,53,Yes,Yes,Yes,present_complete
+find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree,"224. Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree",Hard,advanced-graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+build-a-matrix-with-conditions,"225. Build a Matrix With Conditions",Hard,advanced-graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,2,32,Yes,Yes,Yes,present_complete
+greatest-common-divisor-traversal,"226. Greatest Common Divisor Traversal",Hard,advanced-graphs,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+climbing-stairs,"16. Climbing Stairs",Easy,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,32,Yes,Yes,Yes,present_complete
+min-cost-climbing-stairs,"127. Min Cost Climbing Stairs",Easy,dp-1d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+n-th-tribonacci-number,"227. N-th Tribonacci Number",Easy,dp-1d,,,Yes,Yes,Yes,Yes,Yes,Yes,5,32,Yes,Yes,Yes,present_complete
+house-robber,"22. House Robber",Medium,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,2,32,Yes,Yes,Yes,present_complete
+house-robber-ii,"23. House Robber II",Medium,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+longest-palindromic-substring,"57. Longest Palindromic Substring",Medium,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+palindromic-substrings,"58. Palindromic Substrings",Medium,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+decode-ways,"24. Decode Ways",Medium,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+coin-change,"17. Coin Change",Medium,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+maximum-product-subarray,"6. Maximum Product Subarray",Medium,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+word-break,"20. Word Break",Medium,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+longest-increasing-subsequence,"18. Longest Increasing Subsequence",Medium,dp-1d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+partition-equal-subset-sum,"128. Partition Equal Subset Sum",Medium,dp-1d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+combination-sum-iv,"21. Combination Sum IV",Medium,dp-1d,Yes,,Yes,Yes,Yes,Yes,Yes,Yes,10,33,Yes,Yes,Yes,present_complete
+perfect-squares,"228. Perfect Squares",Medium,dp-1d,,,Yes,Yes,Yes,Yes,Yes,Yes,12,30,Yes,Yes,Yes,present_complete
+integer-break,"229. Integer Break",Medium,dp-1d,,,Yes,Yes,Yes,Yes,Yes,Yes,12,30,Yes,Yes,Yes,present_complete
+stone-game-iii,"230. Stone Game III",Hard,dp-1d,,,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+unique-paths,"25. Unique Paths",Medium,dp-2d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+unique-paths-ii,"231. Unique Paths II",Medium,dp-2d,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+minimum-path-sum,"232. Minimum Path Sum",Medium,dp-2d,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+longest-common-subsequence,"19. Longest Common Subsequence",Medium,dp-2d,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+last-stone-weight-ii,"233. Last Stone Weight II",Medium,dp-2d,,,Yes,Yes,Yes,Yes,Yes,Yes,2,31,Yes,Yes,Yes,present_complete
+best-time-to-buy-and-sell-stock-with-cooldown,"129. Best Time to Buy and Sell Stock with Cooldown",Medium,dp-2d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+coin-change-ii,"130. Coin Change II",Medium,dp-2d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+target-sum,"131. Target Sum",Medium,dp-2d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+interleaving-string,"132. Interleaving String",Medium,dp-2d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,58,Yes,Yes,Yes,present_complete
+stone-game,"234. Stone Game",Medium,dp-2d,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+stone-game-ii,"235. Stone Game II",Medium,dp-2d,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+longest-increasing-path-in-a-matrix,"133. Longest Increasing Path in a Matrix",Hard,dp-2d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,59,Yes,Yes,Yes,present_complete
+distinct-subsequences,"134. Distinct Subsequences",Hard,dp-2d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,59,Yes,Yes,Yes,present_complete
+edit-distance,"135. Edit Distance",Medium,dp-2d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+burst-balloons,"136. Burst Balloons",Hard,dp-2d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,59,Yes,Yes,Yes,present_complete
+regular-expression-matching,"137. Regular Expression Matching",Hard,dp-2d,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,66,Yes,Yes,Yes,present_complete
+lemonade-change,"236. Lemonade Change",Easy,greedy,,,Yes,Yes,Yes,Yes,Yes,Yes,3,31,Yes,Yes,Yes,present_complete
+maximum-subarray,"5. Maximum Subarray",Medium,greedy,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,32,Yes,Yes,Yes,present_complete
+maximum-sum-circular-subarray,"237. Maximum Sum Circular Subarray",Medium,greedy,,,Yes,Yes,Yes,Yes,Yes,Yes,5,32,Yes,Yes,Yes,present_complete
+longest-turbulent-subarray,"238. Longest Turbulent Subarray",Medium,greedy,,,Yes,Yes,Yes,Yes,Yes,Yes,5,32,Yes,Yes,Yes,present_complete
+jump-game,"26. Jump Game",Medium,greedy,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,31,Yes,Yes,Yes,present_complete
+jump-game-ii,"139. Jump Game II",Medium,greedy,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+jump-game-vii,"239. Jump Game VII",Medium,greedy,,,Yes,Yes,Yes,Yes,Yes,Yes,4,33,Yes,Yes,Yes,present_complete
+gas-station,"140. Gas Station",Medium,greedy,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+hand-of-straights,"141. Hand of Straights",Medium,greedy,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,58,Yes,Yes,Yes,present_complete
+dota2-senate,"240. Dota2 Senate",Medium,greedy,,,Yes,Yes,Yes,Yes,Yes,Yes,4,32,Yes,Yes,Yes,present_complete
+merge-triplets-to-form-target-triplet,"142. Merge Triplets to Form Target Triplet",Medium,greedy,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,58,Yes,Yes,Yes,present_complete
+partition-labels,"143. Partition Labels",Medium,greedy,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+valid-parenthesis-string,"144. Valid Parenthesis String",Medium,greedy,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,67,Yes,Yes,Yes,present_complete
+candy,"241. Candy",Hard,greedy,,,Yes,Yes,Yes,Yes,Yes,Yes,5,32,Yes,Yes,Yes,present_complete
+insert-interval,"35. Insert Interval",Medium,intervals,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,30,Yes,Yes,Yes,present_complete
+merge-intervals,"36. Merge Intervals",Medium,intervals,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+non-overlapping-intervals,"37. Non-overlapping Intervals",Medium,intervals,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+meeting-rooms,"38. Meeting Rooms",Easy,intervals,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+meeting-rooms-ii,"39. Meeting Rooms II",Medium,intervals,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+meeting-rooms-iii,"242. Meeting Rooms III",Hard,intervals,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+minimum-interval-to-include-each-query,"138. Minimum Interval to Include Each Query",Hard,intervals,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,57,Yes,Yes,Yes,present_complete
+excel-sheet-column-title,"243. Excel Sheet Column Title",Easy,math-geometry,,,Yes,Yes,Yes,Yes,Yes,Yes,3,31,Yes,Yes,Yes,present_complete
+greatest-common-divisor-of-strings,"244. Greatest Common Divisor of Strings",Easy,math-geometry,,,Yes,Yes,Yes,Yes,Yes,Yes,3,32,Yes,Yes,Yes,present_complete
+insert-greatest-common-divisors-in-linked-list,"245. Insert Greatest Common Divisors in Linked List",Medium,math-geometry,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+transpose-matrix,"246. Transpose Matrix",Easy,math-geometry,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+rotate-image,"48. Rotate Image",Medium,math-geometry,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+spiral-matrix,"47. Spiral Matrix",Medium,math-geometry,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+set-matrix-zeroes,"46. Set Matrix Zeroes",Medium,math-geometry,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+happy-number,"145. Happy Number",Easy,math-geometry,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,71,Yes,Yes,Yes,present_complete
+plus-one,"146. Plus One",Easy,math-geometry,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,63,Yes,Yes,Yes,present_complete
+roman-to-integer,"247. Roman to Integer",Easy,math-geometry,,,Yes,Yes,Yes,Yes,Yes,Yes,3,33,Yes,Yes,Yes,present_complete
+powx-n,"147. Pow(x, n)",Medium,math-geometry,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,80,Yes,Yes,Yes,present_complete
+multiply-strings,"148. Multiply Strings",Medium,math-geometry,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,68,Yes,Yes,Yes,present_complete
+detect-squares,"149. Detect Squares",Medium,math-geometry,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,59,Yes,Yes,Yes,present_complete
+single-number,"150. Single Number",Easy,bit-manipulation,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,68,Yes,Yes,Yes,present_complete
+number-of-1-bits,"12. Number of 1 Bits",Easy,bit-manipulation,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,3,30,Yes,Yes,Yes,present_complete
+counting-bits,"13. Counting Bits",Easy,bit-manipulation,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,31,Yes,Yes,Yes,present_complete
+add-binary,"248. Add Binary",Easy,bit-manipulation,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
+reverse-bits,"15. Reverse Bits",Easy,bit-manipulation,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+missing-number,"14. Missing Number",Easy,bit-manipulation,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,5,30,Yes,Yes,Yes,present_complete
+sum-of-two-integers,"11. Sum of Two Integers",Medium,bit-manipulation,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,4,30,Yes,Yes,Yes,present_complete
+reverse-integer,"151. Reverse Integer",Medium,bit-manipulation,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,6,82,Yes,Yes,Yes,present_complete
+bitwise-and-of-numbers-range,"249. Bitwise AND of Numbers Range",Medium,bit-manipulation,,,Yes,Yes,Yes,Yes,Yes,Yes,3,31,Yes,Yes,Yes,present_complete
+minimum-array-end,"250. Minimum Array End",Medium,bit-manipulation,,,Yes,Yes,Yes,Yes,Yes,Yes,2,30,Yes,Yes,Yes,present_complete
