@@ -1078,20 +1078,68 @@ async function runSampleTests(problemId, language, code, testCases) {
   return pollJob('/api/run', jobId)
 }
 
+// ─── Fixture loading ───
+
+import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync as fsWriteSync } from 'node:fs'
+import { join } from 'node:path'
+
+const FIXTURE_EXT = { python: 'solution.py', cpp: 'solution.cpp', java: 'Solution.java' }
+
+function loadFixtureSolutions(fixturesDir) {
+  const solutions = {}
+  const dirs = readdirSync(fixturesDir, { withFileTypes: true })
+    .filter(d => d.isDirectory())
+    .map(d => d.name)
+  for (const slug of dirs) {
+    solutions[slug] = {}
+    for (const [lang, filename] of Object.entries(FIXTURE_EXT)) {
+      const path = join(fixturesDir, slug, filename)
+      if (existsSync(path)) {
+        solutions[slug][lang] = readFileSync(path, 'utf-8').trimEnd()
+      }
+    }
+  }
+  return solutions
+}
+
+function loadResumeState(outputPath) {
+  if (!existsSync(outputPath)) return new Set()
+  try {
+    const data = JSON.parse(readFileSync(outputPath, 'utf-8'))
+    const passed = new Set()
+    for (const r of (data.results || [])) {
+      if (r.verdict === 'ACCEPTED' || r.verdict === 'TIMEOUT-OK' || r.verdict === 'ERROR-OK' ||
+          (r.type === 'wrong' && r.verdict === 'REJECTED')) {
+        passed.add(`${r.slug}:${r.lang}:${r.type}`)
+      }
+    }
+    return passed
+  } catch { return new Set() }
+}
+
 // ─── Main ───
 
 const args = process.argv.slice(2)
 const filterProblem = args.includes('--problem') ? args[args.indexOf('--problem') + 1] : null
 const filterLang = args.includes('--lang') ? args[args.indexOf('--lang') + 1] : null
 const csvPath = args.includes('--csv') ? args[args.indexOf('--csv') + 1] : null
+const fixturesDir = args.includes('--fixtures-dir') ? args[args.indexOf('--fixtures-dir') + 1] : null
+const jsonOutputPath = args.includes('--output') ? args[args.indexOf('--output') + 1] : null
+const resumeMode = args.includes('--resume')
 
 const LANGUAGES = ['python', 'cpp', 'java']
 const results = []
 
+const activeSolutions = fixturesDir ? loadFixtureSolutions(fixturesDir) : SOLUTIONS
+const resumeSet = resumeMode && jsonOutputPath ? loadResumeState(jsonOutputPath) : new Set()
+
 async function main() {
-  console.log('=== M0.1 Judge Verification ===')
+  const mode = fixturesDir ? 'Fixture' : 'M0.1 Inline'
+  console.log(`=== Judge Verification (${mode}) ===`)
   console.log(`Server: ${BASE}`)
   console.log(`Filter: problem=${filterProblem || 'all'}, lang=${filterLang || 'all'}`)
+  if (fixturesDir) console.log(`Fixtures: ${fixturesDir}`)
+  if (resumeMode) console.log(`Resume: skipping ${resumeSet.size} already-passed tests`)
   console.log()
 
   // Health check
@@ -1104,7 +1152,7 @@ async function main() {
     process.exit(1)
   }
 
-  const problems = Object.keys(SOLUTIONS)
+  const problems = Object.keys(activeSolutions)
   let passed = 0, failed = 0, errors = 0
 
   // Phase 1: Correct solutions against hidden tests (submit)
@@ -1114,7 +1162,13 @@ async function main() {
     if (filterProblem && slug !== filterProblem) continue
     for (const lang of LANGUAGES) {
       if (filterLang && lang !== filterLang) continue
-      const code = SOLUTIONS[slug]?.[lang]
+      if (resumeSet.has(`${slug}:${lang}:correct`)) {
+        console.log(`  ${slug} ${lang} ... SKIP (resumed)`)
+        passed++
+        results.push({ slug, lang, type: 'correct', verdict: 'ACCEPTED', detail: 'resumed', elapsed: '0' })
+        continue
+      }
+      const code = activeSolutions[slug]?.[lang]
       if (!code) { console.log(`  SKIP ${slug} ${lang} (no solution)`); continue }
 
       process.stdout.write(`  ${slug} ${lang} ... `)
@@ -1296,9 +1350,21 @@ class Solution:
   const rows = results.map(r =>
     `${r.slug},${r.lang},${r.type},${r.verdict},"${(r.detail||'').replace(/"/g,'""')}",${r.elapsed}`
   )
-  const { writeFileSync } = await import('node:fs')
-  writeFileSync(csvOut, header + '\n' + rows.join('\n') + '\n')
+  fsWriteSync(csvOut, header + '\n' + rows.join('\n') + '\n')
   console.log(`\nResults written to ${csvOut}`)
+
+  // Write JSON if --output specified
+  if (jsonOutputPath) {
+    const jsonResult = {
+      generated: new Date().toISOString(),
+      server: BASE,
+      mode: fixturesDir ? 'fixture' : 'inline',
+      summary: { total: results.length, passed, failed, errors },
+      results
+    }
+    fsWriteSync(jsonOutputPath, JSON.stringify(jsonResult, null, 2) + '\n')
+    console.log(`JSON results written to ${jsonOutputPath}`)
+  }
 
   process.exit(failed > 0 ? 1 : 0)
 }

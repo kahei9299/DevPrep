@@ -1,0 +1,4061 @@
+{
+  "generated": "2026-10-27T16:42:29.671Z",
+  "summary": {
+    "total_problems": 250,
+    "java": {
+      "available": 20,
+      "needs_adaptation": 230,
+      "missing": 0
+    },
+    "python": {
+      "available": 20,
+      "missing": 230
+    },
+    "cpp": {
+      "available": 20,
+      "missing": 230
+    }
+  },
+  "problems": [
+    {
+      "slug": "concatenation-of-array",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/concatenation-of-array/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "contains-duplicate",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/contains-duplicate/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "valid-anagram",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/valid-anagram/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "two-sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/two-sum/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/two-sum/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/two-sum/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-common-prefix",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-common-prefix/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "group-anagrams",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/group-anagrams/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/group-anagrams/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/group-anagrams/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "remove-element",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/remove-element/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "majority-element",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/majority-element/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "design-hashset",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/design-hashset/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "design-hashmap",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/design-hashmap/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "sort-an-array",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/sort-an-array/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "sort-colors",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/sort-colors/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "top-k-frequent-elements",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/top-k-frequent-elements/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/top-k-frequent-elements/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/top-k-frequent-elements/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "encode-and-decode-strings",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/encode-and-decode-strings/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "range-sum-query-2d-immutable",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/range-sum-query-2d-immutable/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "product-of-array-except-self",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/product-of-array-except-self/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "valid-sudoku",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/valid-sudoku/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-consecutive-sequence",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-consecutive-sequence/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "best-time-to-buy-and-sell-stock-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/best-time-to-buy-and-sell-stock-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "majority-element-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/majority-element-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "subarray-sum-equals-k",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/subarray-sum-equals-k/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "first-missing-positive",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/first-missing-positive/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "reverse-string",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/reverse-string/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "valid-palindrome",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/valid-palindrome/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/valid-palindrome/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/valid-palindrome/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "valid-palindrome-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/valid-palindrome-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "merge-strings-alternately",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/merge-strings-alternately/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "merge-sorted-array",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/merge-sorted-array/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "remove-duplicates-from-sorted-array",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/remove-duplicates-from-sorted-array/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "two-sum-ii-input-array-is-sorted",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/two-sum-ii-input-array-is-sorted/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "3sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/3sum/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/3sum/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/3sum/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "4sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/4sum/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "rotate-array",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/rotate-array/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "container-with-most-water",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/container-with-most-water/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "boats-to-save-people",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/boats-to-save-people/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "trapping-rain-water",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/trapping-rain-water/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "contains-duplicate-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/contains-duplicate-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "best-time-to-buy-and-sell-stock",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/best-time-to-buy-and-sell-stock/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/best-time-to-buy-and-sell-stock/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/best-time-to-buy-and-sell-stock/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-substring-without-repeating-characters",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-substring-without-repeating-characters/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-repeating-character-replacement",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-repeating-character-replacement/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "permutation-in-string",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/permutation-in-string/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "minimum-size-subarray-sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/minimum-size-subarray-sum/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "find-k-closest-elements",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/find-k-closest-elements/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "minimum-window-substring",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/minimum-window-substring/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/minimum-window-substring/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/minimum-window-substring/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "sliding-window-maximum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/sliding-window-maximum/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "baseball-game",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/baseball-game/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "valid-parentheses",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/valid-parentheses/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/valid-parentheses/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/valid-parentheses/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "implement-stack-using-queues",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/implement-stack-using-queues/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "implement-queue-using-stacks",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/implement-queue-using-stacks/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "min-stack",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/min-stack/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "evaluate-reverse-polish-notation",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/evaluate-reverse-polish-notation/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "asteroid-collision",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/asteroid-collision/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "daily-temperatures",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/daily-temperatures/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "online-stock-span",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/online-stock-span/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "car-fleet",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/car-fleet/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "simplify-path",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/simplify-path/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "decode-string",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/decode-string/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "maximum-frequency-stack",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/maximum-frequency-stack/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "largest-rectangle-in-histogram",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/largest-rectangle-in-histogram/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "generate-parentheses",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/generate-parentheses/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "binary-search",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/binary-search/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/binary-search/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/binary-search/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "search-insert-position",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/search-insert-position/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "guess-number-higher-or-lower",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/guess-number-higher-or-lower/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "sqrtx",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/sqrtx/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "search-a-2d-matrix",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/search-a-2d-matrix/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "koko-eating-bananas",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/koko-eating-bananas/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/koko-eating-bananas/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/koko-eating-bananas/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "capacity-to-ship-packages-within-d-days",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/capacity-to-ship-packages-within-d-days/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "find-minimum-in-rotated-sorted-array",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/find-minimum-in-rotated-sorted-array/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "search-in-rotated-sorted-array",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/search-in-rotated-sorted-array/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "search-in-rotated-sorted-array-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/search-in-rotated-sorted-array-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "time-based-key-value-store",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/time-based-key-value-store/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "split-array-largest-sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/split-array-largest-sum/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "median-of-two-sorted-arrays",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/median-of-two-sorted-arrays/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "find-in-mountain-array",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/find-in-mountain-array/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "reverse-linked-list",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/reverse-linked-list/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/reverse-linked-list/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/reverse-linked-list/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "merge-two-sorted-lists",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/merge-two-sorted-lists/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "linked-list-cycle",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/linked-list-cycle/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "reorder-list",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/reorder-list/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "remove-nth-node-from-end-of-list",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/remove-nth-node-from-end-of-list/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "copy-list-with-random-pointer",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/copy-list-with-random-pointer/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "add-two-numbers",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/add-two-numbers/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "find-the-duplicate-number",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/find-the-duplicate-number/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "reverse-linked-list-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/reverse-linked-list-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "design-circular-queue",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/design-circular-queue/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "lru-cache",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/lru-cache/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/lru-cache/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/lru-cache/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "lfu-cache",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/lfu-cache/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "merge-k-sorted-lists",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/merge-k-sorted-lists/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "reverse-nodes-in-k-group",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/reverse-nodes-in-k-group/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "binary-tree-inorder-traversal",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/binary-tree-inorder-traversal/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "binary-tree-preorder-traversal",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/binary-tree-preorder-traversal/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "binary-tree-postorder-traversal",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/binary-tree-postorder-traversal/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "invert-binary-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/invert-binary-tree/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/invert-binary-tree/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/invert-binary-tree/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "maximum-depth-of-binary-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/maximum-depth-of-binary-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "diameter-of-binary-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/diameter-of-binary-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "balanced-binary-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/balanced-binary-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "same-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/same-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "subtree-of-another-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/subtree-of-another-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "lowest-common-ancestor-of-a-binary-search-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/lowest-common-ancestor-of-a-binary-search-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "insert-into-a-binary-search-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/insert-into-a-binary-search-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "delete-node-in-a-bst",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/delete-node-in-a-bst/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "binary-tree-level-order-traversal",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/binary-tree-level-order-traversal/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "binary-tree-right-side-view",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/binary-tree-right-side-view/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "construct-quad-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/construct-quad-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "count-good-nodes-in-binary-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/count-good-nodes-in-binary-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "validate-binary-search-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/validate-binary-search-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "kth-smallest-element-in-a-bst",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/kth-smallest-element-in-a-bst/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "construct-binary-tree-from-preorder-and-inorder-traversal",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/construct-binary-tree-from-preorder-and-inorder-traversal/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "house-robber-iii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/house-robber-iii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "delete-leaves-with-a-given-value",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/delete-leaves-with-a-given-value/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "binary-tree-maximum-path-sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/binary-tree-maximum-path-sum/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "serialize-and-deserialize-binary-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/serialize-and-deserialize-binary-tree/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/serialize-and-deserialize-binary-tree/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/serialize-and-deserialize-binary-tree/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "kth-largest-element-in-a-stream",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/kth-largest-element-in-a-stream/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "last-stone-weight",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/last-stone-weight/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "k-closest-points-to-origin",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/k-closest-points-to-origin/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "kth-largest-element-in-an-array",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/kth-largest-element-in-an-array/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "task-scheduler",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/task-scheduler/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "design-twitter",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/design-twitter/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "single-threaded-cpu",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/single-threaded-cpu/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "reorganize-string",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/reorganize-string/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-happy-string",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-happy-string/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "car-pooling",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/car-pooling/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "find-median-from-data-stream",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/find-median-from-data-stream/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/find-median-from-data-stream/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/find-median-from-data-stream/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "ipo",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/ipo/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "sum-of-all-subset-xor-totals",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/sum-of-all-subset-xor-totals/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "subsets",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/subsets/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/subsets/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/subsets/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "combination-sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/combination-sum/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "combination-sum-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/combination-sum-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "combinations",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/combinations/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "permutations",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/permutations/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "subsets-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/subsets-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "permutations-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/permutations-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "word-search",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/word-search/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "palindrome-partitioning",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/palindrome-partitioning/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "letter-combinations-of-a-phone-number",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/letter-combinations-of-a-phone-number/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "matchsticks-to-square",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/matchsticks-to-square/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "partition-to-k-equal-sum-subsets",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/partition-to-k-equal-sum-subsets/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "n-queens",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/n-queens/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "n-queens-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/n-queens-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "word-break-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/word-break-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "implement-trie-prefix-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/implement-trie-prefix-tree/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/implement-trie-prefix-tree/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/implement-trie-prefix-tree/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "design-add-and-search-words-data-structure",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/design-add-and-search-words-data-structure/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "extra-characters-in-a-string",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/extra-characters-in-a-string/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "word-search-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/word-search-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "island-perimeter",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/island-perimeter/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "verifying-an-alien-dictionary",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/verifying-an-alien-dictionary/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "find-the-town-judge",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/find-the-town-judge/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "number-of-islands",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/number-of-islands/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/number-of-islands/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/number-of-islands/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "max-area-of-island",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/max-area-of-island/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "clone-graph",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/clone-graph/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/clone-graph/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/clone-graph/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "walls-and-gates",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/walls-and-gates/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "rotting-oranges",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/rotting-oranges/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "pacific-atlantic-water-flow",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/pacific-atlantic-water-flow/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "surrounded-regions",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/surrounded-regions/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "open-the-lock",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/open-the-lock/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "course-schedule",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/course-schedule/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "course-schedule-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/course-schedule-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "graph-valid-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/graph-valid-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "course-schedule-iv",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/course-schedule-iv/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "number-of-connected-components-in-an-undirected-graph",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/number-of-connected-components-in-an-undirected-graph/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "redundant-connection",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/redundant-connection/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "accounts-merge",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/accounts-merge/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "evaluate-division",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/evaluate-division/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "minimum-height-trees",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/minimum-height-trees/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "word-ladder",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/word-ladder/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "path-with-minimum-effort",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/path-with-minimum-effort/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "network-delay-time",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/network-delay-time/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "reconstruct-itinerary",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/reconstruct-itinerary/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "min-cost-to-connect-all-points",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/min-cost-to-connect-all-points/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "swim-in-rising-water",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/swim-in-rising-water/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "alien-dictionary",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/alien-dictionary/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "cheapest-flights-within-k-stops",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/cheapest-flights-within-k-stops/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "build-a-matrix-with-conditions",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/build-a-matrix-with-conditions/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "greatest-common-divisor-traversal",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/greatest-common-divisor-traversal/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "climbing-stairs",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/climbing-stairs/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "min-cost-climbing-stairs",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/min-cost-climbing-stairs/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "n-th-tribonacci-number",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/n-th-tribonacci-number/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "house-robber",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/house-robber/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "house-robber-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/house-robber-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-palindromic-substring",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-palindromic-substring/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "palindromic-substrings",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/palindromic-substrings/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "decode-ways",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/decode-ways/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "coin-change",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "available",
+          "path": "tests/judge/fixtures/coin-change/solution.py"
+        },
+        "cpp": {
+          "status": "available",
+          "path": "tests/judge/fixtures/coin-change/solution.cpp"
+        },
+        "java": {
+          "status": "available",
+          "path": "tests/judge/fixtures/coin-change/Solution.java"
+        }
+      }
+    },
+    {
+      "slug": "maximum-product-subarray",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/maximum-product-subarray/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "word-break",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/word-break/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-increasing-subsequence",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-increasing-subsequence/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "partition-equal-subset-sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/partition-equal-subset-sum/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "combination-sum-iv",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/combination-sum-iv/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "perfect-squares",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/perfect-squares/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "integer-break",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/integer-break/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "stone-game-iii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/stone-game-iii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "unique-paths",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/unique-paths/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "unique-paths-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/unique-paths-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "minimum-path-sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/minimum-path-sum/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-common-subsequence",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-common-subsequence/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "last-stone-weight-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/last-stone-weight-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "best-time-to-buy-and-sell-stock-with-cooldown",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/best-time-to-buy-and-sell-stock-with-cooldown/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "coin-change-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/coin-change-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "target-sum",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/target-sum/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "interleaving-string",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/interleaving-string/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "stone-game",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/stone-game/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "stone-game-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/stone-game-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-increasing-path-in-a-matrix",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-increasing-path-in-a-matrix/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "distinct-subsequences",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/distinct-subsequences/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "edit-distance",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/edit-distance/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "burst-balloons",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/burst-balloons/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "regular-expression-matching",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/regular-expression-matching/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "lemonade-change",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/lemonade-change/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "maximum-subarray",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/maximum-subarray/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "maximum-sum-circular-subarray",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/maximum-sum-circular-subarray/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "longest-turbulent-subarray",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/longest-turbulent-subarray/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "jump-game",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/jump-game/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "jump-game-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/jump-game-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "jump-game-vii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/jump-game-vii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "gas-station",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/gas-station/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "hand-of-straights",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/hand-of-straights/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "dota2-senate",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/dota2-senate/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "merge-triplets-to-form-target-triplet",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/merge-triplets-to-form-target-triplet/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "partition-labels",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/partition-labels/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "valid-parenthesis-string",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/valid-parenthesis-string/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "candy",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/candy/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "insert-interval",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/insert-interval/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "merge-intervals",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/merge-intervals/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "non-overlapping-intervals",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/non-overlapping-intervals/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "meeting-rooms",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/meeting-rooms/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "meeting-rooms-ii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/meeting-rooms-ii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "meeting-rooms-iii",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/meeting-rooms-iii/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "minimum-interval-to-include-each-query",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/minimum-interval-to-include-each-query/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "excel-sheet-column-title",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/excel-sheet-column-title/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "greatest-common-divisor-of-strings",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/greatest-common-divisor-of-strings/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "insert-greatest-common-divisors-in-linked-list",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/insert-greatest-common-divisors-in-linked-list/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "transpose-matrix",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/transpose-matrix/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "rotate-image",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/rotate-image/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "spiral-matrix",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/spiral-matrix/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "set-matrix-zeroes",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/set-matrix-zeroes/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "happy-number",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/happy-number/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "plus-one",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/plus-one/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "roman-to-integer",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/roman-to-integer/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "powx-n",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/powx-n/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "multiply-strings",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/multiply-strings/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "detect-squares",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/detect-squares/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "single-number",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/single-number/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "number-of-1-bits",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/number-of-1-bits/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "counting-bits",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/counting-bits/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "add-binary",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/add-binary/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "reverse-bits",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/reverse-bits/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "missing-number",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/missing-number/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "sum-of-two-integers",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/sum-of-two-integers/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "reverse-integer",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/reverse-integer/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "bitwise-and-of-numbers-range",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/bitwise-and-of-numbers-range/Marker.java"
+        }
+      }
+    },
+    {
+      "slug": "minimum-array-end",
+      "has_marker": true,
+      "languages": {
+        "python": {
+          "status": "missing"
+        },
+        "cpp": {
+          "status": "missing"
+        },
+        "java": {
+          "status": "needs-adaptation",
+          "marker_path": "problems/minimum-array-end/Marker.java"
+        }
+      }
+    }
+  ]
+}

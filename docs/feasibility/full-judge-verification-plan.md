@@ -66,17 +66,34 @@ node scripts/verify-judge.mjs --csv results.csv
 
 ## M2 Expansion: 750/750 Verification
 
-For the M2 milestone, the script will be extended to:
+### M1 Preparation (Complete)
 
-1. **Auto-generate solutions** by extracting the reference solution from each problem's `Marker.java` (which contains a working Java implementation).
-2. **Cross-language solution generation** using the Marker as the source of truth.
-3. **Batch execution** with parallel submissions (respecting Docker resource limits).
-4. **Coverage report** showing pass/fail per problem per language.
+The verification framework has been extended to support M2:
+
+1. **Fixture-based solutions**: `tests/judge/fixtures/{slug}/solution.{py,cpp,java}` — 20 problems extracted from M0.1, remaining 230 to be added.
+2. **Fixture loading**: `verify-judge.mjs --fixtures-dir tests/judge/fixtures` loads solutions from files instead of inline constants.
+3. **JSON output**: `verify-judge.mjs --output results.json` writes structured results for programmatic consumption.
+4. **Resume mode**: `verify-judge.mjs --resume --output results.json` skips already-passed tests, allowing interrupted M2 runs to continue.
+5. **Solution inventory**: `docs/feasibility/solution-inventory.json` tracks 250 problems × 3 languages with availability status.
+6. **Verification manifest**: `docs/feasibility/verification-manifest.json` tracks verification status per combination.
+7. **Inventory script**: `scripts/inventory-solutions.mjs` regenerates the inventory and manifest.
+
+### Remaining M2 Work
+
+For the M2 milestone:
+
+1. **Write reference solutions** for the 230 problems not covered by M0.1 (Python, C++, Java).
+2. **Java solutions from Marker.java**: Each problem's `Marker.java` contains a working Java reference. These need adaptation to match `starterCode` signatures.
+3. **Batch execution** with the fixture loader (respecting Docker resource limits).
+4. **Coverage report** from the verification manifest.
 
 ### Estimated Effort
 
 - 250 problems × 3 languages = 750 submissions.
 - At ~4-6 seconds per submission = ~50-75 minutes total runtime.
+- 60/750 already verified in M0.1.
+- 230 Java solutions extractable from Marker.java (need adaptation).
+- 230 Python and 230 C++ solutions need writing.
 - Failures will need manual investigation and solution fixes.
 
 ### Success Criteria
@@ -89,6 +106,19 @@ For the M2 milestone, the script will be extended to:
 | **Content bug** | Fix `Marker.java`, `official-tests.json`, or `metadata.json` |
 | **Runner bug** | Fix the language runner (e.g., type conversion, harness generation) |
 | **Harness bug** | Fix the generated test harness code |
+
+### Verification Levels
+
+Each language-problem combination is assessed at multiple levels:
+
+| Level | Description |
+|---|---|
+| `correct_accepted` | Reference solution accepted by submit endpoint |
+| `public_tests_passed` | Sample tests pass via run endpoint |
+| `hidden_tests_passed` | Full official tests pass via submit endpoint |
+| `wrong_rejected` | Deliberately incorrect solution rejected |
+| `edge_cases_validated` | Boundary conditions tested |
+| `special_judge_validated` | Custom validator behavior confirmed |
 
 ---
 
