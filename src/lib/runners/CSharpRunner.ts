@@ -9,6 +9,7 @@ import { resolveProblemFile } from "$lib/server/contentPaths";
 import { ProgramRunner, RunnerCrashError } from "./ProgramRunner";
 import ContainerPool from "./ContainerPool";
 import { cojudgeContainerLabels } from "$lib/server/containerSession";
+import { cojudgeHostConfig } from "$lib/server/containerConfig";
 
 const docker = new Dockerode();
 
@@ -38,7 +39,8 @@ export class CSharpRunner extends ProgramRunner {
                     Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                     WorkingDir: '/app',
                     Tty: false,
-                    Labels: cojudgeContainerLabels()
+                    Labels: cojudgeContainerLabels(),
+                    HostConfig: cojudgeHostConfig()
                 });
                 await this.container.start();
 

@@ -11,6 +11,7 @@ import Dockerode from "dockerode";
 import tar from 'tar-stream';
 import ContainerPool from "./ContainerPool";
 import { cojudgeContainerLabels } from "$lib/server/containerSession";
+import { cojudgeHostConfig } from "$lib/server/containerConfig";
 
 const docker = new Dockerode();
 
@@ -47,7 +48,8 @@ export class PlaygroundJavaRunner extends PlaygroundRunner {
                 Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                 WorkingDir: '/app',
                 Tty: false,
-                Labels: cojudgeContainerLabels()
+                Labels: cojudgeContainerLabels(),
+                HostConfig: cojudgeHostConfig()
             });
             await this.container.start();
         }
@@ -128,7 +130,8 @@ export class PlaygroundPythonRunner extends PlaygroundRunner {
                 Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                 WorkingDir: '/app',
                 Tty: false,
-                Labels: cojudgeContainerLabels()
+                Labels: cojudgeContainerLabels(),
+                HostConfig: cojudgeHostConfig()
             });
             await this.container.start();
         }
@@ -186,7 +189,8 @@ export class PlaygroundCppRunner extends PlaygroundRunner {
                 Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                 WorkingDir: '/app',
                 Tty: false,
-                Labels: cojudgeContainerLabels()
+                Labels: cojudgeContainerLabels(),
+                HostConfig: cojudgeHostConfig()
             });
             await this.container.start();
         }
@@ -267,7 +271,8 @@ export class PlaygroundCSharpRunner extends PlaygroundRunner {
                 Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                 WorkingDir: '/app',
                 Tty: false,
-                Labels: cojudgeContainerLabels()
+                Labels: cojudgeContainerLabels(),
+                HostConfig: cojudgeHostConfig()
             });
             await this.container.start();
 
@@ -360,7 +365,8 @@ export class PlaygroundRustRunner extends PlaygroundRunner {
                 Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                 WorkingDir: '/app',
                 Tty: false,
-                Labels: cojudgeContainerLabels()
+                Labels: cojudgeContainerLabels(),
+                HostConfig: cojudgeHostConfig()
             });
             await this.container.start();
         }
@@ -441,7 +447,8 @@ export class PlaygroundGoRunner extends PlaygroundRunner {
                 Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                 WorkingDir: '/app',
                 Tty: false,
-                Labels: cojudgeContainerLabels()
+                Labels: cojudgeContainerLabels(),
+                HostConfig: cojudgeHostConfig()
             });
             await this.container.start();
 
@@ -534,7 +541,8 @@ export class PlaygroundTypeScriptRunner extends PlaygroundRunner {
                 Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                 WorkingDir: '/app',
                 Tty: false,
-                Labels: cojudgeContainerLabels()
+                Labels: cojudgeContainerLabels(),
+                HostConfig: cojudgeHostConfig()
             });
             await this.container.start();
 
@@ -604,7 +612,8 @@ export class PlaygroundPhpRunner extends PlaygroundRunner {
                 Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                 WorkingDir: '/app',
                 Tty: false,
-                Labels: cojudgeContainerLabels()
+                Labels: cojudgeContainerLabels(),
+                HostConfig: cojudgeHostConfig()
             });
             await this.container.start();
         }

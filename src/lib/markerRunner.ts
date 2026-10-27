@@ -7,6 +7,7 @@ import { isTranscriptKind } from './utils/interactiveUtil';
 import { ensureImageAvailable, LINUX_TIMEOUT_CODE, TIMEOUT_MESSAGE, type Param } from './utils/util';
 import ContainerPool from './runners/ContainerPool';
 import { cojudgeContainerLabels } from './server/containerSession';
+import { cojudgeHostConfig } from './server/containerConfig';
 
 const docker = new Dockerode();
 
@@ -82,7 +83,8 @@ export async function getMarkerResponses(problemId: string, functionName: string
                 Cmd: ['sh', '-lc', 'tail -f /dev/null'],
                 WorkingDir: '/app',
                 Tty: false,
-                Labels: cojudgeContainerLabels()
+                Labels: cojudgeContainerLabels(),
+                HostConfig: cojudgeHostConfig()
             });
             await container.start();
         }

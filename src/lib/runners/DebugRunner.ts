@@ -24,6 +24,7 @@ import { generateTypeScriptDebugWrapper, rewriteTsImportsForNode, buildMissingTy
 import { PHP_DEBUG_SUPPORT, generatePhpDebugWrapper, phpOriginalForLint } from "./PhpDebugDriver";
 import { generateTypeScriptClassSolution } from "./TypeScriptRunner";
 import { cojudgeContainerLabels } from "$lib/server/containerSession";
+import { cojudgeDebugHostConfig } from "$lib/server/containerConfig";
 
 const docker = new Dockerode();
 
@@ -431,7 +432,8 @@ async function acquireDebugContainer(image: string): Promise<{ container: Docker
             Cmd: ['sleep', 'infinity'],
             WorkingDir: '/app',
             Tty: false,
-            Labels: cojudgeContainerLabels({ 'cojudge.debug': 'true' })
+            Labels: cojudgeContainerLabels({ 'cojudge.debug': 'true' }),
+            HostConfig: cojudgeDebugHostConfig()
         });
         await container.start();
         ContainerPool.acquirePermanent(resolvedImage, container);
