@@ -2,6 +2,8 @@
  * Development-only performance instrumentation.
  * Disabled by default; enable via COJUDGE_PERF=1 environment variable.
  * Logs pipeline stage timings to help identify latency bottlenecks.
+ *
+ * Never logs user code or hidden-test data — only stage names and durations.
  */
 
 const ENABLED = process.env.COJUDGE_PERF === '1'
@@ -13,6 +15,7 @@ export interface PerfTrace {
   totalMs: number
   language: string
   problemId: string
+  outcome: 'ok' | 'error' | 'timeout'
 }
 
 export class PerfTimer {
@@ -40,7 +43,7 @@ export class PerfTimer {
     this.current = { name, start: performance.now() }
   }
 
-  end(): PerfTrace | null {
+  end(outcome: 'ok' | 'error' | 'timeout' = 'ok'): PerfTrace | null {
     if (!ENABLED) return null
     if (this.current) {
       this.stages.push({ ...this.current, end: performance.now() })
@@ -53,9 +56,12 @@ export class PerfTimer {
       language: this.language,
       problemId: this.problemId,
       stages: this.stages.map(s => ({ name: s.name, ms: (s.end ?? performance.now()) - s.start })),
-      totalMs
+      totalMs,
+      outcome
     }
-    console.log(`[perf] ${this.type} ${this.problemId}/${this.language} ${totalMs.toFixed(0)}ms | ${trace.stages.map(s => `${s.name}=${s.ms.toFixed(0)}ms`).join(' ')}`)
+    const stageStr = trace.stages.map(s => `${s.name}=${s.ms.toFixed(0)}ms`).join(' ')
+    const outcomeTag = outcome !== 'ok' ? ` [${outcome}]` : ''
+    console.log(`[perf] ${this.type} ${this.problemId}/${this.language} ${totalMs.toFixed(0)}ms${outcomeTag} | ${stageStr}`)
     return trace
   }
 }

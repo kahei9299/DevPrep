@@ -3,6 +3,9 @@
  * Judge Performance Benchmark
  *
  * Measures end-to-end latency for Run and Submit across Python, C++, and Java.
+ * Loads reference solutions from tests/judge/fixtures/ (the same verified
+ * fixtures used by verify-judge.mjs) and test inputs from problems/ metadata.
+ *
  * Requires: npm run dev (server at localhost:5173) + Docker running.
  *
  * Usage:
@@ -15,253 +18,66 @@
  *   node scripts/benchmark-judge.mjs --json results.json      # Write JSON output
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { readFileSync, readdirSync, writeFileSync, existsSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execSync } from 'node:child_process'
+import { totalmem } from 'node:os'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const BASE = process.env.COJUDGE_URL || 'http://localhost:5173'
 const POLL_INTERVAL = 100
 const POLL_TIMEOUT = 120_000
+const FIXTURES_DIR = join(__dirname, '..', 'tests', 'judge', 'fixtures')
+const PROBLEMS_DIR = join(__dirname, '..', 'problems')
+
+const BENCHMARK_PROBLEMS = [
+  'two-sum',
+  'binary-search',
+  'group-anagrams',
+  'lru-cache',
+  'minimum-window-substring'
+]
+
+const FIXTURE_EXT = { python: 'solution.py', cpp: 'solution.cpp', java: 'Solution.java' }
+const LANGUAGES = ['python', 'cpp', 'java']
 
 // ─── CLI args ───
 
-const args = process.argv.slice(2)
+const cliArgs = process.argv.slice(2)
 function getArg(name) {
-  const idx = args.indexOf(`--${name}`)
-  return idx !== -1 ? args[idx + 1] : null
+  const idx = cliArgs.indexOf(`--${name}`)
+  return idx !== -1 ? cliArgs[idx + 1] : null
 }
 const filterProblem = getArg('problem')
 const filterLang = getArg('lang')
 const REPS = parseInt(getArg('reps') || '5', 10)
 const WARMUP = parseInt(getArg('warmup') || '2', 10)
-const includeCold = args.includes('--cold')
+const includeCold = cliArgs.includes('--cold')
 const jsonPath = getArg('json')
 
-// ─── Solutions for benchmark problems ───
+// ─── Load solutions from verified fixtures ───
 
-const SOLUTIONS = {
-  'two-sum': {
-    python: `from typing import List
-class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        seen = {}
-        for i, n in enumerate(nums):
-            if target - n in seen:
-                return [seen[target - n], i]
-            seen[n] = i
-        return []`,
-    cpp: `#include <vector>
-#include <unordered_map>
-using namespace std;
-class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        unordered_map<int,int> m;
-        for (int i = 0; i < nums.size(); i++) {
-            if (m.count(target - nums[i])) return {m[target-nums[i]], i};
-            m[nums[i]] = i;
-        }
-        return {};
-    }
-};`,
-    java: `import java.util.*;
-class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        Map<Integer,Integer> m = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (m.containsKey(target - nums[i])) return new int[]{m.get(target-nums[i]), i};
-            m.put(nums[i], i);
-        }
-        return new int[]{};
-    }
-}`
-  },
-  'binary-search': {
-    python: `from typing import List
-class Solution:
-    def search(self, nums: List[int], target: int) -> int:
-        lo, hi = 0, len(nums) - 1
-        while lo <= hi:
-            mid = (lo + hi) // 2
-            if nums[mid] == target: return mid
-            elif nums[mid] < target: lo = mid + 1
-            else: hi = mid - 1
-        return -1`,
-    cpp: `#include <vector>
-using namespace std;
-class Solution {
-public:
-    int search(vector<int>& nums, int target) {
-        int lo = 0, hi = nums.size() - 1;
-        while (lo <= hi) {
-            int mid = lo + (hi - lo) / 2;
-            if (nums[mid] == target) return mid;
-            else if (nums[mid] < target) lo = mid + 1;
-            else hi = mid - 1;
-        }
-        return -1;
-    }
-};`,
-    java: `class Solution {
-    public int search(int[] nums, int target) {
-        int lo = 0, hi = nums.length - 1;
-        while (lo <= hi) {
-            int mid = lo + (hi - lo) / 2;
-            if (nums[mid] == target) return mid;
-            else if (nums[mid] < target) lo = mid + 1;
-            else hi = mid - 1;
-        }
-        return -1;
-    }
-}`
-  },
-  'group-anagrams': {
-    python: `from typing import List
-class Solution:
-    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        d = {}
-        for s in strs:
-            k = ''.join(sorted(s))
-            d.setdefault(k, []).append(s)
-        return list(d.values())`,
-    cpp: `#include <vector>
-#include <string>
-#include <unordered_map>
-#include <algorithm>
-using namespace std;
-class Solution {
-public:
-    vector<vector<string>> groupAnagrams(vector<string>& strs) {
-        unordered_map<string, vector<string>> m;
-        for (auto& s : strs) { string k = s; sort(k.begin(), k.end()); m[k].push_back(s); }
-        vector<vector<string>> res;
-        for (auto& [_, v] : m) res.push_back(v);
-        return res;
-    }
-};`,
-    java: `import java.util.*;
-class Solution {
-    public List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> m = new HashMap<>();
-        for (String s : strs) {
-            char[] c = s.toCharArray();
-            Arrays.sort(c);
-            String k = new String(c);
-            m.computeIfAbsent(k, x -> new ArrayList<>()).add(s);
-        }
-        return new ArrayList<>(m.values());
-    }
-}`
-  },
-  'lru-cache': {
-    python: `class LRUCache:
-    def __init__(self, capacity: int):
-        from collections import OrderedDict
-        self.cap = capacity
-        self.d = OrderedDict()
-    def get(self, key: int) -> int:
-        if key not in self.d: return -1
-        self.d.move_to_end(key)
-        return self.d[key]
-    def put(self, key: int, value: int) -> None:
-        if key in self.d: self.d.move_to_end(key)
-        self.d[key] = value
-        if len(self.d) > self.cap: self.d.popitem(last=False)`,
-    cpp: `#include <unordered_map>
-#include <list>
-using namespace std;
-class LRUCache {
-    int cap;
-    list<pair<int,int>> lst;
-    unordered_map<int, list<pair<int,int>>::iterator> m;
-public:
-    LRUCache(int capacity) : cap(capacity) {}
-    int get(int key) {
-        if (!m.count(key)) return -1;
-        lst.splice(lst.end(), lst, m[key]);
-        return m[key]->second;
-    }
-    void put(int key, int value) {
-        if (m.count(key)) { lst.splice(lst.end(), lst, m[key]); m[key]->second = value; return; }
-        if ((int)lst.size() == cap) { m.erase(lst.front().first); lst.pop_front(); }
-        lst.push_back({key, value});
-        m[key] = prev(lst.end());
-    }
-};`,
-    java: `import java.util.*;
-class LRUCache {
-    int cap;
-    LinkedHashMap<Integer,Integer> m;
-    public LRUCache(int capacity) {
-        cap = capacity;
-        m = new LinkedHashMap<>(capacity, 0.75f, true) {
-            protected boolean removeEldestEntry(Map.Entry e) { return size() > cap; }
-        };
-    }
-    public int get(int key) { return m.getOrDefault(key, -1); }
-    public void put(int key, int value) { m.put(key, value); }
-}`
-  },
-  'minimum-window-substring': {
-    python: `class Solution:
-    def minWindow(self, s: str, t: str) -> str:
-        from collections import Counter
-        need = Counter(t)
-        missing = len(t)
-        lo = start = end = 0
-        for hi, c in enumerate(s, 1):
-            if need[c] > 0: missing -= 1
-            need[c] -= 1
-            if missing == 0:
-                while need[s[lo]] < 0:
-                    need[s[lo]] += 1
-                    lo += 1
-                if not end or hi - lo <= end - start:
-                    start, end = lo, hi
-                need[s[lo]] += 1
-                missing += 1
-                lo += 1
-        return s[start:end]`,
-    cpp: `#include <string>
-#include <unordered_map>
-using namespace std;
-class Solution {
-public:
-    string minWindow(string s, string t) {
-        unordered_map<char,int> need;
-        for (char c : t) need[c]++;
-        int missing = t.size(), lo = 0, start = 0, len = INT_MAX;
-        for (int hi = 0; hi < (int)s.size(); hi++) {
-            if (need[s[hi]]-- > 0) missing--;
-            while (!missing) {
-                if (hi - lo + 1 < len) { len = hi - lo + 1; start = lo; }
-                if (++need[s[lo++]] > 0) missing++;
-            }
-        }
-        return len == INT_MAX ? "" : s.substr(start, len);
-    }
-};`,
-    java: `class Solution {
-    public String minWindow(String s, String t) {
-        int[] need = new int[128];
-        for (char c : t.toCharArray()) need[c]++;
-        int missing = t.length(), lo = 0, start = 0, len = Integer.MAX_VALUE;
-        for (int hi = 0; hi < s.length(); hi++) {
-            if (need[s.charAt(hi)]-- > 0) missing--;
-            while (missing == 0) {
-                if (hi - lo + 1 < len) { len = hi - lo + 1; start = lo; }
-                if (++need[s.charAt(lo++)] > 0) missing++;
-            }
-        }
-        return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
-    }
-}`
-  }
+function loadFixtureSolution(slug, lang) {
+  const filename = FIXTURE_EXT[lang]
+  if (!filename) return null
+  const path = join(FIXTURES_DIR, slug, filename)
+  if (!existsSync(path)) return null
+  return readFileSync(path, 'utf-8').trimEnd()
 }
 
-const LANGUAGES = ['python', 'cpp', 'java']
+function loadTestCases(problemId) {
+  const metaPath = join(PROBLEMS_DIR, problemId, 'metadata.json')
+  if (!existsSync(metaPath)) return []
+  const meta = JSON.parse(readFileSync(metaPath, 'utf-8'))
+  return meta.testCases || []
+}
+
+function countOfficialTests(problemId) {
+  const testsPath = join(PROBLEMS_DIR, problemId, 'official-tests.json')
+  if (!existsSync(testsPath)) return 0
+  return JSON.parse(readFileSync(testsPath, 'utf-8')).length
+}
 
 // ─── API helpers ───
 
@@ -271,12 +87,12 @@ async function apiPost(path, body) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   })
-  return res.json()
+  return { httpStatus: res.status, ...(await res.json()) }
 }
 
 async function apiGet(path) {
   const res = await fetch(`${BASE}${path}`)
-  return { status: res.status, ...(await res.json()) }
+  return { httpStatus: res.status, ...(await res.json()) }
 }
 
 async function pollJob(endpoint, jobId) {
@@ -285,69 +101,113 @@ async function pollJob(endpoint, jobId) {
   while (Date.now() - start < POLL_TIMEOUT) {
     const result = await apiGet(`${endpoint}?jobId=${jobId}`)
     polls++
-    if (result.ready || result.error) return { ...result, polls, pollTimeMs: Date.now() - start }
+    if (result.ready || (result.httpStatus >= 400 && result.error)) {
+      return { ...result, polls, pollTimeMs: Date.now() - start }
+    }
     await new Promise(r => setTimeout(r, POLL_INTERVAL))
   }
   return { error: 'POLL_TIMEOUT', polls, pollTimeMs: Date.now() - start }
 }
 
-// ─── Timed run/submit ───
+// ─── Timed run ───
 
 async function timedRun(problemId, language, code, testCases) {
   const t0 = performance.now()
   const postResult = await apiPost('/api/run', { problemId, language, code, testCases })
   const tPost = performance.now()
   if (postResult.error || !postResult.jobId) {
-    return { error: postResult.error || 'No jobId', totalMs: performance.now() - t0 }
+    return { error: postResult.error || 'No jobId', totalMs: performance.now() - t0, valid: false }
   }
   const result = await pollJob('/api/run', postResult.jobId)
   const tDone = performance.now()
+  const passed = Array.isArray(result.results) && result.results.every(r => r.isCorrect)
   return {
     totalMs: tDone - t0,
     postMs: tPost - t0,
     pollMs: tDone - tPost,
     polls: result.polls,
-    executionTimeMs: result.executionTimeMs,
-    memoryKB: result.memoryKB,
-    passed: Array.isArray(result.results) && result.results.every(r => r.isCorrect),
+    executionTimeMs: result.executionTimeMs ?? null,
+    memoryKB: result.memoryKB ?? null,
+    passed,
     timeout: !!result.timeout,
-    error: result.error || null
+    error: result.error || null,
+    // A measurement is valid only if the correct solution was accepted
+    valid: passed && !result.timeout && !result.error
   }
 }
 
+// ─── Timed submit (handles multi-batch) ───
+
 async function timedSubmit(problemId, language, code) {
   const t0 = performance.now()
-  const postResult = await apiPost('/api/submit', { problemId, language, code, startTcNo: 0 })
-  const tPost = performance.now()
-  if (postResult.error || !postResult.jobId) {
-    return { error: postResult.error || 'No jobId', totalMs: performance.now() - t0 }
+  let tcNo = 0
+  let totalPolls = 0
+  let totalTc = 0
+  let passedTc = 0
+  let execMs = 0
+  let memKB = 0
+
+  while (true) {
+    const postResult = await apiPost('/api/submit', { problemId, language, code, startTcNo: tcNo })
+    if (postResult.error || !postResult.jobId) {
+      return { error: postResult.error || 'No jobId', totalMs: performance.now() - t0, valid: false }
+    }
+    const result = await pollJob('/api/submit', postResult.jobId)
+    totalPolls += result.polls || 0
+
+    if (result.error) {
+      return { error: result.error, totalMs: performance.now() - t0, valid: false, polls: totalPolls }
+    }
+    if (result.timeout) {
+      return { timeout: true, totalMs: performance.now() - t0, valid: false, polls: totalPolls }
+    }
+    if (result.totalTc) totalTc = result.totalTc
+    if (result.executionTimeMs != null) execMs += result.executionTimeMs
+    if (result.memoryKB != null) memKB = Math.max(memKB, result.memoryKB)
+
+    if (result.allAccepted) {
+      passedTc = totalTc
+      break
+    }
+    if (!result.accepted) {
+      return {
+        totalMs: performance.now() - t0,
+        valid: false,
+        error: 'Wrong answer',
+        polls: totalPolls,
+        totalTc,
+        passedTc: result.passedTc || 0
+      }
+    }
+    // Batch accepted — advance to next batch
+    tcNo += (result.passedTc || 1)
+    if (tcNo >= totalTc) break
   }
-  const result = await pollJob('/api/submit', postResult.jobId)
+
   const tDone = performance.now()
   return {
     totalMs: tDone - t0,
-    postMs: tPost - t0,
-    pollMs: tDone - tPost,
-    polls: result.polls,
-    allAccepted: !!result.allAccepted,
-    totalTc: result.totalTc,
-    passedTc: result.passedTc,
-    executionTimeMs: result.executionTimeMs,
-    memoryKB: result.memoryKB,
-    timeout: !!result.timeout,
-    error: result.error || null
+    polls: totalPolls,
+    allAccepted: true,
+    totalTc,
+    passedTc,
+    executionTimeMs: execMs || null,
+    memoryKB: memKB || null,
+    valid: true
   }
 }
 
 // ─── Statistics ───
 
 function median(arr) {
+  if (!arr.length) return null
   const s = [...arr].sort((a, b) => a - b)
   const mid = Math.floor(s.length / 2)
   return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2
 }
 
 function p95(arr) {
+  if (arr.length < 5) return null
   const s = [...arr].sort((a, b) => a - b)
   return s[Math.min(Math.ceil(s.length * 0.95) - 1, s.length - 1)]
 }
@@ -357,28 +217,30 @@ function p95(arr) {
 function getEnvInfo() {
   const info = { timestamp: new Date().toISOString(), arch: process.arch, platform: process.platform }
   try { info.dockerVersion = execSync('docker version --format "{{.Server.Version}}"', { encoding: 'utf-8' }).trim() } catch { info.dockerVersion = 'unknown' }
-  try { info.nodeVersion = process.version } catch {}
+  info.nodeVersion = process.version
   try {
-    const cpuInfo = execSync('sysctl -n machdep.cpu.brand_string 2>/dev/null || cat /proc/cpuinfo 2>/dev/null | head -5', { encoding: 'utf-8' }).trim()
+    const cpuInfo = execSync('sysctl -n machdep.cpu.brand_string 2>/dev/null || lscpu 2>/dev/null | head -5', { encoding: 'utf-8' }).trim()
     info.cpu = cpuInfo.split('\n')[0]
   } catch {}
-  try { info.totalMemoryGB = Math.round(require('os').totalmem() / 1024 / 1024 / 1024) } catch {}
+  try { info.totalMemoryGB = Math.round(totalmem() / 1024 / 1024 / 1024) } catch {}
   return info
 }
 
-// ─── Load test cases from problem metadata ───
-
-function loadTestCases(problemId) {
-  const metaPath = join(__dirname, '..', 'problems', problemId, 'metadata.json')
-  if (!existsSync(metaPath)) return []
-  const meta = JSON.parse(readFileSync(metaPath, 'utf-8'))
-  return meta.testCases || []
-}
-
-function countOfficialTests(problemId) {
-  const testsPath = join(__dirname, '..', 'problems', problemId, 'official-tests.json')
-  if (!existsSync(testsPath)) return 0
-  return JSON.parse(readFileSync(testsPath, 'utf-8')).length
+function summarise(samples) {
+  const validTimes = samples.filter(s => s.valid).map(s => s.totalMs)
+  const allTimes = samples.filter(s => !s.error).map(s => s.totalMs)
+  return {
+    validCount: validTimes.length,
+    totalCount: samples.length,
+    medianMs: median(validTimes),
+    p95Ms: p95(validTimes),
+    minMs: validTimes.length ? Math.min(...validTimes) : null,
+    maxMs: validTimes.length ? Math.max(...validTimes) : null,
+    medianPolls: median(samples.map(s => s.polls || 0)),
+    errors: samples.filter(s => s.error).length,
+    timeouts: samples.filter(s => s.timeout).length,
+    invalidVerdicts: samples.filter(s => !s.valid && !s.error && !s.timeout).length
+  }
 }
 
 // ─── Main ───
@@ -389,11 +251,23 @@ async function main() {
   const env = getEnvInfo()
   console.log(`Host: ${env.platform}/${env.arch}, Docker ${env.dockerVersion}, Node ${env.nodeVersion}`)
   console.log(`CPU: ${env.cpu || 'unknown'}, Memory: ${env.totalMemoryGB || '?'} GB`)
-  console.log(`Reps: ${REPS}, Warmup: ${WARMUP}, Cold: ${includeCold}\n`)
+  console.log(`Reps: ${REPS}, Warmup: ${WARMUP}, Cold: ${includeCold}`)
+  console.log(`Fixtures: ${FIXTURES_DIR}\n`)
 
-  const problems = filterProblem ? [filterProblem] : Object.keys(SOLUTIONS)
+  // Health check
+  try {
+    const res = await fetch(`${BASE}/`)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    console.log('Server health: OK\n')
+  } catch (e) {
+    console.error(`Server not reachable at ${BASE}: ${e.message}`)
+    process.exit(1)
+  }
+
+  const problems = filterProblem ? [filterProblem] : BENCHMARK_PROBLEMS
   const languages = filterLang ? [filterLang] : LANGUAGES
   const allResults = []
+  let hasFailures = false
 
   for (const problemId of problems) {
     const testCases = loadTestCases(problemId)
@@ -401,16 +275,25 @@ async function main() {
     console.log(`\n── ${problemId} (${testCases.length} sample, ${officialTestCount} hidden) ──`)
 
     for (const lang of languages) {
-      const code = SOLUTIONS[problemId]?.[lang]
-      if (!code) { console.log(`  ${lang}: no solution, skipping`); continue }
+      const code = loadFixtureSolution(problemId, lang)
+      if (!code) {
+        console.log(`  ${lang}: no fixture, skipping`)
+        continue
+      }
 
       const scenario = { problemId, language: lang, sampleTests: testCases.length, hiddenTests: officialTestCount }
 
       // Warmup
       for (let w = 0; w < WARMUP; w++) {
         process.stdout.write(`  ${lang} warmup ${w + 1}/${WARMUP}...`)
-        await timedRun(problemId, lang, code, testCases)
-        console.log(' done')
+        const wr = await timedRun(problemId, lang, code, testCases)
+        if (!wr.valid) {
+          console.log(` FAILED (${wr.error || 'wrong verdict'})`)
+          console.error(`  *** Warmup failed for ${problemId}/${lang} — skipping this combination`)
+          hasFailures = true
+        } else {
+          console.log(` ${wr.totalMs.toFixed(0)}ms`)
+        }
       }
 
       // Run benchmark
@@ -419,7 +302,8 @@ async function main() {
         process.stdout.write(`  ${lang} run ${i + 1}/${REPS}...`)
         const r = await timedRun(problemId, lang, code, testCases)
         runSamples.push(r)
-        console.log(` ${r.totalMs.toFixed(0)}ms${r.passed ? '' : ' FAIL'}${r.error ? ` (${r.error})` : ''}`)
+        const tag = r.valid ? '' : r.error ? ` ERR(${r.error.substring(0, 60)})` : r.timeout ? ' TIMEOUT' : ' WRONG'
+        console.log(` ${r.totalMs.toFixed(0)}ms${tag}`)
       }
 
       // Submit benchmark
@@ -428,52 +312,48 @@ async function main() {
         process.stdout.write(`  ${lang} submit ${i + 1}/${REPS}...`)
         const s = await timedSubmit(problemId, lang, code)
         submitSamples.push(s)
-        console.log(` ${s.totalMs.toFixed(0)}ms${s.allAccepted ? '' : ' FAIL'}${s.error ? ` (${s.error})` : ''}`)
+        const tag = s.valid ? ` (${s.totalTc} tests)` : s.error ? ` ERR(${s.error.substring(0, 60)})` : s.timeout ? ' TIMEOUT' : ' WRONG'
+        console.log(` ${s.totalMs.toFixed(0)}ms${tag}`)
       }
 
-      const runTimes = runSamples.filter(r => !r.error).map(r => r.totalMs)
-      const submitTimes = submitSamples.filter(s => !s.error).map(s => s.totalMs)
+      const runStats = summarise(runSamples)
+      const submitStats = summarise(submitSamples)
 
-      const result = {
-        ...scenario,
-        run: {
-          samples: runSamples,
-          medianMs: runTimes.length ? median(runTimes) : null,
-          p95Ms: runTimes.length >= 5 ? p95(runTimes) : null,
-          minMs: runTimes.length ? Math.min(...runTimes) : null,
-          maxMs: runTimes.length ? Math.max(...runTimes) : null,
-          medianPolls: runSamples.length ? median(runSamples.map(r => r.polls || 0)) : null,
-          errors: runSamples.filter(r => r.error).length
-        },
-        submit: {
-          samples: submitSamples,
-          medianMs: submitTimes.length ? median(submitTimes) : null,
-          p95Ms: submitTimes.length >= 5 ? p95(submitTimes) : null,
-          minMs: submitTimes.length ? Math.min(...submitTimes) : null,
-          maxMs: submitTimes.length ? Math.max(...submitTimes) : null,
-          medianPolls: submitSamples.length ? median(submitSamples.map(s => s.polls || 0)) : null,
-          errors: submitSamples.filter(s => s.error).length
-        }
+      if (runStats.errors || runStats.invalidVerdicts) {
+        console.log(`  *** ${lang} RUN: ${runStats.errors} errors, ${runStats.invalidVerdicts} wrong verdicts — excluded from timing`)
+        hasFailures = true
       }
+      if (submitStats.errors || submitStats.invalidVerdicts) {
+        console.log(`  *** ${lang} SUB: ${submitStats.errors} errors, ${submitStats.invalidVerdicts} wrong verdicts — excluded from timing`)
+        hasFailures = true
+      }
+
+      const result = { ...scenario, run: { samples: runSamples, ...runStats }, submit: { samples: submitSamples, ...submitStats } }
       allResults.push(result)
 
-      if (runTimes.length) {
-        console.log(`  ${lang} RUN  median=${median(runTimes).toFixed(0)}ms min=${Math.min(...runTimes).toFixed(0)}ms max=${Math.max(...runTimes).toFixed(0)}ms`)
+      if (runStats.medianMs != null) {
+        console.log(`  ${lang} RUN  median=${runStats.medianMs.toFixed(0)}ms min=${runStats.minMs.toFixed(0)}ms max=${runStats.maxMs.toFixed(0)}ms (${runStats.validCount}/${runStats.totalCount} valid)`)
       }
-      if (submitTimes.length) {
-        console.log(`  ${lang} SUB  median=${median(submitTimes).toFixed(0)}ms min=${Math.min(...submitTimes).toFixed(0)}ms max=${Math.max(...submitTimes).toFixed(0)}ms`)
+      if (submitStats.medianMs != null) {
+        console.log(`  ${lang} SUB  median=${submitStats.medianMs.toFixed(0)}ms min=${submitStats.minMs.toFixed(0)}ms max=${submitStats.maxMs.toFixed(0)}ms (${submitStats.validCount}/${submitStats.totalCount} valid)`)
       }
     }
   }
 
   // Summary table
-  console.log('\n\n=== Summary (median ms) ===\n')
-  console.log('Problem'.padEnd(35) + 'Lang'.padEnd(8) + 'Run'.padStart(8) + 'Submit'.padStart(10))
-  console.log('-'.repeat(61))
+  console.log('\n\n=== Summary (median ms, valid measurements only) ===\n')
+  console.log('Problem'.padEnd(35) + 'Lang'.padEnd(8) + 'Run'.padStart(8) + 'Submit'.padStart(10) + '  Valid')
+  console.log('-'.repeat(71))
   for (const r of allResults) {
-    const runStr = r.run.medianMs != null ? r.run.medianMs.toFixed(0) : 'ERR'
-    const subStr = r.submit.medianMs != null ? r.submit.medianMs.toFixed(0) : 'ERR'
-    console.log(r.problemId.padEnd(35) + r.language.padEnd(8) + runStr.padStart(8) + subStr.padStart(10))
+    const runStr = r.run.medianMs != null ? r.run.medianMs.toFixed(0) : '---'
+    const subStr = r.submit.medianMs != null ? r.submit.medianMs.toFixed(0) : '---'
+    const validStr = `${r.run.validCount}/${r.run.totalCount} ${r.submit.validCount}/${r.submit.totalCount}`
+    console.log(r.problemId.padEnd(35) + r.language.padEnd(8) + runStr.padStart(8) + subStr.padStart(10) + '  ' + validStr)
+  }
+
+  if (hasFailures) {
+    console.log('\n*** Some measurements excluded due to errors, timeouts, or incorrect verdicts.')
+    console.log('    Investigate before treating results as representative.\n')
   }
 
   const output = { env, config: { reps: REPS, warmup: WARMUP, cold: includeCold, pollIntervalMs: POLL_INTERVAL }, results: allResults }

@@ -270,6 +270,7 @@ async function executeSubmit(problemId: string, language: string, code: string, 
             job.timeout = true;
             job.timeoutTestCase = timeoutTestcase;
             job.status = 'completed';
+            perf.end('timeout');
         } else {
             // A crash (e.g. SIGSEGV) kills the whole batch container, but the
             // tests before the crash already printed their `---`-delimited
@@ -287,6 +288,7 @@ async function executeSubmit(problemId: string, language: string, code: string, 
             job.errorTestCase = batchTestCases[crashIndex];
             job.errorTestIndex = startTcNo + crashIndex;
             job.status = 'error';
+            perf.end('error');
         }
     }
 }

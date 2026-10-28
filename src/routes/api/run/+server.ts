@@ -236,6 +236,7 @@ async function executeRun(problemId: string, language: string, code: string, tes
         if (error && error.toString && error.toString().indexOf(TIMEOUT_MESSAGE) !== -1) {
             job.timeout = true;
             job.status = 'completed';
+            perf.end('timeout');
         } else {
             const message = annotateCrashSignal(error.message || String(error));
             const partial = ProgramRunner.crashStdout(error);
@@ -283,11 +284,13 @@ async function executeRun(problemId: string, language: string, code: string, tes
                     ];
                     job.crashedTestIndex = crashIdx;
                     job.status = 'completed';
+                    perf.end('error');
                     return;
                 }
             }
             job.error = `Execution failed: details: ${message}`;
             job.status = 'error';
+            perf.end('error');
         }
     }
 }
