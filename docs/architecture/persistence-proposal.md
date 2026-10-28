@@ -374,10 +374,64 @@ If migration fails or the user wants to revert:
 
 ---
 
-## 10. Open Questions
+## 10. Operational Clarifications
+
+### 10.1 WAL-Consistent Backup and Restore
+
+SQLite WAL (Write-Ahead Logging) mode is recommended for concurrent read/write performance. Backup must account for the `-wal` and `-shm` files:
+
+- **API backup** (`GET /api/backup`): Uses SQLite's [`backup` API](https://www.sqlite.org/backup.html) via `better-sqlite3`'s `database.backup()` method, which produces a single self-contained `.sqlite` file with all WAL changes flushed. The caller receives a consistent snapshot regardless of in-flight writes.
+- **Docker volume backup**: If copying `devprep.sqlite` directly from the filesystem, the `-wal` and `-shm` files must also be copied. Alternatively, the application exposes a `GET /api/backup/checkpoint` endpoint that forces a WAL checkpoint (`PRAGMA wal_checkpoint(TRUNCATE)`) before the copy.
+- **Restore**: The `POST /api/backup/restore` endpoint closes the current database connection, replaces the file atomically (write to temp, `rename()`), and reopens. Any stale `-wal`/`-shm` files are deleted before reopening to prevent journal mismatch.
+
+### 10.2 Native Dependency Compatibility
+
+`better-sqlite3` uses a native C addon compiled via `node-gyp` or delivered as a prebuilt binary via `prebuild-install`.
+
+| Target | Status | Notes |
+|---|---|---|
+| macOS ARM64 (Apple Silicon) | Prebuilt available | Primary dev platform |
+| macOS x86_64 | Prebuilt available | — |
+| Linux x86_64 (glibc) | Prebuilt available | Standard Docker images |
+| Linux ARM64 (glibc) | Prebuilt available | ARM64 Docker hosts |
+| Linux x86_64 (musl/Alpine) | Build from source | Requires `python3`, `make`, `g++` in the Docker build stage |
+| Linux ARM64 (musl/Alpine) | Build from source | Same build deps; add to Dockerfile if using `node:22-alpine` |
+
+**Recommendation:** If the Dockerfile currently uses `node:22-alpine`, add `apk add --no-cache python3 make g++` to the build stage, or switch to `node:22-slim` (Debian) where prebuilt binaries work without a compiler. The build-stage dependency does not affect the runtime image if using a multi-stage build.
+
+### 10.3 Recoverable and Idempotent Migration
+
+The localStorage → SQLite migration must be safe to run multiple times:
+
+1. **Idempotency:** The migration endpoint uses `INSERT OR IGNORE` (keyed on `(slug, language)` for drafts, `slug` for progress). Duplicate calls insert nothing new. Submissions are never migrated from localStorage (they don't exist there), so there's no duplication risk.
+2. **Recoverability:** If the migration fails mid-way (server crash, disk full):
+   - The original localStorage data is untouched — the browser never clears it until the user explicitly confirms.
+   - The `devprep-migrated` flag is only set after a successful server response.
+   - Restarting the browser retries the migration automatically.
+   - Partial writes are safe: `INSERT OR IGNORE` skips rows that were already written.
+3. **Manual recovery:** The `/recovery` page continues to read directly from localStorage regardless of SQLite state. Deleting `devprep.sqlite` reverts to pure-localStorage operation.
+
+### 10.4 Protection Against Overwriting Existing Data
+
+- **Migration never overwrites:** `INSERT OR IGNORE` means existing server-side data (from a previous migration or direct API writes) is preserved. The browser's stale localStorage data does not replace newer server data.
+- **Restore overwrites by design:** `POST /api/backup/restore` replaces the entire database. This is intentional — the endpoint requires explicit user action and the previous database is backed up to `devprep.sqlite.bak` before replacement.
+- **Draft saves:** Editor draft `PUT` endpoints overwrite the current draft for that `(slug, language)` pair. This matches localStorage behaviour (latest write wins). If conflict detection is needed later, a `version` column can be added.
+
+### 10.5 Behaviour When Persistence Writes Fail
+
+Write failures are surfaced to the user, not silently swallowed:
+
+- **Submission recording failure:** The submission still completes (verdict is returned to the user). The recording failure is logged server-side and a non-blocking warning is returned in the response (e.g., `{ ..., persistenceWarning: "Failed to record submission" }`). The frontend displays the warning without blocking the verdict display.
+- **Draft save failure:** The debounced PUT returns an error. The frontend falls back to localStorage (write-through cache) and surfaces a non-blocking "save failed" indicator. The draft is preserved in the browser and retried on the next save cycle.
+- **Database corruption:** `PRAGMA integrity_check` runs on server startup. If it fails, the server logs the error, renames the corrupt file to `devprep.sqlite.corrupt`, creates a fresh database, and prompts the user to restore from backup or re-migrate from localStorage.
+- **Disk full:** SQLite returns `SQLITE_FULL`. The server catches this, logs it, and returns a clear error message. No data is lost — SQLite's transaction guarantees mean partial writes are rolled back.
+
+---
+
+## 11. Open Questions
 
 1. **Should editor drafts be debounced or saved on blur/navigation?** Debounced writes (e.g., 2 seconds after last keystroke) balance responsiveness and write frequency. Needs UX validation.
 2. **Should Run results also be recorded in submission history, or only Submit?** The spec says "every submission," but recording every sample Run could generate noise. Recommend: record both, with `is_run` flag, and let the UI filter.
 3. **What is the maximum submission history retention?** Unlimited for single-user? Or prune after N submissions per problem? Recommend: unlimited until the database exceeds a configurable size.
 4. **Should the browser remain a write-through cache for offline resilience?** If the server is always local, the browser and server cannot disagree. But keeping localStorage as a read cache during transition reduces migration risk.
-5. **What SQLite library for ARM64 Alpine?** `better-sqlite3` has prebuilt binaries for most targets, but the Dockerfile uses `node:22-alpine` — verify the prebuilt binary works or add a build step. `node:22-slim` (Debian) is a safer fallback.
+5. **What SQLite library for ARM64 Alpine?** `better-sqlite3` has prebuilt binaries for most targets, but the Dockerfile uses `node:22-alpine` — verify the prebuilt binary works or add a build step. `node:22-slim` (Debian) is a safer fallback. See section 10.2.

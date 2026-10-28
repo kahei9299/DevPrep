@@ -112,10 +112,12 @@ Use the browser's IndexedDB for structured storage, keeping all data client-side
 
 | Risk | Mitigation |
 |---|---|
-| `better-sqlite3` binary unavailable for target platform | Verify prebuilt binaries during Dockerfile build; fall back to `node:22-slim` (Debian) if Alpine fails |
-| Migration data loss | Keep original localStorage intact; flag migration as complete only after verification; `/recovery` page still works |
-| Database corruption | WAL mode + regular backup endpoint; JSON export as secondary backup |
-| Breaking existing cloud sync | Cloud sync reads from localStorage; keep localStorage as write-through cache during transition |
+| `better-sqlite3` binary unavailable for target platform | Verify prebuilt binaries during Dockerfile build; fall back to `node:22-slim` (Debian) if Alpine musl fails. See proposal §10.2 |
+| Migration data loss | `INSERT OR IGNORE` makes migration idempotent; original localStorage untouched until user confirms; `/recovery` page still works. See proposal §10.3 |
+| Database corruption | WAL mode + `PRAGMA integrity_check` on startup; corrupt file renamed and fresh DB created; JSON export as secondary backup. See proposal §10.5 |
+| Backup inconsistency under WAL | `database.backup()` API produces a self-contained snapshot; filesystem copies require `-wal`/`-shm` files or a checkpoint. See proposal §10.1 |
+| Restore overwrites user data | Restore writes to temp file, renames atomically; previous DB backed up to `.bak`; migration never overwrites existing server-side data. See proposal §10.4 |
+| Persistence write failure | Failures surfaced to user, not swallowed; localStorage write-through cache preserves data; disk-full and crash scenarios handled. See proposal §10.5 |
 
 ## Related
 
