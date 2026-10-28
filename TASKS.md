@@ -187,6 +187,7 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 - [ ] Cold and warm execution differentiated.
 - [ ] Main bottlenecks identified and ranked.
 - [ ] Targeted optimisations implemented where justified.
+- [x] Marker compilation cache implemented — 80–85% Python Run reduction, 65–72% C++ Run reduction (see [marker-cache-results.md](docs/performance/marker-cache-results.md)).
 - [ ] Before/after results recorded with absolute values.
 - [ ] Existing judge and security regression suites pass.
 - [ ] Current localStorage persistence documented.
