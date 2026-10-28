@@ -515,6 +515,15 @@
         return new Promise((res) => setTimeout(res, ms));
     }
 
+    // Adaptive polling: start fast (150ms), back off to 1s max
+    let pollDelay = 150;
+    function nextPollDelay(): number {
+        const d = pollDelay;
+        pollDelay = Math.min(pollDelay * 1.5, 1000);
+        return d;
+    }
+    function resetPollDelay() { pollDelay = 150; }
+
     async function handleRun() {
         if (debugJobId || debugState) stopDebugging();
         isLoading = true;
@@ -578,7 +587,8 @@
             }
 
             const jobId = startBody.jobId as string;
-            // Poll until ready
+            // Poll until ready (adaptive: starts fast, backs off)
+            resetPollDelay();
             while (true) {
                 const pollRes = await fetch(
                     `/api/run?jobId=${encodeURIComponent(jobId)}`,
@@ -601,7 +611,7 @@
                     if (body?.status) {
                         runningMessage = statusToString(body?.status);
                     }
-                    await delay(600);
+                    await delay(nextPollDelay());
                     continue;
                 }
                 runningMessage = "";
@@ -664,6 +674,7 @@
         runningMessage = "";
         status = "running";
         submissionFailure = null; // reset previous submission view
+        resetPollDelay();
         let tcNo = 0;
         let totalTc = 0;
         while (true) {
@@ -710,7 +721,8 @@
                     break;
                 }
                 const jobId = startBody.jobId as string;
-                // Poll until completed
+                // Poll until completed (adaptive: starts fast, backs off)
+                resetPollDelay();
                 while (true) {
                     const pollRes = await fetch(
                         `/api/submit?jobId=${encodeURIComponent(jobId)}`,
@@ -754,7 +766,7 @@
                         if (body?.passedTc) {
                             runningMessage = `Passed ${body?.passedTc}`;
                         }
-                        await delay(600);
+                        await delay(nextPollDelay());
                         continue;
                     }
                     if (body?.timeout) {

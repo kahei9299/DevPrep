@@ -43,15 +43,33 @@ export abstract class ProgramRunner {
         return `if command -v /usr/bin/time >/dev/null 2>&1; then /usr/bin/time -f "COJUDGE_METRICS:%e|%M" timeout ${EXECUTION_TIMEOUT_SECONDS} ${cmd}; else timeout ${EXECUTION_TIMEOUT_SECONDS} ${cmd}; fi`;
     }
 
-    /** Install the `time` package (provides /usr/bin/time) inside the container */
+    // Containers with /usr/bin/time already present (keyed by container id)
+    private static timeCheckedContainers = new Set<string>()
+
+    /** Install the `time` package (provides /usr/bin/time) inside the container.
+     *  Skipped when container networking is disabled (NetworkMode:'none'), since
+     *  apt/apk require network access and the attempt adds seconds of latency.
+     *  wrapWithMetrics() already falls back to plain `timeout` when /usr/bin/time
+     *  is absent, so skipping is safe — execution time is still captured via
+     *  internal :::TIME::: markers. */
     static async ensureTimeInstalled(container: Dockerode.Container): Promise<void> {
-        // The install needs network (apt/apk). Offline, apt-get update can
-        // hang for minutes on DNS/connect timeouts, wedging compile at
-        // "Preparing / Compiling" until the cleanup cron kills the container
-        // (surfacing as HTTP 409). Bound it at both levels: `timeout` in the
-        // shell (fail-safe if the binary is missing: 127 -> `|| true`) plus
-        // short apt timeouts, and a JS-side cap as a final backstop. Missing
-        // metrics are fine: run commands fall back to plain `timeout`.
+        // Skip if we've already checked this container
+        if (this.timeCheckedContainers.has(container.id)) return
+
+        // Check if the container has network disabled — if so, install will always fail
+        try {
+            const info = await container.inspect()
+            if (info.HostConfig?.NetworkMode === 'none') {
+                this.timeCheckedContainers.add(container.id)
+                return
+            }
+        } catch {
+            // If inspect fails, skip the install attempt to avoid hanging
+            this.timeCheckedContainers.add(container.id)
+            return
+        }
+
+        // Network-enabled container: try to install
         const exec = await container.exec({
             Cmd: ['/bin/sh', '-c', 'command -v /usr/bin/time >/dev/null 2>&1 || timeout 45 sh -c \'(command -v apt-get >/dev/null 2>&1 && apt-get update -qq -o Acquire::http::Timeout=5 -o Acquire::https::Timeout=5 && apt-get install -y -qq time) || (command -v apk >/dev/null 2>&1 && apk add --no-cache time)\' || true'],
             AttachStdout: true,
@@ -70,6 +88,7 @@ export abstract class ProgramRunner {
             });
             stream.resume();
         });
+        this.timeCheckedContainers.add(container.id)
     }
 
     parseMetricsFromStderr(stderr: string): string {
