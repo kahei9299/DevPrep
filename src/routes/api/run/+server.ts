@@ -14,6 +14,7 @@ import { PhpRunner } from '$lib/runners/PhpRunner';
 import { TypeScriptRunner } from '$lib/runners/TypeScriptRunner';
 import { startProblemDebugSession, getDebugState } from '$lib/runners/DebugRunner';
 import { TIMEOUT_MESSAGE, annotateCrashSignal, type JobStatus } from '$lib/utils/util';
+import { PerfTimer } from '$lib/server/perfTimer';
 
 type RunSuccess = Array<{
     output: string | null;
@@ -184,8 +185,10 @@ async function judgeRawResults(rawResults: string[], testCases: any[], problemDa
 }
 
 async function executeRun(problemId: string, language: string, code: string, testCases: any[], job: RunJob) {
+    const perf = new PerfTimer('run', problemId, language, job.id);
     let problemData: any = null;
     try {
+        perf.stage('loadMetadata');
         await ensureUserContentSeeded();
         const problemPath = await resolveProblemFile(problemId, 'metadata.json');
         const problemContent = await fs.readFile(problemPath, 'utf-8');
@@ -213,8 +216,10 @@ async function executeRun(problemId: string, language: string, code: string, tes
             throw new Error(`${language} is not supported yet`);
         }
 
+        perf.stage('compile');
         job.status = 'preparing';
         await programRunner.compile();
+        perf.stage('execute');
         job.status = 'running';
         const rawResults = await programRunner.run();
         if (programRunner.lastRunMetrics) {
@@ -222,9 +227,11 @@ async function executeRun(problemId: string, language: string, code: string, tes
             job.memoryKB = programRunner.lastRunMetrics.memoryKB;
         }
 
+        perf.stage('judge');
         job.status = 'judging';
         job.results = await judgeRawResults(rawResults, testCases, problemData, problemId, language);
         job.status = 'completed';
+        perf.end();
     } catch (error: any) {
         if (error && error.toString && error.toString().indexOf(TIMEOUT_MESSAGE) !== -1) {
             job.timeout = true;
