@@ -1,22 +1,22 @@
 /**
  * Generates a data-driven Marker validation harness for Java.
  *
- * Unlike the original approach that embeds test data as Java source literals
- * (requiring recompilation per request), this harness reads test data from
- * /app/data.txt at runtime. The compiled Main.class can be reused across
- * requests for the same problem, eliminating the ~2.5-3s javac overhead.
+ * The harness reads test data from /app/data.bin at runtime using a
+ * length-prefixed format (netstrings): each field is encoded as
+ * "<byte-length>:<utf8-bytes>". This preserves embedded newlines,
+ * carriage returns, tabs, quotes, and trailing whitespace exactly.
  *
- * Data file format: one value per line. For each test case:
- *   - One line per parameter (string representation)
- *   - One line for the user's output
- *   - A line containing "---" as separator
- *
- * The harness is specific to a problem's (functionName, params, outputType,
- * interactive) signature — NOT to specific test data.
+ * The compiled Main.class is reusable across requests for the same problem
+ * because it depends only on (functionName, params, outputType, interactive)
+ * — not on specific test data.
  */
 
 import { type Param } from '$lib/utils/util'
 import { javaHelperMethods, getDisplayFuncName } from '$lib/utils/javaUtil'
+
+/** Monotonically increasing version. Bump when the generated harness Java
+ *  source changes in a way that invalidates previously compiled Main.class. */
+export const HARNESS_VERSION = 2
 
 export function generateDataDrivenHarness(
   functionName: string,
@@ -27,19 +27,14 @@ export function generateDataDrivenHarness(
   const toFunc = `to_${outputType}`
   const displayFunc = getDisplayFuncName(outputType)
 
-  // Generate parameter reading code: each param is read as a line and converted
-  const paramReads = params.map((p, i) => {
-    const varName = `p${i}`
-    return `String ${varName}Raw = lines.get(lineIdx++);`
-  }).join('\n            ')
+  const paramReads = params.map((_, i) =>
+    `String p${i}Raw = readField(buf, pos);`
+  ).join('\n            ')
 
-  // Generate the conversion expressions for isCorrect call
-  const paramExprs = params.map((p, i) => {
-    const varName = `p${i}Raw`
-    return convertParam(p, varName)
-  }).join(', ')
+  const paramExprs = params.map((p, i) =>
+    convertParam(p, `p${i}Raw`)
+  ).join(', ')
 
-  // Generate the validation call
   let body: string
   if (interactive) {
     body = `
@@ -48,8 +43,7 @@ export function generateDataDrivenHarness(
             } catch (Exception __e) {
                 System.out.println("false");
             }
-            // For interactive problems, display the secret field value
-            String secretVal = lines.get(lineIdx++);
+            String secretVal = readField(buf, pos);
             System.out.println(${displayFunc}(secretVal));
             System.out.println("---");`
   } else {
@@ -67,16 +61,38 @@ export function generateDataDrivenHarness(
     import java.util.*;
     import java.io.*;
     import java.nio.file.*;
+    import java.nio.charset.StandardCharsets;
     public class Main {
         ${javaHelperMethods}
+
+        // Netstring reader: "<length>:<bytes>"
+        static int[] pos = {0};
+        static String readField(byte[] buf, int[] pos) {
+            int i = pos[0];
+            if (i >= buf.length) throw new RuntimeException("Truncated data at offset " + i);
+            int colonIdx = -1;
+            for (int j = i; j < buf.length; j++) {
+                if (buf[j] == (byte)':') { colonIdx = j; break; }
+                if (buf[j] < '0' || buf[j] > '9')
+                    throw new RuntimeException("Malformed length at offset " + i + ": byte " + buf[j]);
+            }
+            if (colonIdx < 0) throw new RuntimeException("Missing colon at offset " + i);
+            int len = Integer.parseInt(new String(buf, i, colonIdx - i, StandardCharsets.US_ASCII));
+            int start = colonIdx + 1;
+            if (start + len > buf.length)
+                throw new RuntimeException("Field overflows data: need " + len + " bytes at offset " + start + ", have " + (buf.length - start));
+            String val = new String(buf, start, len, StandardCharsets.UTF_8);
+            pos[0] = start + len;
+            return val;
+        }
+
         public static void main(String[] args) throws Exception {
-            List<String> lines = Files.readAllLines(Paths.get("/app/data.txt"));
-            int numTests = Integer.parseInt(lines.get(0).trim());
-            int lineIdx = 1;
+            byte[] buf = Files.readAllBytes(Paths.get("/app/data.bin"));
+            int numTests = Integer.parseInt(readField(buf, pos));
             Marker marker = new Marker();
             for (int __t = 0; __t < numTests; __t++) {
                 ${paramReads}
-                String userOut = lines.get(lineIdx++);
+                String userOut = readField(buf, pos);
                 ${body}
             }
         }
@@ -102,44 +118,47 @@ function convertParam(param: Param, rawVar: string): string {
 }
 
 /**
- * Generate the data.txt content for a set of test cases.
- * This is the runtime data that changes per request.
+ * Encode a string value as a netstring field: "<byte-length>:<utf8-bytes>"
+ */
+function encodeField(value: string): Buffer {
+  const valBuf = Buffer.from(value, 'utf-8')
+  const lenStr = String(valBuf.length)
+  const header = Buffer.from(lenStr + ':', 'ascii')
+  return Buffer.concat([header, valBuf])
+}
+
+/**
+ * Generate the data.bin content (netstring-encoded) for a set of test cases.
  */
 export function generateMarkerDataFile(
   params: Param[],
   testCases: any[],
   outputs: string[],
   interactive: { secretField: string } | null
-): string {
-  const lines: string[] = [String(testCases.length)]
+): Buffer {
+  const parts: Buffer[] = [encodeField(String(testCases.length))]
   for (let i = 0; i < testCases.length; i++) {
     const tc = testCases[i]
     for (const param of params) {
       const val = tc[param.name]
-      // Serialize the value as a string that the Java to_* functions can parse
-      if (typeof val === 'string') {
-        lines.push(val)
-      } else if (val === null || val === undefined) {
-        lines.push('')
-      } else {
-        lines.push(JSON.stringify(val))
-      }
+      let str: string
+      if (typeof val === 'string') str = val
+      else if (val === null || val === undefined) str = ''
+      else str = JSON.stringify(val)
+      parts.push(encodeField(str))
     }
-    lines.push(outputs[i] ?? '')
+    parts.push(encodeField(outputs[i] ?? ''))
     if (interactive) {
-      lines.push(String(tc[interactive.secretField] ?? ''))
+      parts.push(encodeField(String(tc[interactive.secretField] ?? '')))
     }
   }
-  return lines.join('\n') + '\n'
+  return Buffer.concat(parts)
 }
 
 /**
- * Compute a signature hash that identifies the harness structure.
- * Two problems with the same (functionName, params, outputType, interactive)
- * produce the same signature — their Main.java and Marker.java are different
- * but the harness template is the same shape.
- *
- * The full cache key combines this signature with the Marker source hash.
+ * Compute the harness signature for cache key construction.
+ * Includes HARNESS_VERSION so that a code change to the generated
+ * Main.java invalidates all previously compiled Main.class files.
  */
 export function computeHarnessSignature(
   functionName: string,
@@ -147,5 +166,11 @@ export function computeHarnessSignature(
   outputType: string,
   interactive: { secretField: string } | null
 ): string {
-  return JSON.stringify({ functionName, params: params.map(p => ({ name: p.name, type: p.type })), outputType, interactive: interactive?.secretField ?? null })
+  return JSON.stringify({
+    v: HARNESS_VERSION,
+    functionName,
+    params: params.map(p => ({ name: p.name, type: p.type })),
+    outputType,
+    interactive: interactive?.secretField ?? null
+  })
 }

@@ -42,7 +42,6 @@ export async function getMarkerResponses(problemId: string, functionName: string
     perf.stage('cacheCheck');
     const cached = await getCachedClasses(cacheHash);
 
-    // Generate runtime data file (test inputs + user outputs as text)
     const dataFile = generateMarkerDataFile(params, testCases, outputs, interactive);
 
     let container: Dockerode.Container | null = null;
@@ -77,7 +76,7 @@ export async function getMarkerResponses(problemId: string, functionName: string
             pack.entry({ name: 'GraphNode.java' }, Buffer.from(javaGraphNodeClass));
             pack.entry({ name: 'Marker.java' }, Buffer.from(markerCode));
             pack.entry({ name: 'Main.java' }, Buffer.from(mainJava));
-            pack.entry({ name: 'data.txt' }, Buffer.from(dataFile));
+            pack.entry({ name: 'data.bin' }, dataFile);
             pack.finalize();
             await container.putArchive(pack as any, { path: '/app' });
 

@@ -6,21 +6,33 @@ import tar from 'tar-stream'
 
 const CACHE_DIR = join(process.cwd(), 'node_modules', '.cache', 'marker-cache')
 
+// Required class files for a valid cache entry. A problem may produce
+// additional inner-class files (Marker$1.class etc.) which are also cached,
+// but these must be present as a minimum.
+const REQUIRED_CLASSES = ['Main.class', 'Marker.class']
+
 export interface MarkerCacheEntry {
   classFiles: Map<string, Buffer>
   hash: string
 }
 
-// In-memory: hash → class file buffers (including Main.class for the data-driven harness)
 const memoryCache = new Map<string, MarkerCacheEntry>()
-
-// Prevents concurrent duplicate compilations for the same hash
 const pending = new Map<string, Promise<MarkerCacheEntry | null>>()
 
 /**
- * Cache key: hash of Marker.java source + helper class sources + javaHelperMethods
- * + harness signature (function name, param types, output type, interactive config).
- * This ensures the cached Main.class matches the problem's validation interface.
+ * Cache key: SHA-256 of all inputs that affect the compiled .class files.
+ *
+ * Inputs hashed:
+ *   1. Marker.java source code (changes per problem)
+ *   2. Helper class sources: ListNode.java, TreeNode.java, GraphNode.java (constant)
+ *   3. javaHelperMethods string embedded in Main.java (constant)
+ *   4. Harness signature: functionName, param types, outputType, interactive config,
+ *      and HARNESS_VERSION (changes when the generated Main.java structure changes)
+ *
+ * NOT included (and why):
+ *   - Test data / user outputs: read at runtime from data.bin, never compiled
+ *   - Java compiler version: tied to the Docker image tag, which is constant per deployment
+ *     (changing the image invalidates the container pool anyway)
  */
 export function computeMarkerHash(
   markerSource: string,
@@ -34,9 +46,14 @@ export function computeMarkerHash(
   return h.digest('hex').substring(0, 16)
 }
 
+/**
+ * Look up a cache entry. Returns null on miss, incomplete entry, or
+ * any read error. Validates that required .class files are present.
+ */
 export async function getCachedClasses(hash: string): Promise<MarkerCacheEntry | null> {
   const mem = memoryCache.get(hash)
-  if (mem) return mem
+  if (mem && isComplete(mem)) return mem
+  if (mem) { memoryCache.delete(hash); return null }
 
   const dir = join(CACHE_DIR, hash)
   try {
@@ -47,7 +64,7 @@ export async function getCachedClasses(hash: string): Promise<MarkerCacheEntry |
         classFiles.set(f, await fs.readFile(join(dir, f)))
       }
     }
-    if (classFiles.size === 0) return null
+    if (!isCompleteMap(classFiles)) return null
     const entry: MarkerCacheEntry = { classFiles, hash }
     memoryCache.set(hash, entry)
     return entry
@@ -56,6 +73,23 @@ export async function getCachedClasses(hash: string): Promise<MarkerCacheEntry |
   }
 }
 
+function isComplete(entry: MarkerCacheEntry): boolean {
+  return isCompleteMap(entry.classFiles)
+}
+
+function isCompleteMap(classFiles: Map<string, Buffer>): boolean {
+  for (const name of REQUIRED_CLASSES) {
+    const buf = classFiles.get(name)
+    if (!buf || buf.length === 0) return false
+  }
+  return true
+}
+
+/**
+ * Extract .class files from a container and store them in the cache.
+ * Concurrent calls for the same hash share a single extraction.
+ * Returns null (no cache) on any failure — never a partial entry.
+ */
 export async function cacheClassFiles(
   hash: string,
   container: Dockerode.Container
@@ -84,7 +118,6 @@ async function extractAndStore(
     const done = new Promise<void>((resolve, reject) => {
       extract.on('entry', (header: any, stream: any, next: () => void) => {
         const name = header.name.replace(/^app\//, '')
-        // Cache ALL .class files including Main.class (the data-driven harness)
         if (name.endsWith('.class')) {
           const chunks: Buffer[] = []
           stream.on('data', (c: Buffer) => chunks.push(c))
@@ -104,11 +137,14 @@ async function extractAndStore(
     ;(archiveStream as any).pipe(extract)
     await done
 
-    if (classFiles.size === 0) return null
+    if (!isCompleteMap(classFiles)) {
+      console.error(`[marker-cache] incomplete extraction for ${hash}: missing required classes`)
+      return null
+    }
 
+    // Write to disk atomically: temp dir → rename
     const tmpDir = join(CACHE_DIR, `_tmp_${hash}_${Date.now()}`)
     const finalDir = join(CACHE_DIR, hash)
-
     await fs.mkdir(tmpDir, { recursive: true })
     for (const [name, buf] of classFiles) {
       await fs.writeFile(join(tmpDir, name), buf)
@@ -116,6 +152,7 @@ async function extractAndStore(
     try {
       await fs.rename(tmpDir, finalDir)
     } catch {
+      // Another process wrote first — use theirs
       await fs.rm(tmpDir, { recursive: true, force: true })
     }
 
@@ -128,16 +165,16 @@ async function extractAndStore(
   }
 }
 
-/** Pack cached .class files + a data file for the data-driven harness. No .java sources needed. */
+/** Pack cached .class files + a binary data file into a tar archive. */
 export function packCachedWithData(
   cached: MarkerCacheEntry,
-  dataFileContent: string
+  dataFileContent: Buffer
 ) {
   const pack = tar.pack()
   for (const [name, buf] of cached.classFiles) {
     pack.entry({ name }, buf)
   }
-  pack.entry({ name: 'data.txt' }, Buffer.from(dataFileContent))
+  pack.entry({ name: 'data.bin' }, dataFileContent)
   pack.finalize()
   return pack
 }
@@ -146,6 +183,11 @@ export function getCacheStats(): { entries: number } {
   return { entries: memoryCache.size }
 }
 
+/**
+ * Remove a cache entry from memory and disk. Safe to call during
+ * concurrent execution — ongoing reads of the old entry use their
+ * own in-memory copy, not the disk files.
+ */
 export function evictCacheEntry(hash: string): void {
   memoryCache.delete(hash)
   fs.rm(join(CACHE_DIR, hash), { recursive: true, force: true }).catch(() => {})

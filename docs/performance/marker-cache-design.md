@@ -2,72 +2,126 @@
 
 **Date:** 2026-10-28
 **Branch:** `perf/marker-compilation-cache`
+**Implementation version:** HARNESS_VERSION = 2
 
 ---
 
-## Chosen Approach: Option A — Host-side Compilation Cache
+## Chosen Approach: Data-Driven Harness with Host-Side Class Cache
 
-Cache compiled `.class` files for the constant parts of each Marker invocation (helper classes + `Marker.java`). On cache hit, upload pre-compiled classes alongside the per-request `Main.java` and compile only that single file.
+Cache **all** compiled `.class` files — including `Main.class` — so that cache hits require **zero `javac` invocations**. This works because the generated `Main.java` reads test data from a binary file at runtime, making the compiled `Main.class` reusable across requests for the same problem.
 
 ### How it works
 
-1. **Hash inputs.** Compute SHA-256 of the concatenation of: `Marker.java` source, `ListNode.java`, `TreeNode.java`, `GraphNode.java`, and `javaHelperMethods` (the helper code embedded in `Main.java`). These are every input to `javac` that is constant across requests for the same problem.
+1. **Generate a data-driven harness.** `Main.java` reads test inputs and user outputs from `/app/data.bin` using a length-prefixed (netstring) protocol, instead of embedding them as Java source literals. The harness depends only on the problem's function signature — not on specific test data.
 
-2. **Check cache.** Look for `node_modules/.cache/marker-cache/<hash>/` containing `.class` files.
+2. **Hash all compilation inputs.** SHA-256 of: `Marker.java` source, `ListNode.java`, `TreeNode.java`, `GraphNode.java`, `javaHelperMethods`, and the harness signature (function name, param types, output type, interactive config, and `HARNESS_VERSION`).
 
-3. **Cache hit path:**
-   - Upload `Main.java` + all cached `.class` files to the container via tar.
-   - Compile only `Main.java`: `javac -cp . Main.java`.
+3. **Check cache.** Look for `node_modules/.cache/marker-cache/<hash>/` containing `.class` files. Validate that `Main.class` and `Marker.class` are present and non-empty.
+
+4. **Cache hit path (no `javac`):**
+   - Upload cached `.class` files + `data.bin` to the container via tar.
+   - Run `java Main` directly.
+   - No compilation step.
+
+5. **Cache miss path:**
+   - Upload all `.java` sources + `data.bin`.
+   - Compile with `javac *.java`.
+   - After successful compilation, extract all `.class` files from the container via `container.getArchive('/app')`.
+   - Store in cache directory atomically (write to temp dir, rename).
    - Run `java Main`.
-   - Expected compile time: tens of milliseconds (one file, dependencies already resolved).
 
-4. **Cache miss path:**
-   - Upload all 5 `.java` files (unchanged from current behaviour).
-   - Compile with `javac *.java` (unchanged).
-   - After successful compilation, extract `.class` files from the container via `container.getArchive('/app')`.
-   - Store all `.class` files **except `Main.class`** in the cache directory.
-   - Run `java Main`.
+6. **Cache invalidation.** Automatic via content hash. Any change to `Marker.java`, helper classes, `javaHelperMethods`, function signature, or `HARNESS_VERSION` produces a different hash. Old entries are never reused.
 
-5. **Cache invalidation.** Automatic — any change to `Marker.java`, the helper classes, or `javaHelperMethods` produces a different SHA-256 hash and a new cache entry. Old entries can be evicted by age or count.
+### Data transport protocol
+
+Test data is encoded using **netstrings** (length-prefixed UTF-8 fields):
+
+```
+<byte-length>:<utf8-bytes>
+```
+
+Example for `two-sum` with inputs `[2,7,11,15]`, `9` and user output `[0,1]`:
+```
+1:15:[2,7,11,15]1:91:95:[0,1]
+```
+
+This format:
+- Preserves embedded newlines, carriage returns, tabs, quotes, and trailing spaces exactly.
+- Distinguishes empty strings from absent fields.
+- Is unambiguous — no escaping or delimiter conflicts.
+- Rejects truncated or malformed data explicitly (the Java parser throws `RuntimeException` with offset details).
+- Handles arrays, nested arrays, tree/list/graph inputs, and multi-line strings.
+
+The Java parser in Main.java reads a byte-length prefix, then that many bytes of UTF-8 content. The TypeScript encoder in `markerHarness.ts` uses `Buffer.from(value, 'utf-8')` for exact byte-length computation.
+
+### Cache key composition
+
+| Input | Included? | Rationale |
+|---|---|---|
+| `Marker.java` source | Yes | Defines `isCorrect()` and reference solution |
+| `ListNode.java`, `TreeNode.java`, `GraphNode.java` | Yes | Type definitions used by Marker |
+| `javaHelperMethods` | Yes | Conversion functions (`to_int_array`, etc.) compiled into Main.class |
+| Harness signature (functionName, params, outputType, interactive) | Yes | Determines Main.java structure |
+| `HARNESS_VERSION` | Yes | Invalidates cache when harness code generation changes |
+| Test data / user outputs | No | Read at runtime from `data.bin`, never compiled |
+| Java compiler version | No | Tied to Docker image tag; changing the image invalidates the container pool |
 
 ### Cache location
 
-`node_modules/.cache/marker-cache/<sha256-hex>/`
+`node_modules/.cache/marker-cache/<sha256-hex-16>/`
 
-- `node_modules/.cache/` is a conventional cache location (used by Babel, ESLint, Vite, etc.).
-- Already gitignored via `node_modules/` in `.gitignore`.
-- Survives `npm install` (npm preserves `node_modules/.cache/`).
-- Destroyed by `rm -rf node_modules` — acceptable; the cache is rebuilt transparently on next use.
+- Conventional location (used by Babel, ESLint, Vite).
+- Gitignored via `node_modules/`.
+- Survives `npm install`.
+- Destroyed by `rm -rf node_modules` — acceptable; rebuilds transparently.
+- Maximum size: ~25MB (250 problems × ~100KB per entry).
+- No automatic eviction by age or size. Manual cleanup: `rm -rf node_modules/.cache/marker-cache`.
 
 ### What is cached
 
 | Artifact | Cached? | Reason |
 |---|---|---|
+| `Main.class` | **Yes** | Data-driven; reads inputs at runtime |
 | `Marker.class` (+ inner classes) | Yes | Constant per problem version |
-| `ListNode.class` | Yes | Constant globally |
-| `TreeNode.class` | Yes | Constant globally |
-| `GraphNode.class` | Yes | Constant globally |
-| Helper method classes | Yes | From `javaHelperMethods`, constant globally |
-| `Main.class` | **No** | Changes every request (test inputs + user outputs) |
-| `Main.java` | **No** | Generated per request |
-| `Marker.java` source | **No** | Read from filesystem; hash is the key |
+| `ListNode.class`, `TreeNode.class`, `GraphNode.class` | Yes | Constant globally |
+| Helper method classes from `javaHelperMethods` | Yes | Constant globally |
+| `data.bin` | **No** | Changes every request |
+| `.java` sources | **No** | Only needed for compilation |
 
 ### Concurrent access
 
-- Multiple requests for the same problem arrive simultaneously.
-- First request to start a cache-miss compilation proceeds normally.
-- The cache write is atomic: compile into a temp directory, then `rename()` to the final path. Concurrent readers either see the complete directory or nothing (miss).
-- A concurrent miss for the same key results in redundant compilation — acceptable for correctness; the second write overwrites with an identical result.
+- First request for a cache-miss key starts compilation. A `pending` promise map deduplicates — concurrent requests for the same key await the first compilation's result.
+- Cache write is atomic: compile to temp directory, `rename()` to final path. Concurrent readers see the complete directory or nothing.
+- Cache eviction deletes the host-side directory. Active executions already have classes inside their container.
+- If `rename()` fails (another process wrote first), the temp directory is cleaned up and the winner's entry is used.
 
-### Error handling
+### Cache integrity
+
+| Check | When | Behaviour |
+|---|---|---|
+| Required classes present | Cache read | `Main.class` and `Marker.class` must be present and non-empty |
+| Compilation succeeded | Cache write | Only store after `javac` exit code 0 |
+| Extraction complete | Cache write | Validate required classes before writing to disk |
+| Runtime error on cache hit | Execution | Evict entry, fall back to legacy inline harness |
+| Truncated data.bin | Runtime (Java) | `RuntimeException` with "Truncated data at offset N" |
+| Malformed data.bin | Runtime (Java) | `RuntimeException` with "Malformed length at offset N" |
+
+### Error handling and fallback
 
 | Scenario | Behaviour |
 |---|---|
-| Cache-hit compilation fails (`javac Main.java` error) | Evict cache entry, retry with full compilation (cache miss path). If retry also fails, propagate the error. |
-| Cache-miss compilation fails (`javac *.java` error) | Do not cache. Propagate the error (unchanged behaviour). |
-| Corrupted/incomplete cache directory | `javac Main.java` fails → triggers eviction and full retry. |
-| `getArchive` extraction fails | Log warning, do not cache. The current request still succeeds (classes are in the container). Future requests retry caching. |
-| Container destroyed mid-extraction | No cache entry written. Next request uses cache-miss path. |
+| Cache hit, `java Main` fails | Evict cache entry, retry with legacy inline harness (original Cojudge approach). If retry also fails, propagate error. |
+| Cache miss, `javac` fails | Do not cache. Propagate error. |
+| Incomplete cache entry | Rejected by `getCachedClasses()` validation. Treated as cache miss. |
+| `getArchive` extraction fails | Log warning, do not cache. Current request still succeeds (classes are in container). |
+| Container destroyed mid-extraction | No entry written. Next request uses miss path. |
+
+### Security
+
+- Cached `.class` files are compiled inside Docker containers with full security controls (`NetworkMode: 'none'`, `CapDrop: ['ALL']`, etc.).
+- Only trusted Marker source code is compiled. User-submitted code runs in separate containers and never touches the Marker cache.
+- `data.bin` contains user outputs (untrusted), but these are read by the pre-compiled `Main.class` as data, not compiled or executed as code.
+- Host-side cached files are written by the Node.js server process, not by Docker containers. Container code cannot modify the host cache.
 
 ---
 
@@ -75,72 +129,38 @@ Cache compiled `.class` files for the constant parts of each Marker invocation (
 
 ### Option B — Warm Marker Containers
 
-Keep Marker containers alive between requests with pre-compiled `.class` files already on disk.
+Keep containers alive with pre-compiled classes on disk.
 
-**Problem:** `ContainerPool.cleanContainer()` runs `rm -f /app/*.class` on every acquire. Changing this would couple pool cleanup to Marker-specific knowledge and risk cross-contamination between different problems reusing the same container. The pool is shared between user-code runners and Marker runners.
-
-**Verdict:** Higher risk than host-side caching. Would require ContainerPool changes that affect all runners.
+**Rejected:** `ContainerPool.cleanContainer()` deletes `*.class` on acquire. Changing this would couple pool cleanup to Marker-specific knowledge and risk cross-contamination. The pool is shared between user-code runners and Marker runners.
 
 ### Option C — Persistent JVM Worker
 
-Run a long-lived Java process that accepts validation requests without restarting the JVM.
+Long-lived Java process accepting validation requests.
 
-**Benefits:** Eliminates JVM startup (~300ms per invocation) in addition to compilation.
-
-**Problems:**
-- Requires designing a protocol (stdin/stdout, socket, or HTTP) for passing test inputs and receiving results.
-- The worker must handle failure, timeout, and restart without corrupting state.
-- Resource consumption: a persistent JVM uses ~100-200MB of memory.
-- Security: a long-lived process accumulates state; harder to reason about isolation.
-
-**Verdict:** Not justified when compilation (85% of overhead) can be cached with a simpler approach. The remaining ~300ms JVM startup is acceptable.
+**Rejected:** Eliminates ~300ms JVM startup but requires protocol design, failure/timeout handling, restart logic, and persistent memory (~100-200MB). Not justified when compilation (85% of overhead) is already eliminated by caching.
 
 ### Option D — Embed Java in Python/C++ Images
 
-Add a JRE to `python:3.11-slim` and `gcc:13` so Marker validation runs inside the user's container.
+Add JRE to language-specific images.
 
-**Benefits:** Eliminates the second container lifecycle entirely.
-
-**Problems:**
-- Increases image size substantially (JRE is ~200MB).
-- Changes the Docker security boundary — user code and Marker code run in the same container.
-- Maintenance burden: custom images for each language.
-- Requires ADR approval.
-
-**Verdict:** Not acceptable without architectural review.
+**Rejected:** Changes Docker security boundary. Requires ADR approval.
 
 ---
 
-## Correctness and Isolation Guarantees
-
-The 13 requirements from the task specification and how this design satisfies each:
+## Correctness Requirements
 
 | # | Requirement | How satisfied |
 |---|---|---|
-| 1 | User code must never become a cached validator artifact | Only `Marker.java` and helper classes are cached. User code is never present in the Marker container — it runs in a separate container. |
-| 2 | User code/output must not alter cached artifacts | Cache is populated from a container that only contains trusted Marker sources. User outputs are only in `Main.java`, which is never cached. |
-| 3 | Distinct problem versions must not share incompatible artifacts | Cache key is a SHA-256 of all compiled sources. A Marker change produces a different hash. |
-| 4 | Cache keys must include every input affecting compilation | Hash covers: Marker.java, ListNode.java, TreeNode.java, GraphNode.java, javaHelperMethods. These are every file passed to `javac` except Main.java (which is per-request). |
-| 5 | Concurrent requests must not cause partial/corrupted entries | Cache writes use atomic rename (temp dir → final path). Readers see complete entries or nothing. |
-| 6 | Incomplete compilation must not be cached | Cache is populated only after `javac` succeeds (exit code 0). Failed compilations skip caching. |
-| 7 | Corrupted/missing cache must trigger safe rebuilds | If `javac Main.java` fails on a cache hit, the entry is evicted and a full recompilation is attempted. |
-| 8 | Cache eviction must not invalidate active executions | Eviction deletes the host-side directory. Active executions already have classes inside their container — the host cache is not referenced after upload. |
-| 9 | Cached artifacts must remain within Docker trust boundary | Classes are compiled inside a Docker container with standard security controls. The host stores only the resulting `.class` bytecode. These files are uploaded back into Docker containers for execution. |
-| 10 | All executions must remain fully offline | No network access required. Cache is local filesystem. |
-| 11 | Docker security restrictions must remain enforced | No changes to `cojudgeHostConfig()`. Containers retain: 512MB memory, 1 CPU, 256 PIDs, NetworkMode: none, CapDrop: ALL, no-new-privileges. |
-| 12 | Cache misses must preserve uncached semantics | The miss path is identical to the current implementation: upload all sources, `javac *.java`, `java Main`. |
-| 13 | Results from one submission must never leak into another | Each request generates a fresh `Main.java` with its own inputs/outputs. Cached `.class` files contain only the deterministic compilation of trusted source files. Container is cleaned between uses. |
-
----
-
-## Expected Performance Impact
-
-| Scenario | Current | With cache |
-|---|---|---|
-| Marker compile (cache miss) | 2.7–3.3s | 2.7–3.3s (unchanged — full compilation, plus extraction overhead) |
-| Marker compile (cache hit) | 2.7–3.3s | **~50–200ms** (compile one file against existing classpath) |
-| JVM run | 290–390ms | 290–390ms (unchanged) |
-| Total Marker (cache hit) | 3.2–3.7s | **~0.4–0.7s** |
-| Python Run total (cache hit) | 3.3–3.6s | **~0.5–1.0s** |
-
-Target: ≥30% reduction in median warm Python/C++ Run latency. Expected: ~70-80% reduction in Marker overhead, ~60-75% reduction in total Python Run latency.
+| 1 | User code never cached | Only Marker + helper sources compiled. User code runs in separate containers. |
+| 2 | User output cannot alter cache | `data.bin` is read-only data, never compiled. Cache populated from trusted sources only. |
+| 3 | Distinct versions don't share artifacts | SHA-256 content hash includes all compilation inputs + `HARNESS_VERSION`. |
+| 4 | Key covers all compilation inputs | Hash includes: Marker, helpers, javaHelperMethods, function signature, version. |
+| 5 | Concurrent misses don't corrupt | Pending-promise deduplication + atomic rename. |
+| 6 | Failed compilation not cached | Store only after `javac` exit code 0 + required-class validation. |
+| 7 | Corrupted cache triggers rebuild | Incomplete entries rejected on read. Runtime errors trigger eviction + fallback. |
+| 8 | Eviction safe during execution | Active containers have their own copy. Host deletion doesn't affect them. |
+| 9 | Artifacts within Docker trust boundary | Compiled inside Docker with standard controls. Uploaded back into Docker for execution. |
+| 10 | Fully offline | No network access. Cache is local filesystem. |
+| 11 | Docker security unchanged | No changes to `cojudgeHostConfig()`. |
+| 12 | Miss path preserves uncached semantics | Miss path is identical to original + extraction. |
+| 13 | No cross-submission result leakage | Each request generates fresh `data.bin`. Cached `.class` files are deterministic from trusted sources. |

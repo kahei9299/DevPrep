@@ -95,14 +95,14 @@ The `compileAll` stage (2.9s) is eliminated entirely on cache hit. The remaining
 
 ## Why It Works
 
-`javac` on `alpine/java:22-jdk` takes 2.7–3.2 seconds per invocation due to JVM bootstrap overhead for the compiler. This cost is incurred regardless of how many `.java` files are compiled. By caching all compiled `.class` files (Marker, helpers, and a data-driven Main) and feeding per-request test data via a runtime file instead of source literals, the `javac` invocation is skipped entirely on cache hit.
+`javac` on `alpine/java:22-jdk` takes 2.7–3.2 seconds per invocation due to JVM bootstrap overhead for the compiler. This cost is incurred regardless of how many `.java` files are compiled. By caching all compiled `.class` files (Marker, helpers, and a data-driven Main) and feeding per-request test data via a netstring-encoded binary file (`data.bin`) instead of source literals, the `javac` invocation is skipped entirely on cache hit. The netstring format (`<byte-length>:<utf8-bytes>`) preserves embedded newlines, special characters, and trailing whitespace exactly.
 
 ## Reliability
 
 - **150/150 measurements valid**, 0% failure rate.
 - **78/78 judge regression tests pass** (correct accepted, wrong rejected, timeout/error detected).
 - **13/13 security integration tests pass**.
-- **249/249 unit tests pass**.
+- **274/274 unit tests pass** (including netstring encoding, cache integrity, harness signature tests).
 - Cache miss falls back to full compilation with identical semantics.
 - Runtime error on cache hit triggers eviction and falls back to the legacy inline-data harness.
 
