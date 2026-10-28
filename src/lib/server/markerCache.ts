@@ -24,25 +24,28 @@ const pending = new Map<string, Promise<MarkerCacheEntry | null>>()
  *
  * Inputs hashed:
  *   1. Marker.java source code (changes per problem)
- *   2. Helper class sources: ListNode.java, TreeNode.java, GraphNode.java (constant)
- *   3. javaHelperMethods string embedded in Main.java (constant)
- *   4. Harness signature: functionName, param types, outputType, interactive config,
- *      and HARNESS_VERSION (changes when the generated Main.java structure changes)
+ *   2. The actual generated Main.java source — covers function signature,
+ *      param types, output type, interactive config, javaHelperMethods,
+ *      and the harness code structure. Any change to the harness generator
+ *      automatically produces a different hash without manual version bumps.
+ *   3. Docker image tag (e.g. "alpine/java:22-jdk") — invalidates if the
+ *      Java compiler/runtime version changes.
  *
  * NOT included (and why):
  *   - Test data / user outputs: read at runtime from data.bin, never compiled
- *   - Java compiler version: tied to the Docker image tag, which is constant per deployment
- *     (changing the image invalidates the container pool anyway)
+ *   - Helper .java sources (ListNode, TreeNode, GraphNode): these are
+ *     embedded in Main.java via javaHelperMethods, so they're already
+ *     covered by the Main.java hash
  */
 export function computeMarkerHash(
   markerSource: string,
-  helperSources: string[],
-  harnessSignature: string
+  mainJavaSource: string,
+  dockerImageTag: string
 ): string {
   const h = createHash('sha256')
   h.update(markerSource)
-  for (const s of helperSources) h.update(s)
-  h.update(harnessSignature)
+  h.update(mainJavaSource)
+  h.update(dockerImageTag)
   return h.digest('hex').substring(0, 16)
 }
 

@@ -10,7 +10,7 @@ import { cojudgeContainerLabels } from './server/containerSession';
 import { cojudgeHostConfig } from './server/containerConfig';
 import { PerfTimer } from './server/perfTimer';
 import { computeMarkerHash, getCachedClasses, cacheClassFiles, packCachedWithData, evictCacheEntry } from './server/markerCache';
-import { generateDataDrivenHarness, generateMarkerDataFile, computeHarnessSignature } from './server/markerHarness';
+import { generateDataDrivenHarness, generateMarkerDataFile } from './server/markerHarness';
 
 const docker = new Dockerode();
 
@@ -34,10 +34,8 @@ export async function getMarkerResponses(problemId: string, functionName: string
     const markerPath = await resolveProblemFile(problemId, 'Marker.java');
     const markerCode = await fs.readFile(markerPath, 'utf-8');
 
-    const harnessSignature = computeHarnessSignature(functionName, params, outputType, interactive);
-    const cacheHash = computeMarkerHash(markerCode, [
-        javaListNodeClass, javaTreeNodeClass, javaGraphNodeClass, javaHelperMethods
-    ], harnessSignature);
+    const mainJavaSource = generateDataDrivenHarness(functionName, params, outputType, interactive);
+    const cacheHash = computeMarkerHash(markerCode, mainJavaSource, javaImage);
 
     perf.stage('cacheCheck');
     const cached = await getCachedClasses(cacheHash);
@@ -69,13 +67,12 @@ export async function getMarkerResponses(problemId: string, functionName: string
         } else {
             // Cache miss: compile everything, then cache .class files
             perf.stage('uploadSources');
-            const mainJava = generateDataDrivenHarness(functionName, params, outputType, interactive);
             const pack = tar.pack();
             pack.entry({ name: 'ListNode.java' }, Buffer.from(javaListNodeClass));
             pack.entry({ name: 'TreeNode.java' }, Buffer.from(javaTreeNodeClass));
             pack.entry({ name: 'GraphNode.java' }, Buffer.from(javaGraphNodeClass));
             pack.entry({ name: 'Marker.java' }, Buffer.from(markerCode));
-            pack.entry({ name: 'Main.java' }, Buffer.from(mainJava));
+            pack.entry({ name: 'Main.java' }, Buffer.from(mainJavaSource));
             pack.entry({ name: 'data.bin' }, dataFile);
             pack.finalize();
             await container.putArchive(pack as any, { path: '/app' });

@@ -1,13 +1,13 @@
 slug,language,test_type,verdict,detail,elapsed_seconds
 3sum,python,correct,ACCEPTED,"30 tests",4.1
 3sum,cpp,correct,ACCEPTED,"30 tests",2.0
-3sum,java,correct,ACCEPTED,"30 tests",4.0
+3sum,java,correct,ACCEPTED,"30 tests",6.0
 best-time-to-buy-and-sell-stock,python,correct,ACCEPTED,"30 tests",4.0
 best-time-to-buy-and-sell-stock,cpp,correct,ACCEPTED,"30 tests",2.0
 best-time-to-buy-and-sell-stock,java,correct,ACCEPTED,"30 tests",4.0
 binary-search,python,correct,ACCEPTED,"51 tests",4.0
 binary-search,cpp,correct,ACCEPTED,"51 tests",2.0
-binary-search,java,correct,ACCEPTED,"51 tests",4.0
+binary-search,java,correct,ACCEPTED,"51 tests",6.0
 clone-graph,python,correct,ACCEPTED,"32 tests",4.0
 clone-graph,cpp,correct,ACCEPTED,"32 tests",2.0
 clone-graph,java,correct,ACCEPTED,"32 tests",6.0
@@ -22,13 +22,13 @@ group-anagrams,cpp,correct,ACCEPTED,"32 tests",2.0
 group-anagrams,java,correct,ACCEPTED,"32 tests",4.0
 implement-trie-prefix-tree,python,correct,ACCEPTED,"30 tests",4.0
 implement-trie-prefix-tree,cpp,correct,ACCEPTED,"30 tests",2.0
-implement-trie-prefix-tree,java,correct,ACCEPTED,"30 tests",4.0
+implement-trie-prefix-tree,java,correct,ACCEPTED,"30 tests",6.0
 invert-binary-tree,python,correct,ACCEPTED,"31 tests",4.0
 invert-binary-tree,cpp,correct,ACCEPTED,"31 tests",2.0
 invert-binary-tree,java,correct,ACCEPTED,"31 tests",4.0
 koko-eating-bananas,python,correct,ACCEPTED,"51 tests",4.0
 koko-eating-bananas,cpp,correct,ACCEPTED,"51 tests",2.0
-koko-eating-bananas,java,correct,ACCEPTED,"51 tests",6.0
+koko-eating-bananas,java,correct,ACCEPTED,"51 tests",4.0
 lru-cache,python,correct,ACCEPTED,"55 tests",4.0
 lru-cache,cpp,correct,ACCEPTED,"55 tests",2.0
 lru-cache,java,correct,ACCEPTED,"55 tests",6.0
@@ -43,7 +43,7 @@ reverse-linked-list,cpp,correct,ACCEPTED,"30 tests",2.0
 reverse-linked-list,java,correct,ACCEPTED,"30 tests",4.0
 serialize-and-deserialize-binary-tree,python,correct,ACCEPTED,"30 tests",4.0
 serialize-and-deserialize-binary-tree,cpp,correct,ACCEPTED,"30 tests",2.0
-serialize-and-deserialize-binary-tree,java,correct,ACCEPTED,"30 tests",4.0
+serialize-and-deserialize-binary-tree,java,correct,ACCEPTED,"30 tests",6.0
 subsets,python,correct,ACCEPTED,"51 tests",4.0
 subsets,cpp,correct,ACCEPTED,"51 tests",2.0
 subsets,java,correct,ACCEPTED,"51 tests",6.0
