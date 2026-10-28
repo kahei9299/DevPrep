@@ -86,7 +86,7 @@ Same environment, same problems, same solutions. Baseline = main branch (M1); Op
 
 ### Assessment
 
-**The `ensureTimeInstalled` optimisation does not produce a measurable latency improvement on this host.** Changes are within normal measurement variance (±1-3%). The original bottleneck analysis was based on code reading, not runtime measurement. With `NetworkMode: 'none'`, DNS failure is immediate and the `ensureTimeInstalled` shell command adds only ~50-200ms — not seconds.
+**The `ensureTimeInstalled` optimisation does not produce a measurable server-latency improvement on this host.** Changes are within normal measurement variance (±1-3%). The original bottleneck analysis was based on code reading, not runtime measurement. With `NetworkMode: 'none'`, DNS failure is immediate and the `ensureTimeInstalled` shell command adds only ~50-200ms — not seconds.
 
 **The optimisation is still correct and worthwhile:**
 - It removes a known-futile shell exec from the hot path.
@@ -94,6 +94,34 @@ Same environment, same problems, same solutions. Baseline = main branch (M1); Op
 - The `container.inspect()` check is cached per container ID, so subsequent runs on the same container add zero overhead.
 
 **The adaptive polling improvement** (600ms → 150ms initial) is real but not captured by the benchmark script, which uses its own 100ms polling. The improvement is in **perceived UI responsiveness**, not server latency.
+
+### Benchmark Reliability
+
+The before/after comparison above used data from sessions where two servers were started and stopped alternately, which caused intermittent cross-server Docker state contamination (~8% failure rate on both branches). These failures were investigated in [judge-reliability-investigation.md](judge-reliability-investigation.md) and determined to be an artefact of the benchmarking methodology, not a judge bug or a regression.
+
+A clean single-server reliability run (150 measurements, 5 reps × 5 problems × 3 languages × Run+Submit) produced **0 failures** (0.0%). See `reliability-test-results.json`.
+
+### Clean Run Latency (5 reps, single server, 0% failure rate)
+
+#### Run (median ms)
+
+| Problem | Python | C++ | Java |
+|---|---|---|---|
+| two-sum | 3,329 | 4,043 | 3,317 |
+| binary-search | 3,418 | 4,037 | 3,635 |
+| group-anagrams | 4,105 | 4,458 | 3,628 |
+| lru-cache | 3,707 | 4,442 | 3,520 |
+| minimum-window-substring | 4,236 | 4,346 | 5,200 |
+
+#### Submit (median ms)
+
+| Problem | Tests | Python | C++ | Java |
+|---|---|---|---|---|
+| two-sum | 31 | 7,072 | 8,497 | 7,256 |
+| binary-search | 51 | 7,256 | 8,990 | 7,562 |
+| group-anagrams | 32 | 4,152 | 4,860 | 4,650 |
+| lru-cache | 55 | 13,054 | 15,984 | 13,424 |
+| minimum-window-substring | 30 | 3,833 | 4,752 | 4,499 |
 
 ## True Bottleneck: Marker Container Lifecycle
 
@@ -131,5 +159,8 @@ All test suites pass after optimisations:
 | Unit tests (Vitest) | 244 | 244/244 pass |
 | Judge regression (verify-judge.mjs) | 78 | 78/78 pass |
 | Security integration | 13 | 13/13 pass |
+| Benchmark reliability (single server) | 150 | 150/150 valid (0% failure) |
 | Type check (svelte-check) | — | 32 pre-existing errors, 0 new |
 | Production build | — | Success |
+
+See [judge-reliability-investigation.md](judge-reliability-investigation.md) for the full investigation of intermittent failures observed during cross-server benchmarking.
