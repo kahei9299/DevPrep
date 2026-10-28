@@ -190,6 +190,10 @@ Every problem includes a `Marker.java` file containing:
 
 For Java runs, the marker is compiled alongside user code (merged execution). For all other languages, user output is passed to a separate Java container running the marker. See [docs/feasibility/architecture-audit.md](docs/feasibility/architecture-audit.md) section 3 for details.
 
+### Marker Compilation Cache
+
+For Python and C++ submissions, the Marker validation pipeline compiles `Marker.java`, helper classes, and a data-driven `Main.java` harness inside a Docker container. Compiled `.class` files are extracted and cached on the host in `node_modules/.cache/marker-cache/<hash>/`, keyed by a SHA-256 hash of the Marker source, helper sources, and the problem's function signature. On subsequent requests for the same problem, the cached `.class` files and a per-request data file are uploaded to the container, and `java Main` runs directly — skipping the `javac` invocation entirely. This reduces the Marker stage from ~3 seconds (dominated by `javac` JVM startup) to ~400 ms. Cache invalidation is automatic: any change to `Marker.java` or the problem's function signature produces a different hash.
+
 ### Problem Content
 
 Each problem directory contains:
