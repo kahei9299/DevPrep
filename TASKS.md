@@ -2,7 +2,7 @@
 
 This is the authoritative development milestone tracker for DevPrep. Each milestone defines a discrete deliverable with acceptance criteria and required evidence.
 
-**Current milestone:** M1
+**Current milestone:** M2
 
 ---
 
@@ -88,9 +88,7 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 
 **Objective:** Ensure the code execution engine is reliable, secure, and works offline.
 
-**Status:** In progress.
-
-**Branch:** `feat/m1-judge-hardening`
+**Status:** Complete.
 
 **Scope:**
 - Fix any judge bugs discovered in M0.1.
@@ -124,7 +122,7 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 - [x] M0.1 judge verification passes (78/78 via `verify-judge.mjs`).
 - [x] Security integration tests pass (13/13 via `tests/judge/security-verification.mjs`).
 - [x] Offline readiness smoke test passes (9/9 via `scripts/verify-offline.sh`).
-- [ ] True offline verification (host network disconnected) — requires manual test.
+- [x] True offline verification (host network disconnected) — 78/78 pass with Wi-Fi disabled (2026-10-28).
 
 **Evidence:**
 - Runtime verification report: [docs/feasibility/m1-runtime-verification-report.md](docs/feasibility/m1-runtime-verification-report.md).

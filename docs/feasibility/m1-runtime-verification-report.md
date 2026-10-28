@@ -68,13 +68,14 @@ The process-killing `for` loop in `cleanContainer` killed the container entry po
 
 ---
 
-## Not executed
+## True offline verification (host network disconnected)
 
-### True offline verification (host network disconnected)
+**Date:** 2026-10-28
+**Environment:** macOS, Wi-Fi disabled, Docker Desktop 29.4.3
+**Command:** `node scripts/verify-judge.mjs` (full 78-test suite, run in a separate terminal tab)
+**Result:** 78/78 passed (0 failed, 0 errors)
 
-Requires physically disabling the host network interface (Wi-Fi off, Ethernet unplugged). Cannot be performed programmatically from a sandboxed session. The offline readiness smoke test confirms all prerequisites are met. The `NetworkMode: 'none'` enforcement on execution containers is verified by the security integration tests.
-
-**Recommendation:** The product owner should run `scripts/verify-offline.sh` with Wi-Fi disabled to complete this verification.
+The product owner disconnected Wi-Fi, started the dev server, and ran the full M0.1 judge verification suite. All 60 correct-solution submissions were accepted, all 15 wrong-solution submissions were rejected, timeout detection worked, and compilation error detection worked — all without any internet connectivity.
 
 ---
 
