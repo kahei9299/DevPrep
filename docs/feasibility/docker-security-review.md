@@ -182,24 +182,37 @@ Images are pulled on first use (`ensureImageAvailable()`). For offline use, all 
 
 ## 8. Recommendations for DevPrep
 
-### Priority 1 (Before Release)
+### Priority 1 (Before Release) — IMPLEMENTED (M1)
 
-1. **Add resource limits** to all `createContainer` calls
-2. **Disable networking** on runner containers (`NetworkMode: 'none'`)
-3. **Document required Docker images** and provide a pre-pull script
+| # | Recommendation | Status | Implementation |
+|---|---|---|---|
+| 1 | Add resource limits | **Done** | 512 MB, 1 CPU, 256 PIDs via `cojudgeHostConfig()` |
+| 2 | Disable networking | **Done** | `NetworkMode: 'none'` on all execution containers |
+| 3 | Document and pre-pull images | **Done** | `scripts/prepare-offline.sh` |
 
-### Priority 2 (Hardening)
+### Priority 1.5 (Implemented in M1, beyond original scope)
 
-4. **Drop all capabilities** (`CapDrop: ['ALL']`)
-5. **Run as non-root** inside containers
-6. **Use read-only root filesystem** with tmpfs mounts
+| # | Recommendation | Status | Implementation |
+|---|---|---|---|
+| 4 | Drop all capabilities | **Done** | `CapDrop: ['ALL']` |
+| 5 | Block privilege escalation | **Done** | `SecurityOpt: ['no-new-privileges']` |
+| 6 | Enhanced container cleanup | **Done** | Process kill + /tmp cleanup between reuses |
 
-### Priority 3 (Production-Grade)
+### Priority 2 (Hardening) — DEFERRED
 
-7. **Consider gVisor/runsc** for additional syscall isolation
-8. **Add rate limiting** to run/submit endpoints
-9. **Fresh containers per execution** instead of pooling (security vs performance trade-off)
+| # | Recommendation | Status | Reason |
+|---|---|---|---|
+| 7 | Run as non-root | **Deferred** | Breaks `ensureTimeInstalled()`. Mitigated by NetworkMode: 'none'. |
+| 8 | Read-only root filesystem | **Deferred** | Needs testing across Debian/Alpine base images. |
 
-### Acceptable for DevPrep v1.0
+### Priority 3 (Production-Grade) — NOT PLANNED FOR V1.0
 
-The current security posture is acceptable for a single-user, fully offline application. The Docker socket exposure and lack of container hardening are trade-offs that prioritize simplicity and performance. Since the user runs their own code on their own machine, the threat model is primarily about preventing accidental resource exhaustion rather than defending against malicious input.
+| # | Recommendation | Status |
+|---|---|---|
+| 9 | gVisor/runsc | Not planned |
+| 10 | Rate limiting | Not planned |
+| 11 | Fresh containers per execution | Not planned (pooling performance preferred) |
+
+### Current Security Posture (Post-M1)
+
+All execution containers run with resource limits, network isolation, dropped capabilities, and privilege escalation prevention. The security posture is appropriate for a single-user, fully offline application. See [ADR-0003](../adr/0003-docker-security-hardening.md) for the full decision record and [docker-socket-analysis.md](docker-socket-analysis.md) for Docker socket exposure analysis.

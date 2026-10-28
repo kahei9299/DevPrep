@@ -69,6 +69,33 @@ afterEach(async () => {
 	}
 });
 
+describe('ContainerPool.acquire (cleanup)', () => {
+	it('cleans /tmp and app files on reuse', async () => {
+		const container = createStubContainer('test-cleanup-1');
+		held.push(container);
+		let cleanupCmd = '';
+		container.exec = async () => ({
+			start: async () => {
+				const stream = new EventEmitter() as EventEmitter & { resume: () => void };
+				stream.resume = () => setImmediate(() => stream.emit('end'));
+				return stream;
+			},
+			inspect: async () => ({ ExitCode: 0 })
+		});
+		// Override exec to capture the cleanup command
+		const origExec = container.exec;
+		container.exec = async (opts: any) => {
+			if (opts?.Cmd) cleanupCmd = opts.Cmd.join(' ');
+			return origExec(opts);
+		};
+		await ContainerPool.release(IMAGE, container as any);
+		await ContainerPool.acquire(IMAGE);
+		expect(cleanupCmd).toContain('/tmp/*');
+		expect(cleanupCmd).toContain('mkdir -p /app');
+		expect(cleanupCmd).not.toContain('kill');
+	});
+});
+
 describe('ContainerPool.cleanupStale', () => {
 	it('does not destroy an in-use container acquired recently', async () => {
 		const container = createStubContainer('test-container-1');

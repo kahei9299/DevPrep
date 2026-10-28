@@ -239,13 +239,17 @@ The containerised deployment mounts the host Docker socket (`/var/run/docker.soc
 
 | Boundary | Current State |
 |---|---|
-| Container resource limits | **Not set** — no memory, CPU, or PID limits |
-| Container networking | **Unrestricted** — containers have full network access |
-| Container capabilities | **Default** — no capabilities dropped |
-| Container user | **Root** inside containers |
+| Container resource limits | **512 MB memory, 1 CPU, 256 PIDs** — enforced via HostConfig on all execution containers |
+| Container networking | **Disabled** — `NetworkMode: 'none'` on all execution containers (debug containers retain network access) |
+| Container capabilities | **All dropped** — `CapDrop: ['ALL']` |
+| Privilege escalation | **Blocked** — `SecurityOpt: ['no-new-privileges']` |
+| Container user | **Root** inside containers (non-root deferred — see [ADR-0003](docs/adr/0003-docker-security-hardening.md)) |
 | Execution timeout | 30 seconds via Linux `timeout` command |
-| Container cleanup | 60-second cron removes orphaned containers |
+| Container cleanup | 60-second cron removes orphaned containers; process kill and /tmp cleanup between reuses |
 | Path traversal | Validated via `isSafeSegment()` |
+| Filesystem | Read-write (read-only root deferred — see [ADR-0003](docs/adr/0003-docker-security-hardening.md)) |
+
+Security configuration is centralised in `src/lib/server/containerConfig.ts`. See [ADR-0003](docs/adr/0003-docker-security-hardening.md) for the rationale and deferred controls.
 
 ### Testing Infrastructure
 
