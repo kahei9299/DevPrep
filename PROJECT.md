@@ -48,7 +48,7 @@ These requirements define the minimum acceptable release. All must be satisfied.
 - Hidden test submission (full test suite, results reported).
 - Correct solutions accepted; incorrect solutions rejected.
 - Timeout detection and error reporting.
-- 750/750 language-problem combinations passing acceptance tests.
+- Inherited library acceptance criteria met (see [ADR-0004](docs/adr/0004-accept-inherited-cojudge-library.md)).
 
 ### Practice Modes
 
@@ -127,7 +127,7 @@ These features are planned but must not block the v1.0 release.
 
 The v1.0 release is accepted when:
 
-1. All 250 NeetCode 250 problems pass automated tests in Python, C++, and Java (750/750).
+1. Cojudge's inherited problem library meets the acceptance criteria defined in [ADR-0004](docs/adr/0004-accept-inherited-cojudge-library.md): all 250 problems available, structurally complete, Run and Submit functional across Python/C++/Java, representative regression tests passing, no known critical defects unresolved.
 2. Public test execution and hidden test submission work for all three languages.
 3. Incorrect solutions are correctly rejected.
 4. Timeout and error conditions are reported accurately.
@@ -141,6 +141,8 @@ The v1.0 release is accepted when:
 12. The application deploys with documented Docker commands and works offline.
 13. All automated tests pass (`npm test`, build succeeds).
 
+**Note:** Problem content status is tracked using tiers: Bundled, Statically checked, Runtime tested, Independently verified, and Known issue. Acceptance does not require all problems to reach the Independently verified tier. See [ADR-0004](docs/adr/0004-accept-inherited-cojudge-library.md) for definitions.
+
 ## Development Constraints
 
 - **Timeline:** 6-8 weeks, 20+ hours/week of developer supervision.
@@ -152,7 +154,7 @@ The v1.0 release is accepted when:
 
 | Risk | Impact | Mitigation |
 |---|---|---|
-| Judge bugs in specific problems | Incorrect grading undermines trust | Systematic 750-problem verification |
+| Judge bugs in specific problems | Incorrect grading undermines trust | Representative regression testing; bug-driven verification per ADR-0004 |
 | Docker unavailability | Cannot execute code | Document prerequisites; test on clean machines |
 | localStorage data loss | Progress lost | Implement backup/restore; plan persistence migration |
 | Scope creep into learning modules | v1.0 delayed | Learning features are explicitly post-v1.0 |

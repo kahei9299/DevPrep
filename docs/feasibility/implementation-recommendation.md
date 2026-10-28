@@ -3,6 +3,8 @@
 **Date:** 2026-10-27
 **Decision:** Fork Cojudge and extend it (Option A)
 
+> **Note (2026-10-28):** This document is preserved as a historical record of the Phase 0 recommendation. The release assumption that all 750 language-problem combinations must be independently verified before v1.0 has been revised. See [ADR-0004](../adr/0004-accept-inherited-cojudge-library.md) for the updated acceptance criteria.
+
 ---
 
 ## Options Evaluated
