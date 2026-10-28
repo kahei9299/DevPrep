@@ -280,43 +280,52 @@ import { computeMarkerHash } from './markerCache'
 
 describe('cache key invalidation via generated Main.java', () => {
   const marker = 'class Marker { boolean isCorrect(int[] a, int[] b) { return true; } }'
+  const helpers = ['class ListNode {}', 'class TreeNode {}', 'class GraphNode {}']
   const image = 'alpine/java:22-jdk'
 
   it('same problem produces same cache key', () => {
     const params = [{ name: 'nums', type: 'int_array' as const }, { name: 'target', type: 'int' as const }]
     const mainA = generateDataDrivenHarness('twoSum', params, 'int_array', null)
     const mainB = generateDataDrivenHarness('twoSum', params, 'int_array', null)
-    expect(computeMarkerHash(marker, mainA, image)).toBe(computeMarkerHash(marker, mainB, image))
+    expect(computeMarkerHash(marker, mainA, helpers, image)).toBe(computeMarkerHash(marker, mainB, helpers, image))
   })
 
   it('different function name invalidates cache key', () => {
     const params = [{ name: 'nums', type: 'int_array' as const }]
     const mainA = generateDataDrivenHarness('twoSum', params, 'int_array', null)
     const mainB = generateDataDrivenHarness('search', params, 'int_array', null)
-    expect(computeMarkerHash(marker, mainA, image)).not.toBe(computeMarkerHash(marker, mainB, image))
+    expect(computeMarkerHash(marker, mainA, helpers, image)).not.toBe(computeMarkerHash(marker, mainB, helpers, image))
   })
 
   it('different param types invalidates cache key', () => {
     const mainA = generateDataDrivenHarness('fn', [{ name: 'x', type: 'int' }], 'int', null)
     const mainB = generateDataDrivenHarness('fn', [{ name: 'x', type: 'string' }], 'int', null)
-    expect(computeMarkerHash(marker, mainA, image)).not.toBe(computeMarkerHash(marker, mainB, image))
+    expect(computeMarkerHash(marker, mainA, helpers, image)).not.toBe(computeMarkerHash(marker, mainB, helpers, image))
   })
 
   it('different output type invalidates cache key', () => {
     const mainA = generateDataDrivenHarness('fn', [], 'int', null)
     const mainB = generateDataDrivenHarness('fn', [], 'string', null)
-    expect(computeMarkerHash(marker, mainA, image)).not.toBe(computeMarkerHash(marker, mainB, image))
+    expect(computeMarkerHash(marker, mainA, helpers, image)).not.toBe(computeMarkerHash(marker, mainB, helpers, image))
   })
 
   it('different Docker image invalidates cache key', () => {
     const main = generateDataDrivenHarness('fn', [], 'int', null)
-    expect(computeMarkerHash(marker, main, 'alpine/java:22-jdk'))
-      .not.toBe(computeMarkerHash(marker, main, 'alpine/java:23-jdk'))
+    expect(computeMarkerHash(marker, main, helpers, 'alpine/java:22-jdk'))
+      .not.toBe(computeMarkerHash(marker, main, helpers, 'alpine/java:23-jdk'))
   })
 
   it('different Marker source invalidates cache key', () => {
     const main = generateDataDrivenHarness('fn', [], 'int', null)
-    expect(computeMarkerHash('class Marker { int v1; }', main, image))
-      .not.toBe(computeMarkerHash('class Marker { int v2; }', main, image))
+    expect(computeMarkerHash('class Marker { int v1; }', main, helpers, image))
+      .not.toBe(computeMarkerHash('class Marker { int v2; }', main, helpers, image))
+  })
+
+  it('different helper class source invalidates cache key', () => {
+    const main = generateDataDrivenHarness('fn', [], 'int', null)
+    const h1 = ['class ListNode { int val; }', 'class TreeNode {}', 'class GraphNode {}']
+    const h2 = ['class ListNode { int val; ListNode next; }', 'class TreeNode {}', 'class GraphNode {}']
+    expect(computeMarkerHash(marker, main, h1, image))
+      .not.toBe(computeMarkerHash(marker, main, h2, image))
   })
 })

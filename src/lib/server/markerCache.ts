@@ -28,23 +28,26 @@ const pending = new Map<string, Promise<MarkerCacheEntry | null>>()
  *      param types, output type, interactive config, javaHelperMethods,
  *      and the harness code structure. Any change to the harness generator
  *      automatically produces a different hash without manual version bumps.
- *   3. Docker image tag (e.g. "alpine/java:22-jdk") — invalidates if the
+ *   3. Helper class sources: ListNode.java, TreeNode.java, GraphNode.java.
+ *      These are compiled alongside Marker.java and Main.java but are NOT
+ *      embedded in Main.java — they are separate .java files uploaded to
+ *      the container.
+ *   4. Docker image tag (e.g. "alpine/java:22-jdk") — invalidates if the
  *      Java compiler/runtime version changes.
  *
  * NOT included (and why):
  *   - Test data / user outputs: read at runtime from data.bin, never compiled
- *   - Helper .java sources (ListNode, TreeNode, GraphNode): these are
- *     embedded in Main.java via javaHelperMethods, so they're already
- *     covered by the Main.java hash
  */
 export function computeMarkerHash(
   markerSource: string,
   mainJavaSource: string,
+  helperSources: string[],
   dockerImageTag: string
 ): string {
   const h = createHash('sha256')
   h.update(markerSource)
   h.update(mainJavaSource)
+  for (const s of helperSources) h.update(s)
   h.update(dockerImageTag)
   return h.digest('hex').substring(0, 16)
 }

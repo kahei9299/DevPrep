@@ -35,7 +35,11 @@ export async function getMarkerResponses(problemId: string, functionName: string
     const markerCode = await fs.readFile(markerPath, 'utf-8');
 
     const mainJavaSource = generateDataDrivenHarness(functionName, params, outputType, interactive);
-    const cacheHash = computeMarkerHash(markerCode, mainJavaSource, javaImage);
+    const cacheHash = computeMarkerHash(
+        markerCode, mainJavaSource,
+        [javaListNodeClass, javaTreeNodeClass, javaGraphNodeClass],
+        javaImage
+    );
 
     perf.stage('cacheCheck');
     const cached = await getCachedClasses(cacheHash);

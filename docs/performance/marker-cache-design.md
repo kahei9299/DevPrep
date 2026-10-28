@@ -56,18 +56,17 @@ The Java parser in Main.java reads a byte-length prefix, then that many bytes of
 
 ### Cache key composition
 
-The cache key is SHA-256 of three inputs:
+The cache key is SHA-256 of four inputs:
 
 | Input | Included? | Rationale |
 |---|---|---|
 | `Marker.java` source | Yes | Defines `isCorrect()` and reference solution |
-| **Generated `Main.java` source** | Yes | Covers function name, param types, output type, interactive config, `javaHelperMethods`, helper class sources, and the harness code structure. Any change to the harness generator automatically produces a different hash — no manual version bump needed. |
+| **Generated `Main.java` source** | Yes | Covers function name, param types, output type, interactive config, `javaHelperMethods` (conversion functions), and the harness code structure. Any change to the harness generator automatically produces a different hash — no manual version bump needed. |
+| **Helper class sources** (`ListNode.java`, `TreeNode.java`, `GraphNode.java`) | Yes | Compiled alongside Marker and Main as separate `.java` files. Not embedded in Main.java — they are distinct compilation inputs. |
 | Docker image tag (e.g. `alpine/java:22-jdk`) | Yes | Invalidates if the Java compiler/runtime version changes |
 | Test data / user outputs | No | Read at runtime from `data.bin`, never compiled |
 
-The generated `Main.java` source is the single authoritative representation of all compilation inputs besides `Marker.java` and the JDK. It includes `javaHelperMethods` (which contains `ListNode`, `TreeNode`, `GraphNode` class definitions and all `to_*`/`display_*` conversion functions) verbatim, so changes to any helper class or conversion function automatically invalidate the cache.
-
-`HARNESS_VERSION` is retained in the harness signature for documentation purposes but is not the sole invalidation mechanism — the full `Main.java` source hash provides automatic invalidation.
+Note: `javaHelperMethods` (which contains `to_*` and `display_*` conversion functions) IS embedded verbatim in the generated `Main.java` and is therefore covered by the Main.java hash. The `ListNode.java`, `TreeNode.java`, and `GraphNode.java` class definitions are NOT — they are uploaded as separate files and must be hashed independently.
 
 ### Cache location
 
@@ -157,7 +156,7 @@ Add JRE to language-specific images.
 | 1 | User code never cached | Only Marker + helper sources compiled. User code runs in separate containers. |
 | 2 | User output cannot alter cache | `data.bin` is read-only data, never compiled. Cache populated from trusted sources only. |
 | 3 | Distinct versions don't share artifacts | SHA-256 content hash includes all compilation inputs + `HARNESS_VERSION`. |
-| 4 | Key covers all compilation inputs | Hash includes: Marker.java source, generated Main.java source (which embeds helpers, function signature, version), and Docker image tag. |
+| 4 | Key covers all compilation inputs | Hash includes: Marker.java, generated Main.java (embeds javaHelperMethods, function signature, version), ListNode/TreeNode/GraphNode.java sources, and Docker image tag. |
 | 5 | Concurrent misses don't corrupt | Pending-promise deduplication + atomic rename. |
 | 6 | Failed compilation not cached | Store only after `javac` exit code 0 + required-class validation. |
 | 7 | Corrupted cache triggers rebuild | Incomplete entries rejected on read. Runtime errors trigger eviction + fallback. |
