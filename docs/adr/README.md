@@ -10,6 +10,8 @@ This directory contains Architecture Decision Records (ADRs) for the DevPrep pro
 | [0001](0001-extend-cojudge.md) | Extend Cojudge rather than rewrite | Accepted | 2026-10-27 |
 | [0002](0002-retain-cojudge-runtime-versions.md) | Retain Cojudge's runtime versions for v1.0 | Accepted | 2026-10-27 |
 | [0003](0003-docker-security-hardening.md) | Docker container security hardening | Accepted | 2026-10-28 |
+| [0004](0004-accept-inherited-cojudge-library.md) | Accept inherited Cojudge problem library | Accepted | 2026-10-28 |
+| [0005](0005-sqlite-persistence-proposal.md) | SQLite persistence for user data | Proposed | 2026-10-28 |
 
 ## When to Create an ADR
 

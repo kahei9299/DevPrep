@@ -2,7 +2,7 @@
 
 This is the authoritative development milestone tracker for DevPrep. Each milestone defines a discrete deliverable with acceptance criteria and required evidence.
 
-**Current milestone:** M2
+**Current milestone:** M2.5
 
 ---
 
@@ -131,31 +131,69 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 
 ---
 
-## M2 — Complete NeetCode 250 Verification
+## M2 — Inherited Library Acceptance and Regression Maintenance
 
-**Objective:** Verify all 250 problems work correctly in Python, C++, and Java.
+**Objective:** Formally accept Cojudge's problem library as the DevPrep baseline and maintain regression coverage.
 
-**Status:** Not started.
+**Status:** Complete.
+
+**Supersedes:** The original M2 ("Complete NeetCode 250 Verification — 750/750"). See [ADR-0004](docs/adr/0004-accept-inherited-cojudge-library.md).
 
 **Scope:**
-- Systematic testing of all 250 problems × 3 languages = 750 combinations.
-- Automated test suite that runs reference solutions against the judge.
-- Fix content bugs (incorrect tests, broken validators, missing edge cases).
-- Produce a verified coverage report.
+- Accept Cojudge's 250-problem library as inherited baseline.
+- Maintain representative regression tests across Python, C++, and Java.
+- Fix and regression-test content bugs as they are discovered.
+- Preserve existing verification fixtures and tooling.
 
 **Dependencies:**
 - M1 complete (judge reliable and hardened).
 
 **Acceptance criteria:**
 
-- [ ] 750/750 language-problem combinations pass with correct reference solutions.
-- [ ] Automated test suite exists and is repeatable.
-- [ ] All content fixes documented.
-- [ ] Coverage report generated.
+- [x] All 250 NeetCode 250 problems available with complete files.
+- [x] Representative regression tests pass across 3 languages (78/78 via verify-judge.mjs).
+- [x] Content status tier system defined (Bundled / Statically checked / Runtime tested / Independently verified / Known issue).
+- [x] ADR-0004 accepted.
+- [x] Exhaustive 750/750 independent verification removed as release prerequisite.
+- [x] Regression-testing obligations documented.
 
-**Required evidence:**
-- Automated test output showing 750/750 pass.
-- List of problems that required content fixes and what was changed.
+**Evidence:**
+- ADR-0004: [docs/adr/0004-accept-inherited-cojudge-library.md](docs/adr/0004-accept-inherited-cojudge-library.md).
+- M0.1 verification: 78/78 pass. M1 verification: 78/78 pass (including offline).
+
+**Blockers:** None.
+
+---
+
+## M2.5 — Judge Performance and Usability
+
+**Objective:** Investigate and improve Run/Submit latency; propose persistence architecture.
+
+**Status:** In progress.
+
+**Scope:**
+- End-to-end latency instrumentation for Run and Submit pipelines.
+- Reproducible benchmarks across Python, C++, and Java.
+- Bottleneck identification (frontend polling, Docker pooling, compilation, Marker validation, batching, resource limits).
+- Targeted performance optimisations.
+- SQLite persistence architecture proposal (design only, no implementation).
+
+**Dependencies:**
+- M2 complete (library accepted, judge baseline stable).
+
+**Acceptance criteria:**
+
+- [ ] Run and Submit latency measured across Python, C++, and Java.
+- [ ] Cold and warm execution differentiated.
+- [ ] Main bottlenecks identified and ranked.
+- [ ] Targeted optimisations implemented where justified.
+- [ ] Before/after results recorded with absolute values.
+- [ ] Existing judge and security regression suites pass.
+- [ ] Current localStorage persistence documented.
+- [ ] SQLite alternatives compared and recommendation made.
+- [ ] Proposed schema and migration strategy documented.
+- [ ] ADR-0005 (persistence proposal) created with Proposed status.
+- [ ] No database implementation introduced.
 
 ---
 
@@ -170,11 +208,10 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 - Personal notes and reflections per problem.
 - Progress tracking that survives browser data clearing.
 - Backup and restore functionality.
-- Persistence migration (if approved — pending ADR for approach).
+- Persistence migration (per approved architecture from M2.5/ADR-0005).
 
 **Dependencies:**
-- M2 complete (stable judge).
-- Persistence architecture decision approved.
+- M2.5 complete (performance baseline established, persistence architecture approved).
 
 **Acceptance criteria:**
 

@@ -295,13 +295,13 @@ Browser `localStorage` is fragile for long-term use. A migration to SQLite (via 
 - Notes and reflections.
 - Progress backup.
 
-**Status:** Proposed. No ADR created yet. Migration strategy, schema design, and backward compatibility with existing `localStorage` data require review.
+**Status:** Proposed. An architecture proposal (ADR-0005) is being prepared as part of M2.5. Migration strategy, schema design, and backward compatibility with existing `localStorage` data require review before implementation.
 
 ### Container security hardening
 
-Adding resource limits, network isolation, and capability dropping to runner containers. See [docs/feasibility/docker-security-review.md](docs/feasibility/docker-security-review.md) for recommendations.
+Resource limits (512 MB, 1 CPU, 256 PIDs), network isolation (`NetworkMode: 'none'`), and capability dropping (`CapDrop: ['ALL']`, `no-new-privileges`) enforced on all execution containers. Implemented in M1. See [ADR-0003](docs/adr/0003-docker-security-hardening.md) and [docs/feasibility/docker-security-review.md](docs/feasibility/docker-security-review.md).
 
-**Status:** Proposed. Acceptable for single-user local use in current form. Hardening is recommended before any network-accessible deployment.
+**Status:** Implemented. Read-only root filesystem and non-root container user deferred to Priority 2 per ADR-0003.
 
 ### Firebase removal
 

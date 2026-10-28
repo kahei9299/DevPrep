@@ -1,0 +1,1503 @@
+{
+  "env": {
+    "timestamp": "2026-10-28T05:01:25.459Z",
+    "arch": "arm64",
+    "platform": "darwin",
+    "dockerVersion": "29.4.3",
+    "nodeVersion": "v26.0.0",
+    "cpu": "Apple M4",
+    "totalMemoryGB": 24
+  },
+  "config": {
+    "reps": 3,
+    "warmup": 1,
+    "cold": false,
+    "pollIntervalMs": 100
+  },
+  "results": [
+    {
+      "problemId": "two-sum",
+      "language": "python",
+      "sampleTests": 3,
+      "hiddenTests": 31,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3432.7680409999994,
+            "postMs": 2.82287499999984,
+            "pollMs": 3429.9451659999995,
+            "polls": 34,
+            "executionTimeMs": 0.004207,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3333.2466249999998,
+            "postMs": 4.043625000000247,
+            "pollMs": 3329.2029999999995,
+            "polls": 33,
+            "executionTimeMs": 0.003209,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3333.665417,
+            "postMs": 3.782583000000159,
+            "pollMs": 3329.882834,
+            "polls": 33,
+            "executionTimeMs": 0.004208,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3333.665417,
+        "p95Ms": null,
+        "minMs": 3333.2466249999998,
+        "maxMs": 3432.7680409999994,
+        "medianPolls": 33,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 6970.955041000001,
+            "polls": 69,
+            "allAccepted": true,
+            "totalTc": 31,
+            "passedTc": 0,
+            "executionTimeMs": 0.184998,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 7067.697624999997,
+            "polls": 70,
+            "allAccepted": true,
+            "totalTc": 31,
+            "passedTc": 0,
+            "executionTimeMs": 0.174501,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 7156.984249999998,
+            "polls": 71,
+            "allAccepted": true,
+            "totalTc": 31,
+            "passedTc": 0,
+            "executionTimeMs": 0.181833,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 7067.697624999997,
+        "p95Ms": null,
+        "minMs": 6970.955041000001,
+        "maxMs": 7156.984249999998,
+        "medianPolls": 70,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "two-sum",
+      "language": "cpp",
+      "sampleTests": 3,
+      "hiddenTests": 31,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 4058.1717089999947,
+            "postMs": 3.329374999993888,
+            "pollMs": 4054.842334000001,
+            "polls": 40,
+            "executionTimeMs": 0.001124,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4140.880541999999,
+            "postMs": 3.9434170000022277,
+            "pollMs": 4136.937124999997,
+            "polls": 41,
+            "executionTimeMs": 0.001292,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4161.766583999997,
+            "postMs": 4.785875000001397,
+            "pollMs": 4156.980708999996,
+            "polls": 41,
+            "executionTimeMs": 0.001167,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 4140.880541999999,
+        "p95Ms": null,
+        "minMs": 4058.1717089999947,
+        "maxMs": 4161.766583999997,
+        "medianPolls": 41,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 8507.117708999998,
+            "polls": 84,
+            "allAccepted": true,
+            "totalTc": 31,
+            "passedTc": 0,
+            "executionTimeMs": 0.012457,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 8497.910749999995,
+            "polls": 84,
+            "allAccepted": true,
+            "totalTc": 31,
+            "passedTc": 0,
+            "executionTimeMs": 0.020127,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 8512.932874999999,
+            "polls": 84,
+            "allAccepted": true,
+            "totalTc": 31,
+            "passedTc": 0,
+            "executionTimeMs": 0.012375,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 8507.117708999998,
+        "p95Ms": null,
+        "minMs": 8497.910749999995,
+        "maxMs": 8512.932874999999,
+        "medianPolls": 84,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "two-sum",
+      "language": "java",
+      "sampleTests": 3,
+      "hiddenTests": 31,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3424.6757500000094,
+            "postMs": 3.3964170000108425,
+            "pollMs": 3421.2793329999986,
+            "polls": 34,
+            "executionTimeMs": 27.035625,
+            "memoryKB": 232576,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3321.0760840000003,
+            "postMs": 3.433166999995592,
+            "pollMs": 3317.6429170000047,
+            "polls": 33,
+            "executionTimeMs": 26.726167,
+            "memoryKB": 231520,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3314.7670840000064,
+            "postMs": 3.2861249999987194,
+            "pollMs": 3311.4809590000077,
+            "polls": 33,
+            "executionTimeMs": 26.901917,
+            "memoryKB": 231696,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3321.0760840000003,
+        "p95Ms": null,
+        "minMs": 3314.7670840000064,
+        "maxMs": 3424.6757500000094,
+        "medianPolls": 33,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "error": "Submission failed: details: RunnerCrashError",
+            "totalMs": 3829.8673329999874,
+            "valid": false,
+            "polls": 38
+          },
+          {
+            "totalMs": 7251.489208999992,
+            "polls": 72,
+            "allAccepted": true,
+            "totalTc": 31,
+            "passedTc": 0,
+            "executionTimeMs": 75.43304,
+            "memoryKB": 244448,
+            "valid": true
+          },
+          {
+            "totalMs": 7364.859249999994,
+            "polls": 73,
+            "allAccepted": true,
+            "totalTc": 31,
+            "passedTc": 0,
+            "executionTimeMs": 78.472624,
+            "memoryKB": 245760,
+            "valid": true
+          }
+        ],
+        "validCount": 2,
+        "totalCount": 3,
+        "medianMs": 7308.174229499993,
+        "p95Ms": null,
+        "minMs": 7251.489208999992,
+        "maxMs": 7364.859249999994,
+        "medianPolls": 72,
+        "errors": 1,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "binary-search",
+      "language": "python",
+      "sampleTests": 4,
+      "hiddenTests": 51,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3317.2377089999936,
+            "postMs": 4.35899999999674,
+            "pollMs": 3312.878708999997,
+            "polls": 33,
+            "executionTimeMs": 0.003499,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3321.227832999997,
+            "postMs": 3.1874580000003334,
+            "pollMs": 3318.040374999997,
+            "polls": 33,
+            "executionTimeMs": 0.003749,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3321.599457999997,
+            "postMs": 3.8522910000028787,
+            "pollMs": 3317.747166999994,
+            "polls": 33,
+            "executionTimeMs": 0.003668,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3321.227832999997,
+        "p95Ms": null,
+        "minMs": 3317.2377089999936,
+        "maxMs": 3321.599457999997,
+        "medianPolls": 33,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 7357.451125000007,
+            "polls": 73,
+            "allAccepted": true,
+            "totalTc": 51,
+            "passedTc": 0,
+            "executionTimeMs": 0.048546,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 7163.888291999989,
+            "polls": 71,
+            "allAccepted": true,
+            "totalTc": 51,
+            "passedTc": 0,
+            "executionTimeMs": 0.046961,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 7259.024666999991,
+            "polls": 72,
+            "allAccepted": true,
+            "totalTc": 51,
+            "passedTc": 0,
+            "executionTimeMs": 0.0485,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 7259.024666999991,
+        "p95Ms": null,
+        "minMs": 7163.888291999989,
+        "maxMs": 7357.451125000007,
+        "medianPolls": 72,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "binary-search",
+      "language": "cpp",
+      "sampleTests": 4,
+      "hiddenTests": 51,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3929.583042000013,
+            "postMs": 3.6743750000023283,
+            "pollMs": 3925.9086670000106,
+            "polls": 39,
+            "executionTimeMs": 0.000124,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 2065.573959000001,
+            "postMs": 4.156959000014467,
+            "pollMs": 2061.4169999999867,
+            "polls": 21,
+            "executionTimeMs": 0.000083,
+            "memoryKB": 0,
+            "passed": false,
+            "timeout": false,
+            "error": null,
+            "valid": false
+          },
+          {
+            "totalMs": 4033.4310840000107,
+            "postMs": 1.976334000006318,
+            "pollMs": 4031.4547500000044,
+            "polls": 40,
+            "executionTimeMs": 0.000167,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 2,
+        "totalCount": 3,
+        "medianMs": 3981.507063000012,
+        "p95Ms": null,
+        "minMs": 3929.583042000013,
+        "maxMs": 4033.4310840000107,
+        "medianPolls": 39,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 1
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 8613.201167000021,
+            "polls": 85,
+            "allAccepted": true,
+            "totalTc": 51,
+            "passedTc": 0,
+            "executionTimeMs": 0.001708,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 8694.179000000004,
+            "polls": 86,
+            "allAccepted": true,
+            "totalTc": 51,
+            "passedTc": 0,
+            "executionTimeMs": 0.0019190000000000001,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 8693.638124999998,
+            "polls": 86,
+            "allAccepted": true,
+            "totalTc": 51,
+            "passedTc": 0,
+            "executionTimeMs": 0.001541,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 8693.638124999998,
+        "p95Ms": null,
+        "minMs": 8613.201167000021,
+        "maxMs": 8694.179000000004,
+        "medianPolls": 86,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "binary-search",
+      "language": "java",
+      "sampleTests": 4,
+      "hiddenTests": 51,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3422.1773329999996,
+            "postMs": 2.9885829999984708,
+            "pollMs": 3419.188750000001,
+            "polls": 34,
+            "executionTimeMs": 26.892082,
+            "memoryKB": 233200,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3319.317667000025,
+            "postMs": 5.291667000012239,
+            "pollMs": 3314.0260000000126,
+            "polls": 33,
+            "executionTimeMs": 28.806458,
+            "memoryKB": 230384,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3318.6695419999887,
+            "postMs": 4.013166999997338,
+            "pollMs": 3314.6563749999914,
+            "polls": 33,
+            "executionTimeMs": 28.267958,
+            "memoryKB": 231632,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3319.317667000025,
+        "p95Ms": null,
+        "minMs": 3318.6695419999887,
+        "maxMs": 3422.1773329999996,
+        "medianPolls": 33,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 7463.714791999984,
+            "polls": 74,
+            "allAccepted": true,
+            "totalTc": 51,
+            "passedTc": 0,
+            "executionTimeMs": 153.372005,
+            "memoryKB": 270880,
+            "valid": true
+          },
+          {
+            "totalMs": 7357.443375000003,
+            "polls": 73,
+            "allAccepted": true,
+            "totalTc": 51,
+            "passedTc": 0,
+            "executionTimeMs": 108.073455,
+            "memoryKB": 258144,
+            "valid": true
+          },
+          {
+            "error": "Submission failed: details: Error",
+            "totalMs": 726.4021249999932,
+            "valid": false,
+            "polls": 8
+          }
+        ],
+        "validCount": 2,
+        "totalCount": 3,
+        "medianMs": 7410.579083499993,
+        "p95Ms": null,
+        "minMs": 7357.443375000003,
+        "maxMs": 7463.714791999984,
+        "medianPolls": 73,
+        "errors": 1,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "group-anagrams",
+      "language": "python",
+      "sampleTests": 3,
+      "hiddenTests": 32,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3519.4091670000053,
+            "postMs": 3.1471249999885913,
+            "pollMs": 3516.2620420000167,
+            "polls": 35,
+            "executionTimeMs": 0.0345,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3518.481624999986,
+            "postMs": 2.3588330000056885,
+            "pollMs": 3516.12279199998,
+            "polls": 35,
+            "executionTimeMs": 0.031166,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3734.408457999991,
+            "postMs": 2.6454999999841675,
+            "pollMs": 3731.7629580000066,
+            "polls": 37,
+            "executionTimeMs": 0.030501,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3519.4091670000053,
+        "p95Ms": null,
+        "minMs": 3518.481624999986,
+        "maxMs": 3734.408457999991,
+        "medianPolls": 35,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 3842.959415999998,
+            "polls": 38,
+            "allAccepted": true,
+            "totalTc": 32,
+            "passedTc": 0,
+            "executionTimeMs": 0.208498,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3836.572582999972,
+            "polls": 38,
+            "allAccepted": true,
+            "totalTc": 32,
+            "passedTc": 0,
+            "executionTimeMs": 0.223875,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3832.1371249999793,
+            "polls": 38,
+            "allAccepted": true,
+            "totalTc": 32,
+            "passedTc": 0,
+            "executionTimeMs": 0.202998,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3836.572582999972,
+        "p95Ms": null,
+        "minMs": 3832.1371249999793,
+        "maxMs": 3842.959415999998,
+        "medianPolls": 38,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "group-anagrams",
+      "language": "cpp",
+      "sampleTests": 3,
+      "hiddenTests": 32,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 4349.809000000008,
+            "postMs": 2.9991659999941476,
+            "pollMs": 4346.809834000014,
+            "polls": 43,
+            "executionTimeMs": 0.002751,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4345.924750000006,
+            "postMs": 3.4994170000136364,
+            "pollMs": 4342.425332999992,
+            "polls": 43,
+            "executionTimeMs": 0.003041,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4351.58808300001,
+            "postMs": 2.3274580000143033,
+            "pollMs": 4349.260624999995,
+            "polls": 43,
+            "executionTimeMs": 0.003126,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 4349.809000000008,
+        "p95Ms": null,
+        "minMs": 4345.924750000006,
+        "maxMs": 4351.58808300001,
+        "medianPolls": 43,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 4868.735416999989,
+            "polls": 48,
+            "allAccepted": true,
+            "totalTc": 32,
+            "passedTc": 0,
+            "executionTimeMs": 0.014376,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4763.088375000021,
+            "polls": 47,
+            "allAccepted": true,
+            "totalTc": 32,
+            "passedTc": 0,
+            "executionTimeMs": 0.014794,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4849.295625000028,
+            "polls": 48,
+            "allAccepted": true,
+            "totalTc": 32,
+            "passedTc": 0,
+            "executionTimeMs": 0.014915,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 4849.295625000028,
+        "p95Ms": null,
+        "minMs": 4763.088375000021,
+        "maxMs": 4868.735416999989,
+        "medianPolls": 48,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "group-anagrams",
+      "language": "java",
+      "sampleTests": 3,
+      "hiddenTests": 32,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3520.2301669999724,
+            "postMs": 0.7418750000069849,
+            "pollMs": 3519.4882919999654,
+            "polls": 35,
+            "executionTimeMs": 44.424042,
+            "memoryKB": 235040,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3518.9762919999775,
+            "postMs": 3.406124999979511,
+            "pollMs": 3515.570166999998,
+            "polls": 35,
+            "executionTimeMs": 45.624917,
+            "memoryKB": 242992,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3520.553750000021,
+            "postMs": 2.3027920000022277,
+            "pollMs": 3518.2509580000187,
+            "polls": 35,
+            "executionTimeMs": 41.816083,
+            "memoryKB": 234800,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3520.2301669999724,
+        "p95Ms": null,
+        "minMs": 3518.9762919999775,
+        "maxMs": 3520.553750000021,
+        "medianPolls": 35,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 4249.46100000001,
+            "polls": 42,
+            "allAccepted": true,
+            "totalTc": 32,
+            "passedTc": 0,
+            "executionTimeMs": 48.827249,
+            "memoryKB": 248688,
+            "valid": true
+          },
+          {
+            "totalMs": 4046.878832999966,
+            "polls": 40,
+            "allAccepted": true,
+            "totalTc": 32,
+            "passedTc": 0,
+            "executionTimeMs": 48.025293,
+            "memoryKB": 247136,
+            "valid": true
+          },
+          {
+            "totalMs": 4037.0863339999923,
+            "polls": 40,
+            "allAccepted": true,
+            "totalTc": 32,
+            "passedTc": 0,
+            "executionTimeMs": 55.281252,
+            "memoryKB": 246832,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 4046.878832999966,
+        "p95Ms": null,
+        "minMs": 4037.0863339999923,
+        "maxMs": 4249.46100000001,
+        "medianPolls": 40,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "lru-cache",
+      "language": "python",
+      "sampleTests": 4,
+      "hiddenTests": 55,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3537.9456669999636,
+            "postMs": 3.592917000001762,
+            "pollMs": 3534.352749999962,
+            "polls": 35,
+            "executionTimeMs": 0.104334,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3552.2970000000205,
+            "postMs": 2.8775420000310987,
+            "pollMs": 3549.4194579999894,
+            "polls": 35,
+            "executionTimeMs": 0.120582,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3548.3066250000265,
+            "postMs": 3.238540999998804,
+            "pollMs": 3545.0680840000277,
+            "polls": 35,
+            "executionTimeMs": 0.11775,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3548.3066250000265,
+        "p95Ms": null,
+        "minMs": 3537.9456669999636,
+        "maxMs": 3552.2970000000205,
+        "medianPolls": 35,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 12605.139125000045,
+            "polls": 123,
+            "allAccepted": true,
+            "totalTc": 55,
+            "passedTc": 0,
+            "executionTimeMs": 166.75534,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 10335.850625000021,
+            "valid": false,
+            "error": "Wrong answer",
+            "polls": 102,
+            "totalTc": 55,
+            "passedTc": 1
+          },
+          {
+            "totalMs": 12694.569958000036,
+            "polls": 124,
+            "allAccepted": true,
+            "totalTc": 55,
+            "passedTc": 0,
+            "executionTimeMs": 170.00020999999998,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 2,
+        "totalCount": 3,
+        "medianMs": 12649.85454150004,
+        "p95Ms": null,
+        "minMs": 12605.139125000045,
+        "maxMs": 12694.569958000036,
+        "medianPolls": 123,
+        "errors": 1,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "lru-cache",
+      "language": "cpp",
+      "sampleTests": 4,
+      "hiddenTests": 55,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 4377.52341699996,
+            "postMs": 4.039916999987327,
+            "pollMs": 4373.483499999973,
+            "polls": 43,
+            "executionTimeMs": 0.002791,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4275.084709000017,
+            "postMs": 5.9861670000245795,
+            "pollMs": 4269.098541999992,
+            "polls": 42,
+            "executionTimeMs": 0.002875,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4262.66958300001,
+            "postMs": 4.010124999971595,
+            "pollMs": 4258.659458000038,
+            "polls": 42,
+            "executionTimeMs": 0.002666,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 4275.084709000017,
+        "p95Ms": null,
+        "minMs": 4262.66958300001,
+        "maxMs": 4377.52341699996,
+        "medianPolls": 42,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 15481.767542000045,
+            "polls": 151,
+            "allAccepted": true,
+            "totalTc": 55,
+            "passedTc": 0,
+            "executionTimeMs": 0.615036,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 15427.606207999983,
+            "valid": false,
+            "error": "Wrong answer",
+            "polls": 151,
+            "totalTc": 55,
+            "passedTc": 1
+          },
+          {
+            "totalMs": 15488.729624999978,
+            "polls": 151,
+            "allAccepted": true,
+            "totalTc": 55,
+            "passedTc": 0,
+            "executionTimeMs": 0.620871,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 2,
+        "totalCount": 3,
+        "medianMs": 15485.248583500012,
+        "p95Ms": null,
+        "minMs": 15481.767542000045,
+        "maxMs": 15488.729624999978,
+        "medianPolls": 151,
+        "errors": 1,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "lru-cache",
+      "language": "java",
+      "sampleTests": 4,
+      "hiddenTests": 55,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3660.895750000025,
+            "postMs": 3.6273330000112765,
+            "pollMs": 3657.268417000014,
+            "polls": 36,
+            "executionTimeMs": 62.956375,
+            "memoryKB": 232896,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3554.9467089999816,
+            "postMs": 3.7714169999817386,
+            "pollMs": 3551.175292,
+            "polls": 35,
+            "executionTimeMs": 62.772585,
+            "memoryKB": 234464,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3445.1330000000307,
+            "postMs": 1.890625,
+            "pollMs": 3443.2423750000307,
+            "polls": 34,
+            "executionTimeMs": 63.349167,
+            "memoryKB": 235024,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3554.9467089999816,
+        "p95Ms": null,
+        "minMs": 3445.1330000000307,
+        "maxMs": 3660.895750000025,
+        "medianPolls": 35,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 12966.16608299996,
+            "polls": 127,
+            "allAccepted": true,
+            "totalTc": 55,
+            "passedTc": 0,
+            "executionTimeMs": 1117.421714,
+            "memoryKB": 384544,
+            "valid": true
+          },
+          {
+            "totalMs": 12977.85824999999,
+            "polls": 127,
+            "allAccepted": true,
+            "totalTc": 55,
+            "passedTc": 0,
+            "executionTimeMs": 1053.135082,
+            "memoryKB": 381376,
+            "valid": true
+          },
+          {
+            "error": "Submission failed: details: Error",
+            "totalMs": 3235.584124999994,
+            "valid": false,
+            "polls": 32
+          }
+        ],
+        "validCount": 2,
+        "totalCount": 3,
+        "medianMs": 12972.012166499975,
+        "p95Ms": null,
+        "minMs": 12966.16608299996,
+        "maxMs": 12977.85824999999,
+        "medianPolls": 127,
+        "errors": 1,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "minimum-window-substring",
+      "language": "python",
+      "sampleTests": 3,
+      "hiddenTests": 30,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 3338.806500000006,
+            "postMs": 3.5583329999935813,
+            "pollMs": 3335.2481670000125,
+            "polls": 33,
+            "executionTimeMs": 0.018709,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3338.036167000013,
+            "postMs": 1.8639170000096783,
+            "pollMs": 3336.1722500000033,
+            "polls": 33,
+            "executionTimeMs": 0.017417,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3235.8289170000353,
+            "postMs": 3.030917000025511,
+            "pollMs": 3232.79800000001,
+            "polls": 32,
+            "executionTimeMs": 0.015958,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3338.036167000013,
+        "p95Ms": null,
+        "minMs": 3235.8289170000353,
+        "maxMs": 3338.806500000006,
+        "medianPolls": 33,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 3657.3749170000083,
+            "polls": 36,
+            "allAccepted": true,
+            "totalTc": 30,
+            "passedTc": 0,
+            "executionTimeMs": 0.068252,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3544.2585839999956,
+            "polls": 35,
+            "allAccepted": true,
+            "totalTc": 30,
+            "passedTc": 0,
+            "executionTimeMs": 0.072915,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3738.784791000013,
+            "polls": 37,
+            "allAccepted": true,
+            "totalTc": 30,
+            "passedTc": 0,
+            "executionTimeMs": 0.066792,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3657.3749170000083,
+        "p95Ms": null,
+        "minMs": 3544.2585839999956,
+        "maxMs": 3738.784791000013,
+        "medianPolls": 36,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "minimum-window-substring",
+      "language": "cpp",
+      "sampleTests": 3,
+      "hiddenTests": 30,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 4075.4843329999712,
+            "postMs": 3.2542919999687,
+            "pollMs": 4072.2300410000025,
+            "polls": 40,
+            "executionTimeMs": 0.004,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4067.1402920000255,
+            "postMs": 3.2950000000419095,
+            "pollMs": 4063.8452919999836,
+            "polls": 40,
+            "executionTimeMs": 0.007751,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4066.624332999985,
+            "postMs": 1.655291999981273,
+            "pollMs": 4064.969041000004,
+            "polls": 40,
+            "executionTimeMs": 0.003959,
+            "memoryKB": 0,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 4067.1402920000255,
+        "p95Ms": null,
+        "minMs": 4066.624332999985,
+        "maxMs": 4075.4843329999712,
+        "medianPolls": 40,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 4386.402500000026,
+            "polls": 43,
+            "allAccepted": true,
+            "totalTc": 30,
+            "passedTc": 0,
+            "executionTimeMs": 0.010542,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4490.3282500000205,
+            "polls": 44,
+            "allAccepted": true,
+            "totalTc": 30,
+            "passedTc": 0,
+            "executionTimeMs": 0.010129,
+            "memoryKB": null,
+            "valid": true
+          },
+          {
+            "totalMs": 4383.215250000008,
+            "polls": 43,
+            "allAccepted": true,
+            "totalTc": 30,
+            "passedTc": 0,
+            "executionTimeMs": 0.01054,
+            "memoryKB": null,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 4386.402500000026,
+        "p95Ms": null,
+        "minMs": 4383.215250000008,
+        "maxMs": 4490.3282500000205,
+        "medianPolls": 43,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    },
+    {
+      "problemId": "minimum-window-substring",
+      "language": "java",
+      "sampleTests": 3,
+      "hiddenTests": 30,
+      "run": {
+        "samples": [
+          {
+            "totalMs": 2613.1135420000064,
+            "postMs": 2.9133330000331625,
+            "pollMs": 2610.2002089999733,
+            "polls": 26,
+            "executionTimeMs": null,
+            "memoryKB": null,
+            "passed": false,
+            "timeout": false,
+            "error": "Execution failed: details: Error",
+            "valid": false
+          },
+          {
+            "totalMs": 3435.3662919999915,
+            "postMs": 0.7509169999975711,
+            "pollMs": 3434.615374999994,
+            "polls": 34,
+            "executionTimeMs": 0.922167,
+            "memoryKB": 230480,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          },
+          {
+            "totalMs": 3346.9800000000396,
+            "postMs": 2.9100409999955446,
+            "pollMs": 3344.069959000044,
+            "polls": 33,
+            "executionTimeMs": 0.946375,
+            "memoryKB": 230096,
+            "passed": true,
+            "timeout": false,
+            "error": null,
+            "valid": true
+          }
+        ],
+        "validCount": 2,
+        "totalCount": 3,
+        "medianMs": 3391.1731460000155,
+        "p95Ms": null,
+        "minMs": 3346.9800000000396,
+        "maxMs": 3435.3662919999915,
+        "medianPolls": 33,
+        "errors": 1,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      },
+      "submit": {
+        "samples": [
+          {
+            "totalMs": 3656.44191600004,
+            "polls": 36,
+            "allAccepted": true,
+            "totalTc": 30,
+            "passedTc": 0,
+            "executionTimeMs": 1.353789,
+            "memoryKB": 233424,
+            "valid": true
+          },
+          {
+            "totalMs": 3855.3176669999957,
+            "polls": 38,
+            "allAccepted": true,
+            "totalTc": 30,
+            "passedTc": 0,
+            "executionTimeMs": 1.349875,
+            "memoryKB": 232112,
+            "valid": true
+          },
+          {
+            "totalMs": 3767.619583999971,
+            "polls": 37,
+            "allAccepted": true,
+            "totalTc": 30,
+            "passedTc": 0,
+            "executionTimeMs": 1.188629,
+            "memoryKB": 232272,
+            "valid": true
+          }
+        ],
+        "validCount": 3,
+        "totalCount": 3,
+        "medianMs": 3767.619583999971,
+        "p95Ms": null,
+        "minMs": 3656.44191600004,
+        "maxMs": 3855.3176669999957,
+        "medianPolls": 37,
+        "errors": 0,
+        "timeouts": 0,
+        "invalidVerdicts": 0
+      }
+    }
+  ]
+}

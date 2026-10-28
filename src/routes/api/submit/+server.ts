@@ -14,6 +14,7 @@ import { GoRunner } from '$lib/runners/GoRunner';
 import { PhpRunner } from '$lib/runners/PhpRunner';
 import { TypeScriptRunner } from '$lib/runners/TypeScriptRunner';
 import { TIMEOUT_MESSAGE, annotateCrashSignal, type JobStatus } from '$lib/utils/util';
+import { PerfTimer } from '$lib/server/perfTimer';
 
 type SubmitResult = {
     accepted?: boolean;
@@ -50,9 +51,11 @@ function isJavaLanguage(language: string): boolean {
 }
 
 async function executeSubmit(problemId: string, language: string, code: string, startTcNo: number, job: SubmitJob) {
+    const perf = new PerfTimer('submit', problemId, language, job.id);
     let timeoutTestcase: any = null;
     let batchTestCases: any[] = [];
     try {
+        perf.stage('loadMetadata');
         job.status = 'running';
         await ensureUserContentSeeded();
 
@@ -140,13 +143,16 @@ async function executeSubmit(problemId: string, language: string, code: string, 
         if (!programRunner) {
             throw new Error(`${language} is not supported yet`);
         }
+        perf.stage('compile');
         await programRunner.compile();
+        perf.stage('execute');
         const rawResults = await programRunner.run();
         if (programRunner.lastRunMetrics) {
             job.executionTimeMs = programRunner.lastRunMetrics.executionTimeMs;
             job.memoryKB = programRunner.lastRunMetrics.memoryKB;
         }
 
+        perf.stage('judge');
         const hasMergedMarker = isJavaLanguage(language) &&
             rawResults.length > 0 &&
             rawResults[0].includes(':::VERDICT:::');
@@ -258,11 +264,13 @@ async function executeSubmit(problemId: string, language: string, code: string, 
         const accepted = markerResponses.every((m: any) => m.isCorrect);
         job.result = { accepted, totalTc, passedTc: (job.result?.passedTc ? job.result?.passedTc : 0) + testCases.length, results: finalResponse };
         job.status = 'completed';
+        perf.end();
     } catch (error: any) {
         if (error && error.toString() && error.toString().indexOf(TIMEOUT_MESSAGE) !== -1) {
             job.timeout = true;
             job.timeoutTestCase = timeoutTestcase;
             job.status = 'completed';
+            perf.end('timeout');
         } else {
             // A crash (e.g. SIGSEGV) kills the whole batch container, but the
             // tests before the crash already printed their `---`-delimited
@@ -280,6 +288,7 @@ async function executeSubmit(problemId: string, language: string, code: string, 
             job.errorTestCase = batchTestCases[crashIndex];
             job.errorTestIndex = startTcNo + crashIndex;
             job.status = 'error';
+            perf.end('error');
         }
     }
 }
