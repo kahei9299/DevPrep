@@ -8,6 +8,9 @@ import { ensureImageAvailable, LINUX_TIMEOUT_CODE, TIMEOUT_MESSAGE, type Param }
 import ContainerPool from './runners/ContainerPool';
 import { cojudgeContainerLabels } from './server/containerSession';
 import { cojudgeHostConfig } from './server/containerConfig';
+import { PerfTimer } from './server/perfTimer';
+import { computeMarkerHash, getCachedClasses, cacheClassFiles, packCachedWithData, evictCacheEntry } from './server/markerCache';
+import { generateDataDrivenHarness, generateMarkerDataFile, computeHarnessSignature } from './server/markerHarness';
 
 const docker = new Dockerode();
 
@@ -18,13 +21,6 @@ export type MarkerResponse = {
 };
 
 export async function getMarkerResponses(problemId: string, functionName: string, params: Param[], testCases: any, outputs: string[], outputType: string): Promise<MarkerResponse[]> {
-    // Interactive problems (e.g. guess-word): outputs[i] is a harness-generated
-    // transcript "solved:N"/"failed:N". Marker.isCorrect(wordlist, secret, transcript)
-    // validates it; the correct answer shown is the secret itself.
-    // Return-value judge kinds (guess-number, first-bad, array-reader,
-    // mountain-array, celebrity) behave like standard problems: outputs[i] is
-    // the integer answer (or "over-budget:N", which fails to parse as int and
-    // is therefore rejected), graded by Marker.isCorrect.
     let interactive: any = null;
     try {
         const metaPath = await resolveProblemFile(problemId, 'metadata.json');
@@ -32,49 +28,26 @@ export async function getMarkerResponses(problemId: string, functionName: string
         const meta = JSON.parse(metaContent);
         if (meta?.interactive?.secretField && isTranscriptKind(String(meta.interactive.kind ?? 'guess-word'))) interactive = meta.interactive;
     } catch {}
-    const testCalls = testCases
-    .map((tc: any, i: number) => {
-        let fullParam = javaGetFullParam(params, tc);
-        // NOTE: no .trim() here - runner outputs are already exact (endpoint
-        // parsing preserves significant whitespace); trimming would corrupt
-        // whitespace-only values.
-        const out = formatAndSplitJavaString(outputs[i] ?? '');
-        const toFunc = `to_${outputType}`;
-        const displayFunc = getDisplayFuncName(outputType);
-        if (interactive) {
-            const secretVal = String(tc[interactive.secretField] ?? '');
-            const secretLit = formatAndSplitJavaString(secretVal);
-            return `try {
-            System.out.println(marker.isCorrect(${fullParam}, ${toFunc}(${out})));
-        } catch (Exception __e) {
-            System.out.println("false");
-        }
-        System.out.println(${displayFunc}(${secretLit}));
-        System.out.println("---");`;
-        }
-        return `try {
-            System.out.println(marker.isCorrect(${fullParam}, ${toFunc}(${out})));
-        } catch (Exception __e) {
-            System.out.println("false");
-        }
-        System.out.println(${displayFunc}(marker.${functionName}(${fullParam})));
-        System.out.println("---");`;
-    })
-    .join('\n        ');
 
-    const runner = `
-    import java.util.*;
-    public class Main {
-        ${javaHelperMethods}
-        public static void main(String[] args) throws Exception {
-            Marker marker = new Marker();
-            ${testCalls}
-        }
-    }`;
+    const perf = new PerfTimer('run', problemId, 'marker', `marker-${problemId}`);
+    perf.stage('resolveMarker');
     const markerPath = await resolveProblemFile(problemId, 'Marker.java');
     const markerCode = await fs.readFile(markerPath, 'utf-8');
+
+    const harnessSignature = computeHarnessSignature(functionName, params, outputType, interactive);
+    const cacheHash = computeMarkerHash(markerCode, [
+        javaListNodeClass, javaTreeNodeClass, javaGraphNodeClass, javaHelperMethods
+    ], harnessSignature);
+
+    perf.stage('cacheCheck');
+    const cached = await getCachedClasses(cacheHash);
+
+    // Generate runtime data file (test inputs + user outputs as text)
+    const dataFile = generateMarkerDataFile(params, testCases, outputs, interactive);
+
     let container: Dockerode.Container | null = null;
     try {
+        perf.stage('acquireContainer');
         container = await ContainerPool.acquire(javaImage);
         if (!container) {
             await ensureImageAvailable(docker, javaImage);
@@ -89,40 +62,56 @@ export async function getMarkerResponses(problemId: string, functionName: string
             await container.start();
         }
 
-        const pack = tar.pack();
-        pack.entry({ name: 'ListNode.java' }, Buffer.from(javaListNodeClass));
-        pack.entry({ name: 'TreeNode.java' }, Buffer.from(javaTreeNodeClass));
-        pack.entry({ name: 'GraphNode.java' }, Buffer.from(javaGraphNodeClass));
-        pack.entry({ name: 'Marker.java' }, Buffer.from(markerCode));
-        pack.entry({ name: 'Main.java' }, Buffer.from(runner));
-        pack.finalize();
-        await container.putArchive(pack as any, { path: '/app' });
+        if (cached) {
+            // Cache hit: upload .class files + data.txt, skip javac entirely
+            perf.stage('uploadCached');
+            const pack = packCachedWithData(cached, dataFile);
+            await container.putArchive(pack as any, { path: '/app' });
+        } else {
+            // Cache miss: compile everything, then cache .class files
+            perf.stage('uploadSources');
+            const mainJava = generateDataDrivenHarness(functionName, params, outputType, interactive);
+            const pack = tar.pack();
+            pack.entry({ name: 'ListNode.java' }, Buffer.from(javaListNodeClass));
+            pack.entry({ name: 'TreeNode.java' }, Buffer.from(javaTreeNodeClass));
+            pack.entry({ name: 'GraphNode.java' }, Buffer.from(javaGraphNodeClass));
+            pack.entry({ name: 'Marker.java' }, Buffer.from(markerCode));
+            pack.entry({ name: 'Main.java' }, Buffer.from(mainJava));
+            pack.entry({ name: 'data.txt' }, Buffer.from(dataFile));
+            pack.finalize();
+            await container.putArchive(pack as any, { path: '/app' });
 
-        const compileExec = await container.exec({
-            Cmd: ['/bin/sh', '-c', 'javac *.java'],
-            AttachStdout: true,
-            AttachStderr: true
-        });
-        const cstream: any = await compileExec.start({ hijack: true, stdin: false });
-        let cstdout = '';
-        let cstderr = '';
-        await new Promise((resolve, reject) => {
-            (container as any).modem.demuxStream(
-                cstream,
-                { write: (chunk: any) => (cstdout += chunk.toString()) },
-                { write: (chunk: any) => (cstderr += chunk.toString()) }
-            );
-            cstream.on('end', resolve);
-            cstream.on('error', reject);
-        });
-        const cinspect = await compileExec.inspect();
-        if (cinspect.ExitCode === LINUX_TIMEOUT_CODE) {
-            throw new Error(TIMEOUT_MESSAGE);
-        }
-        if (cinspect.ExitCode !== 0) {
-            throw new Error(cstderr || cstdout);
+            perf.stage('compileAll');
+            const compileExec = await container.exec({
+                Cmd: ['/bin/sh', '-c', 'javac *.java'],
+                AttachStdout: true,
+                AttachStderr: true
+            });
+            const cstream: any = await compileExec.start({ hijack: true, stdin: false });
+            let cstdout = '';
+            let cstderr = '';
+            await new Promise((resolve, reject) => {
+                (container as any).modem.demuxStream(
+                    cstream,
+                    { write: (chunk: any) => (cstdout += chunk.toString()) },
+                    { write: (chunk: any) => (cstderr += chunk.toString()) }
+                );
+                cstream.on('end', resolve);
+                cstream.on('error', reject);
+            });
+            const cinspect = await compileExec.inspect();
+            if (cinspect.ExitCode === LINUX_TIMEOUT_CODE) {
+                throw new Error(TIMEOUT_MESSAGE);
+            }
+            if (cinspect.ExitCode !== 0) {
+                throw new Error(cstderr || cstdout);
+            }
+
+            perf.stage('cacheStore');
+            await cacheClassFiles(cacheHash, container);
         }
 
+        perf.stage('jvmRun');
         const runExec = await container.exec({
             Cmd: ['timeout', '15', '/bin/sh', '-c', 'java Main'],
             AttachStdout: true,
@@ -145,15 +134,25 @@ export async function getMarkerResponses(problemId: string, functionName: string
             throw new Error(TIMEOUT_MESSAGE);
         }
         if (rinspect.ExitCode !== 0) {
+            // If cache hit produced a runtime error, evict and retry uncached
+            if (cached) {
+                evictCacheEntry(cacheHash);
+                perf.stage('fallbackUncached');
+                return getMarkerResponsesLegacy(
+                    problemId, functionName, params, testCases, outputs, outputType,
+                    interactive, container, perf
+                );
+            }
             throw new Error(rstderr || rstdout);
         }
 
-        const combinedStderr = (cstderr || '') + (rstderr || '');
-        if (combinedStderr) {
-            throw new Error(combinedStderr);
+        if (rstderr) {
+            throw new Error(rstderr);
         }
 
+        perf.stage('parseResults');
         const results = rstdout.split('---\n').filter(res => res.trim() !== '');
+        perf.end();
         return results.map((x, i) => {
             const arr = x.split('\n');
             return {
@@ -162,9 +161,109 @@ export async function getMarkerResponses(problemId: string, functionName: string
                 correctAnswer: arr[1]
             } as MarkerResponse;
         });
+    } catch (e) {
+        perf.end('error');
+        throw e;
     } finally {
         if (container) {
             await ContainerPool.release(javaImage, container);
         }
     }
+}
+
+/**
+ * Legacy path: original inline-data harness. Used as fallback when the
+ * data-driven cache produces a runtime error, to determine whether the
+ * issue is in the cache or the user's output.
+ */
+async function getMarkerResponsesLegacy(
+    problemId: string, functionName: string, params: Param[],
+    testCases: any, outputs: string[], outputType: string,
+    interactive: any, container: Dockerode.Container, perf: PerfTimer
+): Promise<MarkerResponse[]> {
+    const testCalls = testCases.map((tc: any, i: number) => {
+        let fullParam = javaGetFullParam(params, tc);
+        const out = formatAndSplitJavaString(outputs[i] ?? '');
+        const toFunc = `to_${outputType}`;
+        const displayFunc = getDisplayFuncName(outputType);
+        if (interactive) {
+            const secretVal = String(tc[interactive.secretField] ?? '');
+            const secretLit = formatAndSplitJavaString(secretVal);
+            return `try {
+            System.out.println(marker.isCorrect(${fullParam}, ${toFunc}(${out})));
+        } catch (Exception __e) { System.out.println("false"); }
+        System.out.println(${displayFunc}(${secretLit}));
+        System.out.println("---");`;
+        }
+        return `try {
+            System.out.println(marker.isCorrect(${fullParam}, ${toFunc}(${out})));
+        } catch (Exception __e) { System.out.println("false"); }
+        System.out.println(${displayFunc}(marker.${functionName}(${fullParam})));
+        System.out.println("---");`;
+    }).join('\n        ');
+
+    const runner = `
+    import java.util.*;
+    public class Main {
+        ${javaHelperMethods}
+        public static void main(String[] args) throws Exception {
+            Marker marker = new Marker();
+            ${testCalls}
+        }
+    }`;
+
+    const markerPath = await resolveProblemFile(problemId, 'Marker.java');
+    const markerCode = await fs.readFile(markerPath, 'utf-8');
+
+    const pack = tar.pack();
+    pack.entry({ name: 'ListNode.java' }, Buffer.from(javaListNodeClass));
+    pack.entry({ name: 'TreeNode.java' }, Buffer.from(javaTreeNodeClass));
+    pack.entry({ name: 'GraphNode.java' }, Buffer.from(javaGraphNodeClass));
+    pack.entry({ name: 'Marker.java' }, Buffer.from(markerCode));
+    pack.entry({ name: 'Main.java' }, Buffer.from(runner));
+    pack.finalize();
+    await container.putArchive(pack as any, { path: '/app' });
+
+    const compileExec = await container.exec({
+        Cmd: ['/bin/sh', '-c', 'javac *.java'],
+        AttachStdout: true, AttachStderr: true
+    });
+    const cstream: any = await compileExec.start({ hijack: true, stdin: false });
+    let cstdout = '', cstderr = '';
+    await new Promise((resolve, reject) => {
+        (container as any).modem.demuxStream(cstream,
+            { write: (c: any) => (cstdout += c.toString()) },
+            { write: (c: any) => (cstderr += c.toString()) });
+        cstream.on('end', resolve);
+        cstream.on('error', reject);
+    });
+    const cinspect = await compileExec.inspect();
+    if (cinspect.ExitCode === LINUX_TIMEOUT_CODE) throw new Error(TIMEOUT_MESSAGE);
+    if (cinspect.ExitCode !== 0) throw new Error(cstderr || cstdout);
+
+    perf.stage('jvmRun');
+    const runExec = await container.exec({
+        Cmd: ['timeout', '15', '/bin/sh', '-c', 'java Main'],
+        AttachStdout: true, AttachStderr: true
+    });
+    const rstream: any = await runExec.start({ hijack: true, stdin: false });
+    let rstdout = '', rstderr = '';
+    await new Promise((resolve, reject) => {
+        (container as any).modem.demuxStream(rstream,
+            { write: (c: any) => (rstdout += c.toString()) },
+            { write: (c: any) => (rstderr += c.toString()) });
+        rstream.on('end', resolve);
+        rstream.on('error', reject);
+    });
+    const rinspect = await runExec.inspect();
+    if (rinspect.ExitCode === LINUX_TIMEOUT_CODE) throw new Error(TIMEOUT_MESSAGE);
+    if (rinspect.ExitCode !== 0) throw new Error(rstderr || rstdout);
+    if (rstderr) throw new Error(rstderr);
+
+    const results = rstdout.split('---\n').filter(res => res.trim() !== '');
+    perf.end();
+    return results.map((x, i) => {
+        const arr = x.split('\n');
+        return { actualAnswer: outputs[i], isCorrect: arr[0] === 'true', correctAnswer: arr[1] } as MarkerResponse;
+    });
 }
