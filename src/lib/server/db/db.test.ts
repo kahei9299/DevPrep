@@ -326,6 +326,36 @@ describe('backup and restore integration', () => {
     expect(row.content).toBe('here')
   })
 
+  it('aborts restore when checkpoint finds busy pages', () => {
+    const db = getDb()
+    db.prepare("INSERT INTO notes (slug, content) VALUES ('important', 'must survive')").run()
+    const dbPath = getDbPath()
+
+    // Create a valid backup to restore from
+    const backupPath = path.join(dir, 'backup.sqlite')
+    const bdb = initDb(backupPath)
+    bdb.prepare("INSERT INTO notes (slug, content) VALUES ('replacement', 'new')").run()
+    bdb.close()
+
+    // Open a second connection with an uncommitted write transaction.
+    // closeDb() closes the singleton, but this writer holds a lock
+    // that makes TRUNCATE checkpoint report busy pages.
+    const blocker = new Database(dbPath)
+    blocker.exec('BEGIN IMMEDIATE')
+    blocker.prepare("INSERT INTO notes (slug, content) VALUES ('block', 'x')").run()
+
+    expect(() => restoreFromBackup(backupPath)).toThrow(/checkpoint|busy/i)
+
+    blocker.exec('ROLLBACK')
+    blocker.close()
+
+    // Original database and its committed data must be intact
+    const recovered = getDb()
+    const row = recovered.prepare("SELECT content FROM notes WHERE slug = 'important'").get() as any
+    expect(row.content).toBe('must survive')
+    expect(fs.existsSync(dbPath)).toBe(true)
+  })
+
   it('backup includes data committed in WAL mode', async () => {
     const db = getDb()
     // WAL mode is enabled by initDb — write data that may reside in WAL

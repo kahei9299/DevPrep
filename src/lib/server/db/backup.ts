@@ -113,14 +113,26 @@ export function restoreFromBackup(backupPath: string): void {
   // Close active connection (flushes WAL on close)
   closeDb()
 
-  // Checkpoint any remaining WAL data into the main DB file before we
-  // rename it away, so .previous is self-contained.
-  try {
-    const tmp = new Database(dbPath)
-    tmp.pragma('wal_checkpoint(TRUNCATE)')
-    tmp.close()
-  } catch {
-    // DB may not exist yet on first run — that's fine
+  // Checkpoint WAL into the main DB file so .previous is self-contained.
+  // No other process may have the database open during restore.
+  if (fs.existsSync(dbPath)) {
+    let tmp: Database.Database | null = null
+    try {
+      tmp = new Database(dbPath)
+      const result = tmp.pragma('wal_checkpoint(TRUNCATE)') as { busy: number; checkpointed: number; log: number }[]
+      if (result[0]?.busy !== 0) {
+        throw new Error(
+          'WAL checkpoint reported busy pages — another process may have the database open. ' +
+          'Stop all other processes accessing the database before restoring.'
+        )
+      }
+    } catch (e) {
+      // Clean up staging file before aborting
+      try { fs.unlinkSync(stagePath) } catch {}
+      throw new Error(`Restore aborted: WAL checkpoint failed: ${e instanceof Error ? e.message : e}`)
+    } finally {
+      tmp?.close()
+    }
   }
 
   try {
@@ -128,7 +140,8 @@ export function restoreFromBackup(backupPath: string): void {
     if (fs.existsSync(dbPath)) {
       fs.renameSync(dbPath, previousPath)
     }
-    // Clean up any leftover sidecars (should be gone after checkpoint, belt-and-suspenders)
+    // Sidecars should be empty after TRUNCATE checkpoint; remove them
+    // so .previous stands alone after the rename above.
     try { fs.unlinkSync(walPath) } catch {}
     try { fs.unlinkSync(shmPath) } catch {}
 
