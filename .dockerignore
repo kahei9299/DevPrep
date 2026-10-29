@@ -27,6 +27,9 @@ Dockerfile*
 .idea
 .vscode
 
+# User data (SQLite database)
+data
+
 # Misc
 coverage
 
