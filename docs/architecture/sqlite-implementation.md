@@ -28,7 +28,7 @@ The `data/` directory is gitignored. It is auto-created on first access. Never s
 |---|---|
 | API | Synchronous (no async overhead in SvelteKit server routes) |
 | Read performance | Sub-millisecond |
-| Node.js compatibility | Verified with Node 26.0.0 |
+| Node.js compatibility | Requires Node >= 22. Verified with Node 22.23.4 (Docker) and Node 26.0.0 (dev). |
 | macOS ARM64 | Prebuilt binary available |
 | Linux x86_64 (glibc) | Prebuilt binary available |
 | Linux ARM64/x86_64 (musl/Alpine) | Build from source — `python3`, `make`, `g++` added to Dockerfile deps stage |
@@ -78,8 +78,8 @@ Entry point: `src/lib/server/db/index.ts`.
 ## Backup and Restore
 
 - **Backup:** `better-sqlite3`'s `db.backup(destPath)` produces a WAL-consistent snapshot. All committed data is included regardless of WAL state.
-- **Restore:** Validate backup → close live DB → save `.previous` copy → copy backup to live path → remove stale WAL/SHM files → reopen and verify.
-- **Validation:** Integrity check, minimum size, DevPrep schema version presence.
+- **Restore:** Offline maintenance operation. Validate backup → close live DB → checkpoint WAL → rename current to `.previous` → stage and rename backup to live path → reopen and verify. On failure, `.previous` is renamed back and reopened.
+- **Validation:** Integrity check, minimum size, schema version (rejects `0` and versions newer than supported), required tables (all 8).
 
 See [sqlite-backup-restore.md](../maintenance/sqlite-backup-restore.md) for operational procedures.
 

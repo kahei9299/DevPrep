@@ -9,7 +9,8 @@
 import Database from 'better-sqlite3'
 import fs from 'node:fs'
 import path from 'node:path'
-import { getDb, getDbPath, closeDb, initDb, _resetDb } from './index'
+import { getDb, getDbPath, closeDb, initDb, _setDb, SCHEMA_VERSION } from './index'
+import { REQUIRED_TABLES } from './schema'
 
 const BACKUP_SUFFIX = '.backup'
 const PREVIOUS_SUFFIX = '.previous'
@@ -24,13 +25,10 @@ export async function createBackup(destPath?: string): Promise<string> {
   const dir = path.dirname(target)
   fs.mkdirSync(dir, { recursive: true })
 
-  // Write to a temp file first, then rename for atomicity
   const tmpPath = target + '.tmp.' + Date.now()
   try {
     await db.backup(tmpPath)
-    // Validate the backup
     validateBackup(tmpPath)
-    // Atomic move
     fs.renameSync(tmpPath, target)
     return target
   } catch (e) {
@@ -40,7 +38,8 @@ export async function createBackup(destPath?: string): Promise<string> {
 }
 
 /**
- * Validate that a SQLite file is a readable, intact database.
+ * Validate that a SQLite file is a readable, intact DevPrep database
+ * compatible with this application version.
  */
 export function validateBackup(backupPath: string): void {
   if (!fs.existsSync(backupPath)) {
@@ -50,6 +49,7 @@ export function validateBackup(backupPath: string): void {
   if (stat.size < 100) {
     throw new Error('Backup file is too small to be a valid SQLite database')
   }
+
   let testDb: Database.Database | null = null
   try {
     testDb = new Database(backupPath, { readonly: true })
@@ -57,9 +57,25 @@ export function validateBackup(backupPath: string): void {
     if (result !== 'ok') {
       throw new Error(`Backup integrity check failed: ${result}`)
     }
+
     const version = testDb.pragma('user_version', { simple: true }) as number
     if (version < 1) {
       throw new Error('Backup does not contain a DevPrep schema (user_version = 0)')
+    }
+    if (version > SCHEMA_VERSION) {
+      throw new Error(
+        `Backup schema version ${version} is newer than supported version ${SCHEMA_VERSION}. ` +
+        `Upgrade DevPrep before restoring this backup.`
+      )
+    }
+
+    const tables = testDb
+      .prepare("SELECT name FROM sqlite_master WHERE type='table'")
+      .all() as { name: string }[]
+    const tableNames = new Set(tables.map(t => t.name))
+    const missing = REQUIRED_TABLES.filter(t => !tableNames.has(t))
+    if (missing.length > 0) {
+      throw new Error(`Backup is missing required tables: ${missing.join(', ')}`)
     }
   } finally {
     testDb?.close()
@@ -69,56 +85,82 @@ export function validateBackup(backupPath: string): void {
 /**
  * Restore the database from a backup file.
  *
- * 1. Validates the backup.
- * 2. Closes the current database connection.
- * 3. Renames the current DB to .previous (recovery copy).
- * 4. Copies the backup to the live DB path.
- * 5. Reopens the database.
- * 6. On failure, attempts to restore the .previous copy.
+ * This is an offline maintenance operation. The caller must ensure no
+ * concurrent database operations are in progress.
+ *
+ * Lifecycle:
+ * 1. Validate the backup (integrity, version, tables).
+ * 2. Close the current database connection.
+ * 3. Checkpoint WAL into the main file, then remove sidecars.
+ * 4. Rename current DB to .previous (atomic, same filesystem).
+ * 5. Rename (or copy) backup to the live path.
+ * 6. Reopen and verify.
+ * 7. On failure, rename .previous back and reopen.
  */
 export function restoreFromBackup(backupPath: string): void {
   validateBackup(backupPath)
 
   const dbPath = getDbPath()
   const previousPath = dbPath + PREVIOUS_SUFFIX
-
-  // Close active connection
-  closeDb()
-  _resetDb()
-
-  // Clean up WAL/SHM sidecar files
   const walPath = dbPath + '-wal'
   const shmPath = dbPath + '-shm'
+  const stagePath = dbPath + '.staging'
+
+  // Stage: copy backup to a file on the same filesystem as the live DB,
+  // so the final rename is atomic.
+  fs.copyFileSync(backupPath, stagePath)
+
+  // Close active connection (flushes WAL on close)
+  closeDb()
+
+  // Checkpoint any remaining WAL data into the main DB file before we
+  // rename it away, so .previous is self-contained.
+  try {
+    const tmp = new Database(dbPath)
+    tmp.pragma('wal_checkpoint(TRUNCATE)')
+    tmp.close()
+  } catch {
+    // DB may not exist yet on first run — that's fine
+  }
 
   try {
-    // Save current database as recovery copy
+    // Preserve current DB as recovery copy (atomic rename, same fs)
     if (fs.existsSync(dbPath)) {
-      fs.copyFileSync(dbPath, previousPath)
+      fs.renameSync(dbPath, previousPath)
     }
-    // Remove sidecar files from the old DB
+    // Clean up any leftover sidecars (should be gone after checkpoint, belt-and-suspenders)
     try { fs.unlinkSync(walPath) } catch {}
     try { fs.unlinkSync(shmPath) } catch {}
 
-    // Copy backup to live location
-    fs.copyFileSync(backupPath, dbPath)
+    // Atomic rename staged backup into live path
+    fs.renameSync(stagePath, dbPath)
 
     // Reopen and verify
     const db = initDb(dbPath)
-    db.pragma('integrity_check', { simple: true })
+    const check = db.pragma('integrity_check', { simple: true })
+    if (check !== 'ok') {
+      db.close()
+      throw new Error(`Restored database failed integrity check: ${check}`)
+    }
+    // Register as the singleton so getDb() works
+    _setDb(db)
   } catch (e) {
-    // Attempt recovery from .previous
+    // Clean up failed staging file if it's still there
+    try { fs.unlinkSync(stagePath) } catch {}
+    // Restore from .previous
     try {
       if (fs.existsSync(previousPath)) {
-        fs.copyFileSync(previousPath, dbPath)
+        // Remove whatever is at dbPath (might be partial)
+        try { fs.unlinkSync(dbPath) } catch {}
         try { fs.unlinkSync(walPath) } catch {}
         try { fs.unlinkSync(shmPath) } catch {}
+        fs.renameSync(previousPath, dbPath)
+        const recovered = initDb(dbPath)
+        _setDb(recovered)
       }
-    } catch {}
-    // Reinitialize whatever we have
-    try { initDb(dbPath) } catch {}
-    throw new Error(`Restore failed: ${e instanceof Error ? e.message : e}. Previous database recovered.`)
-  } finally {
-    // Clean up .previous on success (keep on failure for manual recovery)
-    // Actually, always keep it — the user may want to inspect it
+    } catch {
+      // Recovery also failed — .previous file still on disk for manual recovery
+    }
+    throw new Error(`Restore failed: ${e instanceof Error ? e.message : e}`)
   }
 }

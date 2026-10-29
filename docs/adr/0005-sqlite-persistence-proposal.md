@@ -127,7 +127,7 @@ The following details were confirmed during implementation:
 |---|---|---|
 | Database location | `data/devprep.sqlite` | Confirmed. Configurable via `DEVPREP_DATA_DIR`. |
 | Driver | `better-sqlite3` | Confirmed. Works with Node 26.0.0. |
-| Alpine musl compatibility | Needed verification | Build from source required — `python3`, `make`, `g++` added to Dockerfile deps stage. |
+| Alpine musl compatibility | Needed verification | Build from source required — `python3`, `make`, `g++` added to Dockerfile deps stage. Dockerfile updated from `node:20-alpine` to `node:22-alpine` (`better-sqlite3@13` requires Node >= 22). |
 | Docker volume | Not specified | `cojudge-data` named volume mapped to `/usr/src/app/data` in `docker.sh`. |
 | Schema | 9 tables proposed | 8 tables implemented (v1). `problems` table dropped — slugs used directly as foreign-key-free identifiers since problem content lives on the filesystem. |
 | Migration mechanism | `PRAGMA user_version` | Confirmed. Transactional, idempotent. Rejects newer schema versions. |

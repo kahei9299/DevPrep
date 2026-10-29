@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
 import Database from 'better-sqlite3'
-import { initDb, closeDb, _resetDb, getDataDir } from './index'
+import { initDb, closeDb, _resetDb, _setDb, getDb, getDbPath, SCHEMA_VERSION } from './index'
 import { createBackup, validateBackup, restoreFromBackup } from './backup'
 
 function tmpDir() {
@@ -25,7 +25,6 @@ describe('database initialization', () => {
     expect(fs.existsSync(dbPath)).toBe(true)
     const version = db.pragma('user_version', { simple: true })
     expect(version).toBe(1)
-    // Check tables exist
     const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").all() as { name: string }[]
     const names = tables.map(t => t.name)
     expect(names).toContain('user_progress')
@@ -83,11 +82,22 @@ describe('database initialization', () => {
     expect(() => initDb(dbPath)).toThrow('newer than supported')
   })
 
+  it('closes the connection when migration fails', () => {
+    const dbPath = path.join(dir, 'test.sqlite')
+    const db = new Database(dbPath)
+    db.pragma('user_version = 999')
+    db.close()
+    // initDb should throw but not leak a connection
+    expect(() => initDb(dbPath)).toThrow()
+    // The file should still be openable (no SQLITE_BUSY from leaked handle)
+    const db2 = new Database(dbPath)
+    db2.close()
+  })
+
   it('schema creation is idempotent', () => {
     const dbPath = path.join(dir, 'test.sqlite')
     const db1 = initDb(dbPath)
     db1.close()
-    // Re-init same file — should not error
     const db2 = initDb(dbPath)
     expect(db2.pragma('user_version', { simple: true })).toBe(1)
     db2.close()
@@ -131,41 +141,23 @@ describe('schema operations', () => {
       })
       tx()
     } catch {}
-    // 'a' should exist, 'b' should not
     expect(db.prepare("SELECT count(*) as c FROM notes").get()).toEqual({ c: 1 })
   })
 })
 
-describe('backup and restore', () => {
+describe('backup validation', () => {
   let dir: string
   beforeEach(() => { dir = tmpDir() })
   afterEach(() => { closeDb(); _resetDb(); cleanup(dir) })
 
-  it('creates a consistent backup', async () => {
-    const dbPath = path.join(dir, 'live.sqlite')
-    const db = initDb(dbPath)
-    db.prepare("INSERT INTO notes (slug, content) VALUES ('test', 'hello')").run()
-
-    const backupPath = path.join(dir, 'backup.sqlite')
-    // Use db.backup directly since getDb() returns the singleton
-    await db.backup(backupPath)
-
-    // Verify backup contents
-    const bdb = new Database(backupPath, { readonly: true })
-    const row = bdb.prepare("SELECT content FROM notes WHERE slug = 'test'").get() as any
-    expect(row.content).toBe('hello')
-    bdb.close()
-    db.close()
-  })
-
-  it('validates a valid backup', () => {
+  it('accepts a valid DevPrep database', () => {
     const dbPath = path.join(dir, 'valid.sqlite')
     const db = initDb(dbPath)
     db.close()
     expect(() => validateBackup(dbPath)).not.toThrow()
   })
 
-  it('rejects a nonexistent backup', () => {
+  it('rejects a nonexistent file', () => {
     expect(() => validateBackup(path.join(dir, 'nope.sqlite'))).toThrow('does not exist')
   })
 
@@ -189,17 +181,65 @@ describe('backup and restore', () => {
     expect(() => validateBackup(p)).toThrow('user_version = 0')
   })
 
-  it('restores from a valid backup', () => {
-    // Create original with data
-    const dbPath = path.join(dir, 'live.sqlite')
-    process.env.DEVPREP_DATA_DIR = dir
-    // Rename so getDbPath returns our test path
-    const db = initDb(path.join(dir, 'devprep.sqlite'))
-    db.prepare("INSERT INTO notes (slug, content) VALUES ('original', 'before')").run()
+  it('rejects a database with a newer schema version', () => {
+    const p = path.join(dir, 'future.sqlite')
+    const db = initDb(p)
     db.close()
-    _resetDb()
+    // Bump version beyond what we support
+    const db2 = new Database(p)
+    db2.pragma(`user_version = ${SCHEMA_VERSION + 1}`)
+    db2.close()
+    expect(() => validateBackup(p)).toThrow('newer than supported')
+  })
 
-    // Create a backup with different data
+  it('rejects a database missing required tables', () => {
+    const p = path.join(dir, 'partial.sqlite')
+    const db = new Database(p)
+    db.pragma('user_version = 1')
+    db.exec('CREATE TABLE user_progress (slug TEXT PRIMARY KEY)')
+    db.close()
+    expect(() => validateBackup(p)).toThrow('missing required tables')
+  })
+})
+
+describe('backup and restore integration', () => {
+  let dir: string
+  const origEnv = process.env.DEVPREP_DATA_DIR
+
+  beforeEach(() => {
+    dir = tmpDir()
+    process.env.DEVPREP_DATA_DIR = dir
+  })
+  afterEach(() => {
+    closeDb()
+    _resetDb()
+    process.env.DEVPREP_DATA_DIR = origEnv
+    cleanup(dir)
+  })
+
+  it('createBackup produces a valid backup with WAL data', async () => {
+    const db = getDb()
+    db.prepare("INSERT INTO notes (slug, content) VALUES ('test', 'hello')").run()
+
+    const backupPath = path.join(dir, 'backup.sqlite')
+    const result = await createBackup(backupPath)
+    expect(result).toBe(backupPath)
+
+    // Verify backup is self-contained (readable without WAL)
+    const bdb = new Database(backupPath, { readonly: true })
+    const row = bdb.prepare("SELECT content FROM notes WHERE slug = 'test'").get() as any
+    expect(row.content).toBe('hello')
+    // Backup is readable and passes validation
+    expect(() => validateBackup(backupPath)).not.toThrow()
+    bdb.close()
+  })
+
+  it('restores successfully and getDb() returns the restored database', () => {
+    // Create original with data
+    const db = getDb()
+    db.prepare("INSERT INTO notes (slug, content) VALUES ('original', 'before')").run()
+
+    // Create a separate backup database with different data
     const backupPath = path.join(dir, 'backup.sqlite')
     const bdb = initDb(backupPath)
     bdb.prepare("INSERT INTO notes (slug, content) VALUES ('restored', 'after')").run()
@@ -208,24 +248,17 @@ describe('backup and restore', () => {
     // Restore
     restoreFromBackup(backupPath)
 
-    // Verify restored data
-    const restored = initDb(path.join(dir, 'devprep.sqlite'))
+    // getDb() must return the restored database
+    const restored = getDb()
     const row = restored.prepare("SELECT content FROM notes WHERE slug = 'restored'").get() as any
     expect(row.content).toBe('after')
-    // Original data should be gone from the live DB
     const orig = restored.prepare("SELECT count(*) as c FROM notes WHERE slug = 'original'").get() as any
     expect(orig.c).toBe(0)
-    restored.close()
-
-    delete process.env.DEVPREP_DATA_DIR
   })
 
-  it('keeps .previous copy after restore', () => {
-    process.env.DEVPREP_DATA_DIR = dir
-    const db = initDb(path.join(dir, 'devprep.sqlite'))
+  it('preserves .previous copy after successful restore', () => {
+    const db = getDb()
     db.prepare("INSERT INTO notes (slug, content) VALUES ('old', 'data')").run()
-    db.close()
-    _resetDb()
 
     const backupPath = path.join(dir, 'backup.sqlite')
     const bdb = initDb(backupPath)
@@ -233,8 +266,80 @@ describe('backup and restore', () => {
 
     restoreFromBackup(backupPath)
 
-    expect(fs.existsSync(path.join(dir, 'devprep.sqlite.previous'))).toBe(true)
+    const prevPath = path.join(dir, 'devprep.sqlite.previous')
+    expect(fs.existsSync(prevPath)).toBe(true)
 
-    delete process.env.DEVPREP_DATA_DIR
+    // .previous should contain the original data
+    const prevDb = new Database(prevPath, { readonly: true })
+    const row = prevDb.prepare("SELECT content FROM notes WHERE slug = 'old'").get() as any
+    expect(row.content).toBe('data')
+    prevDb.close()
+  })
+
+  it('preserves original database when restore fails (corrupt backup)', () => {
+    const db = getDb()
+    db.prepare("INSERT INTO notes (slug, content) VALUES ('precious', 'keep me')").run()
+
+    const corruptPath = path.join(dir, 'corrupt.sqlite')
+    fs.writeFileSync(corruptPath, Buffer.alloc(200, 0x42))
+
+    expect(() => restoreFromBackup(corruptPath)).toThrow()
+
+    // Original data must survive — reopen via getDb()
+    const recovered = getDb()
+    const row = recovered.prepare("SELECT content FROM notes WHERE slug = 'precious'").get() as any
+    expect(row.content).toBe('keep me')
+  })
+
+  it('preserves original database when restore fails (future schema version)', () => {
+    const db = getDb()
+    db.prepare("INSERT INTO notes (slug, content) VALUES ('safe', 'still here')").run()
+
+    const futurePath = path.join(dir, 'future.sqlite')
+    const fdb = initDb(futurePath)
+    fdb.close()
+    const fdb2 = new Database(futurePath)
+    fdb2.pragma(`user_version = ${SCHEMA_VERSION + 1}`)
+    fdb2.close()
+
+    expect(() => restoreFromBackup(futurePath)).toThrow('newer than supported')
+
+    const recovered = getDb()
+    const row = recovered.prepare("SELECT content FROM notes WHERE slug = 'safe'").get() as any
+    expect(row.content).toBe('still here')
+  })
+
+  it('preserves original database when restore fails (missing tables)', () => {
+    const db = getDb()
+    db.prepare("INSERT INTO notes (slug, content) VALUES ('safe', 'here')").run()
+
+    const badPath = path.join(dir, 'bad-schema.sqlite')
+    const bdb = new Database(badPath)
+    bdb.pragma('user_version = 1')
+    bdb.exec('CREATE TABLE user_progress (slug TEXT PRIMARY KEY)')
+    bdb.close()
+
+    expect(() => restoreFromBackup(badPath)).toThrow('missing required tables')
+
+    const recovered = getDb()
+    const row = recovered.prepare("SELECT content FROM notes WHERE slug = 'safe'").get() as any
+    expect(row.content).toBe('here')
+  })
+
+  it('backup includes data committed in WAL mode', async () => {
+    const db = getDb()
+    // WAL mode is enabled by initDb — write data that may reside in WAL
+    for (let i = 0; i < 50; i++) {
+      db.prepare("INSERT INTO submissions (slug, language, code, verdict) VALUES (?, 'py', ?, 'accepted')")
+        .run(`prob-${i}`, `code-${i}`)
+    }
+
+    const backupPath = path.join(dir, 'wal-backup.sqlite')
+    await createBackup(backupPath)
+
+    const bdb = new Database(backupPath, { readonly: true })
+    const count = bdb.prepare("SELECT count(*) as c FROM submissions").get() as any
+    expect(count.c).toBe(50)
+    bdb.close()
   })
 })

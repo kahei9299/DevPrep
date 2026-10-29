@@ -13,9 +13,9 @@
 import Database from 'better-sqlite3'
 import fs from 'node:fs'
 import path from 'node:path'
-import { SCHEMA_V1 } from './schema'
+import { SCHEMA_V1, REQUIRED_TABLES } from './schema'
 
-const SCHEMA_VERSION = 1
+export const SCHEMA_VERSION = 1
 
 let _db: Database.Database | null = null
 
@@ -38,13 +38,17 @@ export function initDb(dbPath: string): Database.Database {
   fs.mkdirSync(dir, { recursive: true })
 
   const db = new Database(dbPath)
+  try {
+    db.pragma('journal_mode = WAL')
+    db.pragma('synchronous = NORMAL')
+    db.pragma('foreign_keys = ON')
+    db.pragma('busy_timeout = 5000')
 
-  db.pragma('journal_mode = WAL')
-  db.pragma('synchronous = NORMAL')
-  db.pragma('foreign_keys = ON')
-  db.pragma('busy_timeout = 5000')
-
-  applyMigrations(db)
+    applyMigrations(db)
+  } catch (e) {
+    db.close()
+    throw e
+  }
 
   return db
 }
@@ -79,6 +83,11 @@ export function closeDb(): void {
     _db.close()
     _db = null
   }
+}
+
+/** Replace the singleton with a new connection. Used by restore. */
+export function _setDb(db: Database.Database): void {
+  _db = db
 }
 
 /** Reset singleton — for tests only. */

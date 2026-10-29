@@ -1,4 +1,10 @@
 /** Schema v1 SQL — embedded as a string so it works after SvelteKit bundles server code. */
+
+export const REQUIRED_TABLES = [
+  'user_progress', 'editor_drafts', 'submissions', 'notes',
+  'reflections', 'review_schedule', 'settings', 'migration_meta',
+] as const
+
 export const SCHEMA_V1 = `
 CREATE TABLE IF NOT EXISTS user_progress (
   slug       TEXT NOT NULL,
