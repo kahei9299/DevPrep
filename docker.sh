@@ -78,6 +78,7 @@ docker run -d \
   --name "${NAME}" \
   -p "${HOST_PORT}:${APP_PORT}" \
   -v "${HOST_DOCKER_SOCKET}:/var/run/docker.sock" \
+  -v "${DATA_VOLUME:-cojudge-data}:/usr/src/app/data" \
   --restart=unless-stopped \
   "${IMAGE}" >/dev/null
 

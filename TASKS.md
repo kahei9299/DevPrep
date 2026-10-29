@@ -203,7 +203,22 @@ This is the authoritative development milestone tracker for DevPrep. Each milest
 
 **Objective:** Implement reliable persistence for solution history, notes, and progress.
 
-**Status:** Not started.
+**Status:** In progress.
+
+### M3 Phase 1 — SQLite Foundation
+
+- [x] `better-sqlite3` installed and verified (Node 26, macOS ARM64).
+- [x] Database module with lazy init, WAL mode, foreign keys, busy timeout.
+- [x] Schema v1: 8 tables for progress, drafts, submissions, notes, reflections, scheduling.
+- [x] Versioned migrations via `PRAGMA user_version` — transactional, idempotent.
+- [x] WAL-consistent backup via `db.backup()` API.
+- [x] Validated restore with `.previous` recovery copy.
+- [x] Docker volume persistence via `cojudge-data` named volume.
+- [x] 19 database tests (init, reopen, WAL, FK, migration, backup, restore, edge cases).
+- [x] ADR-0005 accepted.
+- [ ] localStorage migration (M3 Phase 2).
+- [ ] Submission recording integration (M3 Phase 2).
+- [ ] Notes and reflections API (M3 Phase 2+).
 
 **Scope:**
 - Solution history: record every submission with timestamp, code, language, and verdict.

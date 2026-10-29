@@ -1,3 +1,10 @@
+# DevPrep user data (SQLite database, backups)
+data/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+
 # Logs
 logs
 *.log

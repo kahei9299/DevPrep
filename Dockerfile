@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 RUN apk add --no-cache libc6-compat
 
@@ -6,6 +6,8 @@ WORKDIR /usr/src/app
 
 FROM base AS deps
 
+# Build tools for better-sqlite3 native addon (no prebuilt for Alpine musl)
+RUN apk add --no-cache python3 make g++
 COPY package.json package-lock.json* ./
 RUN [ -f package-lock.json ] && npm ci || npm install
 
@@ -55,6 +57,9 @@ COPY --from=build /usr/src/app/courses ./courses
 COPY --from=build /usr/src/app/problems ./problems
 COPY --from=build /usr/src/app/package.json ./package.json
 COPY --from=build /usr/src/app/node_modules ./node_modules
+
+RUN mkdir -p /usr/src/app/data
+VOLUME /usr/src/app/data
 
 EXPOSE 3000
 
