@@ -1,6 +1,6 @@
 # ADR-0005: SQLite Persistence for User Data
 
-**Status:** Proposed
+**Status:** Accepted
 
 **Date:** 2026-10-28
 
@@ -119,9 +119,26 @@ Use the browser's IndexedDB for structured storage, keeping all data client-side
 | Restore overwrites user data | Restore writes to temp file, renames atomically; previous DB backed up to `.bak`; migration never overwrites existing server-side data. See proposal §10.4 |
 | Persistence write failure | Failures surfaced to user, not swallowed; localStorage write-through cache preserves data; disk-full and crash scenarios handled. See proposal §10.5 |
 
+## Implementation Reconciliation (M3 Phase 1)
+
+The following details were confirmed during implementation:
+
+| Aspect | Proposed | Implemented |
+|---|---|---|
+| Database location | `data/devprep.sqlite` | Confirmed. Configurable via `DEVPREP_DATA_DIR`. |
+| Driver | `better-sqlite3` | Confirmed. Works with Node 26.0.0. |
+| Alpine musl compatibility | Needed verification | Build from source required — `python3`, `make`, `g++` added to Dockerfile deps stage. |
+| Docker volume | Not specified | `cojudge-data` named volume mapped to `/usr/src/app/data` in `docker.sh`. |
+| Schema | 9 tables proposed | 8 tables implemented (v1). `problems` table dropped — slugs used directly as foreign-key-free identifiers since problem content lives on the filesystem. |
+| Migration mechanism | `PRAGMA user_version` | Confirmed. Transactional, idempotent. Rejects newer schema versions. |
+| Backup | `database.backup()` API | Confirmed. WAL-consistent snapshots. Restore validates integrity before replacing. |
+| localStorage migration | Proposed as migration-on-first-access | Deferred to M3 Phase 2. Browser stores unchanged in this phase. |
+
 ## Related
 
 - **Full proposal:** [docs/architecture/persistence-proposal.md](../architecture/persistence-proposal.md)
+- **Implementation:** [docs/architecture/sqlite-implementation.md](../architecture/sqlite-implementation.md)
+- **Backup/restore:** [docs/maintenance/sqlite-backup-restore.md](../maintenance/sqlite-backup-restore.md)
 - **Current stores:** `src/lib/stores/codeStore.ts`, `userStore.ts`, `userSettingsStorage.ts`, `testCaseStore.ts`, `bookmarkStore.ts`, `fileStore.ts`, `gameResultsStore.ts`
 - **Backup system:** `src/lib/progressBackup.ts`
 - **Recovery page:** `src/routes/recovery/+page.svelte`

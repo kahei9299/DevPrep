@@ -13,6 +13,7 @@
 import Database from 'better-sqlite3'
 import fs from 'node:fs'
 import path from 'node:path'
+import { SCHEMA_V1 } from './schema'
 
 const SCHEMA_VERSION = 1
 
@@ -59,11 +60,9 @@ function applyMigrations(db: Database.Database): void {
   }
 
   if (currentVersion < 1) {
-    const schemaPath = path.join(path.dirname(new URL(import.meta.url).pathname), 'schema.sql')
-    const schemaSql = fs.readFileSync(schemaPath, 'utf-8')
     db.exec('BEGIN')
     try {
-      db.exec(schemaSql)
+      db.exec(SCHEMA_V1)
       db.pragma(`user_version = ${SCHEMA_VERSION}`)
       db.exec('COMMIT')
     } catch (e) {

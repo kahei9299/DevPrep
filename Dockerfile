@@ -57,7 +57,6 @@ COPY --from=build /usr/src/app/courses ./courses
 COPY --from=build /usr/src/app/problems ./problems
 COPY --from=build /usr/src/app/package.json ./package.json
 COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/src/lib/server/db/schema.sql ./src/lib/server/db/schema.sql
 
 RUN mkdir -p /usr/src/app/data
 VOLUME /usr/src/app/data

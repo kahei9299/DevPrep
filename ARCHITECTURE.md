@@ -220,6 +220,17 @@ Each problem directory contains:
 
 **Limitation:** All user data is in `localStorage`. No server-side database exists. Data does not survive browser data clearing. The `/recovery` page provides manual export.
 
+### Database Persistence (M3 Phase 1)
+
+SQLite via `better-sqlite3` provides durable server-side storage for future user data (submissions, notes, reflections, spaced repetition). The database file lives at `data/devprep.sqlite` (configurable via `DEVPREP_DATA_DIR`), persisted on a Docker volume (`cojudge-data`) in containerised deployments.
+
+- WAL mode with `synchronous=NORMAL` for crash resilience.
+- Schema version tracked via `PRAGMA user_version`.
+- Backup via `db.backup()` API for WAL-consistent snapshots.
+- Browser `localStorage` remains the active persistence layer. Migration to SQLite is planned for M3 Phase 2.
+
+See [ADR-0005](docs/adr/0005-sqlite-persistence-proposal.md) and [docs/architecture/sqlite-implementation.md](docs/architecture/sqlite-implementation.md).
+
 ### Docker Deployment
 
 **Local development:**
