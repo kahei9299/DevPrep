@@ -15,6 +15,7 @@ import { PhpRunner } from '$lib/runners/PhpRunner';
 import { TypeScriptRunner } from '$lib/runners/TypeScriptRunner';
 import { TIMEOUT_MESSAGE, annotateCrashSignal, type JobStatus } from '$lib/utils/util';
 import { PerfTimer } from '$lib/server/perfTimer';
+import { JobStore, genJobId } from '$lib/server/jobStore';
 
 type SubmitResult = {
     accepted?: boolean;
@@ -27,24 +28,18 @@ type SubmitJob = {
     id: string;
     status: JobStatus;
     createdAt: number;
+    completedAt?: number;
     result?: SubmitResult;
     timeout?: boolean;
     timeoutTestCase?: any;
     error?: string;
     errorTestCase?: any;
-    /** Absolute 0-based index (across all official tests) of the test that crashed. */
     errorTestIndex?: number;
     executionTimeMs?: number;
     memoryKB?: number;
 };
 
-const jobs: Map<string, SubmitJob> = new Map();
-
-function genId() {
-    const g: any = globalThis as any;
-    if (g.crypto && typeof g.crypto.randomUUID === 'function') return g.crypto.randomUUID();
-    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
+const jobs = new JobStore<SubmitJob>();
 
 function isJavaLanguage(language: string): boolean {
     return language === 'java';
@@ -74,6 +69,7 @@ async function executeSubmit(problemId: string, language: string, code: string, 
             if (startTcNo >= totalTc) {
                 job.result = { allAccepted: true, totalTc, passedTc: totalTc, results: [] };
                 job.status = 'completed';
+                jobs.markCompleted(job);
                 return;
             }
             let tcNo = startTcNo;
@@ -86,6 +82,14 @@ async function executeSubmit(problemId: string, language: string, code: string, 
             testCases = newTestCases;
             passedTc = newTestCases.length;
             batchTestCases = newTestCases;
+            // @javascript: expressions generate large test inputs at runtime
+            // (e.g. Array.from({length:50000}, ...), 'x'.repeat(10000)).
+            // Trust boundary: vm.runInNewContext is NOT a secure sandbox —
+            // constructor-chain escapes can access the full Node process.
+            // This is acceptable for single-user local deployment where the
+            // user already has host access. If DevPrep is ever network-
+            // accessible, these expressions must be pre-computed at build
+            // time instead of evaluated at runtime.
             const JAVASCRIPT_PREFIX = '@javascript:';
             for (let i = 0; i < testCases.length; i++) {
                 const tc = testCases[i];
@@ -117,6 +121,7 @@ async function executeSubmit(problemId: string, language: string, code: string, 
             if (startTcNo >= totalTc) {
                 job.result = { allAccepted: true, totalTc, passedTc: 0, results: [] };
                 job.status = 'completed';
+                jobs.markCompleted(job);
                 return;
             }
         }
@@ -264,12 +269,14 @@ async function executeSubmit(problemId: string, language: string, code: string, 
         const accepted = markerResponses.every((m: any) => m.isCorrect);
         job.result = { accepted, totalTc, passedTc: (job.result?.passedTc ? job.result?.passedTc : 0) + testCases.length, results: finalResponse };
         job.status = 'completed';
+        jobs.markCompleted(job);
         perf.end();
     } catch (error: any) {
         if (error && error.toString() && error.toString().indexOf(TIMEOUT_MESSAGE) !== -1) {
             job.timeout = true;
             job.timeoutTestCase = timeoutTestcase;
             job.status = 'completed';
+            jobs.markCompleted(job);
             perf.end('timeout');
         } else {
             // A crash (e.g. SIGSEGV) kills the whole batch container, but the
@@ -288,6 +295,7 @@ async function executeSubmit(problemId: string, language: string, code: string, 
             job.errorTestCase = batchTestCases[crashIndex];
             job.errorTestIndex = startTcNo + crashIndex;
             job.status = 'error';
+            jobs.markCompleted(job);
             perf.end('error');
         }
     }
@@ -295,7 +303,7 @@ async function executeSubmit(problemId: string, language: string, code: string, 
 
 export const POST: RequestHandler = async ({ request }) => {
     const { problemId, language, code, startTcNo } = await request.json();
-    const id = genId();
+    const id = genJobId();
     const job: SubmitJob = { id, status: 'pending', createdAt: Date.now() };
     jobs.set(id, job);
     executeSubmit(problemId, language, code, Number(startTcNo) || 0, job);

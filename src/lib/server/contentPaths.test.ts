@@ -324,4 +324,65 @@ describe('contentPaths', () => {
 			cwdSpy.mockRestore();
 		}
 	});
+
+	describe('path validation', () => {
+		it('rejects .. in resolveProblemFile', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemFile('../../etc', 'passwd')).rejects.toThrow('Invalid problem ID');
+		});
+
+		it('rejects .. in resolveProblemFileSync', async () => {
+			const mod = await import('./contentPaths');
+			expect(() => mod.resolveProblemFileSync('../..', 'file')).toThrow('Invalid problem ID');
+		});
+
+		it('rejects .. in resolveProblemDir', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemDir('..')).rejects.toThrow('Invalid problem ID');
+		});
+
+		it('rejects .. in resolveProblemDirSync', async () => {
+			const mod = await import('./contentPaths');
+			expect(() => mod.resolveProblemDirSync('..')).toThrow('Invalid problem ID');
+		});
+
+		it('rejects slashes in slug', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemFile('a/b', 'file')).rejects.toThrow('Invalid problem ID');
+		});
+
+		it('rejects null bytes in slug', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemFile('two\0sum', 'file')).rejects.toThrow('Invalid problem ID');
+		});
+
+		it('rejects empty slug', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemFile('', 'file')).rejects.toThrow('Invalid problem ID');
+		});
+
+		it('accepts legitimate problem slugs', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemFile('two-sum', 'metadata.json')).resolves.toBeDefined();
+			await expect(mod.resolveProblemFile('3sum', 'metadata.json')).resolves.toBeDefined();
+		});
+
+		it('rejects traversal in the leaf filename', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemFile('two-sum', '..')).rejects.toThrow('Invalid path segment');
+			await expect(mod.resolveProblemFile('two-sum', '../metadata.json')).rejects.toThrow('Invalid path segment');
+		});
+
+		it('rejects traversal in leaf filename (sync)', async () => {
+			const mod = await import('./contentPaths');
+			expect(() => mod.resolveProblemFileSync('two-sum', '..')).toThrow('Invalid path segment');
+		});
+
+		it('accepts legitimate filenames with dots and hyphens', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemFile('two-sum', 'official-tests.json')).resolves.toBeDefined();
+			await expect(mod.resolveProblemFile('two-sum', 'Marker.java')).resolves.toBeDefined();
+			await expect(mod.resolveProblemFile('two-sum', 'solution.md')).resolves.toBeDefined();
+		});
+	});
 });

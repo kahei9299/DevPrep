@@ -215,6 +215,30 @@ async function getMarkerResponsesLegacy(
     const markerPath = await resolveProblemFile(problemId, 'Marker.java');
     const markerCode = await fs.readFile(markerPath, 'utf-8');
 
+    // Clean stale cached .class files before recompiling in the same container.
+    // Require completion — if cleanup fails or times out, destroy the container
+    // so it cannot be returned to the pool with stale artifacts.
+    const cleanExec = await container.exec({
+        Cmd: ['sh', '-c', 'rm -f /app/*.class /app/*.java /app/data.bin 2>/dev/null; mkdir -p /app'],
+        AttachStdout: true, AttachStderr: true
+    });
+    const cleanStream: any = await cleanExec.start({ hijack: true, stdin: false });
+    const cleanTimedOut = await new Promise<boolean>((resolve) => {
+        cleanStream.on('end', () => resolve(false));
+        cleanStream.on('error', () => resolve(true));
+        cleanStream.resume();
+        setTimeout(() => resolve(true), 5000);
+    });
+    if (cleanTimedOut) {
+        await ContainerPool.markForCleanup(container);
+        throw new Error('Marker fallback cleanup timed out — container destroyed');
+    }
+    const cleanInspect = await cleanExec.inspect();
+    if (cleanInspect.ExitCode !== 0) {
+        await ContainerPool.markForCleanup(container);
+        throw new Error('Marker fallback cleanup failed — container destroyed');
+    }
+
     const pack = tar.pack();
     pack.entry({ name: 'ListNode.java' }, Buffer.from(javaListNodeClass));
     pack.entry({ name: 'TreeNode.java' }, Buffer.from(javaTreeNodeClass));

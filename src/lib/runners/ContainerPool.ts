@@ -37,7 +37,12 @@ class ContainerPool {
             entries.splice(idx, 1);
             return null;
         }
-        await ContainerPool.cleanContainer(entry.container);
+        const cleaned = await ContainerPool.cleanContainer(entry.container);
+        if (!cleaned) {
+            entries.splice(idx, 1);
+            void ContainerPool.destroyContainer(entry.container);
+            return null;
+        }
         return entry.container;
     }
 
@@ -142,7 +147,7 @@ class ContainerPool {
         }));
     }
 
-    private static async cleanContainer(container: Dockerode.Container): Promise<void> {
+    private static async cleanContainer(container: Dockerode.Container): Promise<boolean> {
         try {
             const exec = await container.exec({
                 Cmd: ['sh', '-c', 'rm -rf /tmp/* 2>/dev/null || true; rm -f /app/*.java /app/*.py /app/*.cpp /app/*.cs /app/*.rs /app/*.go /app/*.class /app/Main /app/main /app/*.php /app/*.ts /app/*.js /app/*.o 2>/dev/null; mkdir -p /app'],
@@ -150,18 +155,25 @@ class ContainerPool {
                 AttachStderr: true
             });
             const stream: any = await exec.start({ hijack: true, stdin: false });
-            await new Promise<void>((resolve, reject) => {
-                stream.on('end', resolve);
-                stream.on('error', reject);
+            const timedOut = await new Promise<boolean>((resolve) => {
+                stream.on('end', () => resolve(false));
+                stream.on('error', () => resolve(true));
                 stream.resume();
-                setTimeout(resolve, 10000);
+                setTimeout(() => resolve(true), 10000);
             });
+            if (timedOut) {
+                console.error('cleanContainer timed out or errored — destroying container');
+                return false;
+            }
             const inspect = await exec.inspect();
             if (inspect.ExitCode !== 0) {
                 console.error(`cleanContainer exit code: ${inspect.ExitCode}`);
+                return false;
             }
+            return true;
         } catch (e) {
             console.error('cleanContainer failed:', e);
+            return false;
         }
     }
 
