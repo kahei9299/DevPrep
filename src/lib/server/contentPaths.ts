@@ -55,6 +55,7 @@ function isSafeSegment(segment: string): boolean {
 
 /** Prefer the user copy; fall back to the bundled copy. */
 export function resolveProblemDirSync(slug: string): string {
+	if (!isSafeSegment(slug)) throw new Error(`Invalid problem ID: ${slug}`);
 	const userDir = path.join(getProblemsDir(), slug);
 	try {
 		if (existsSync(userDir)) return userDir;
@@ -66,6 +67,7 @@ export function resolveProblemDirSync(slug: string): string {
 
 /** Prefer the user copy; fall back to the bundled copy. */
 export async function resolveProblemDir(slug: string): Promise<string> {
+	if (!isSafeSegment(slug)) throw new Error(`Invalid problem ID: ${slug}`);
 	const userDir = path.join(getProblemsDir(), slug);
 	try {
 		await fs.access(userDir);
@@ -81,11 +83,9 @@ export async function resolveProblemDir(slug: string): Promise<string> {
  * the user path (for a useful error message) when neither exists.
  */
 export function resolveProblemFileSync(slug: string, ...rest: string[]): string {
-	for (const segment of [slug, ...rest]) {
-		if (!isSafeSegment(segment) && segment !== rest[rest.length - 1]) {
-			// Slugs and intermediate segments must be safe; the leaf file
-			// name is still basename-guarded below by join semantics.
-		}
+	if (!isSafeSegment(slug)) throw new Error(`Invalid problem ID: ${slug}`);
+	for (const segment of rest.slice(0, -1)) {
+		if (!isSafeSegment(segment)) throw new Error(`Invalid path segment: ${segment}`);
 	}
 	const userPath = path.join(getProblemsDir(), slug, ...rest);
 	try {
@@ -103,6 +103,10 @@ export function resolveProblemFileSync(slug: string, ...rest: string[]): string 
 }
 
 export async function resolveProblemFile(slug: string, ...rest: string[]): Promise<string> {
+	if (!isSafeSegment(slug)) throw new Error(`Invalid problem ID: ${slug}`);
+	for (const segment of rest.slice(0, -1)) {
+		if (!isSafeSegment(segment)) throw new Error(`Invalid path segment: ${segment}`);
+	}
 	const userPath = path.join(getProblemsDir(), slug, ...rest);
 	try {
 		await fs.access(userPath);

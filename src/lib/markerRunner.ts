@@ -215,6 +215,14 @@ async function getMarkerResponsesLegacy(
     const markerPath = await resolveProblemFile(problemId, 'Marker.java');
     const markerCode = await fs.readFile(markerPath, 'utf-8');
 
+    // Clean stale cached .class files before recompiling in the same container
+    const cleanExec = await container.exec({
+        Cmd: ['sh', '-c', 'rm -f /app/*.class /app/*.java /app/data.bin 2>/dev/null; mkdir -p /app'],
+        AttachStdout: true, AttachStderr: true
+    });
+    const cleanStream: any = await cleanExec.start({ hijack: true, stdin: false });
+    await new Promise<void>((resolve) => { cleanStream.on('end', resolve); cleanStream.resume(); setTimeout(resolve, 5000) });
+
     const pack = tar.pack();
     pack.entry({ name: 'ListNode.java' }, Buffer.from(javaListNodeClass));
     pack.entry({ name: 'TreeNode.java' }, Buffer.from(javaTreeNodeClass));

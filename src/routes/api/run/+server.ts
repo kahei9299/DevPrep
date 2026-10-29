@@ -15,6 +15,7 @@ import { TypeScriptRunner } from '$lib/runners/TypeScriptRunner';
 import { startProblemDebugSession, getDebugState } from '$lib/runners/DebugRunner';
 import { TIMEOUT_MESSAGE, annotateCrashSignal, type JobStatus } from '$lib/utils/util';
 import { PerfTimer } from '$lib/server/perfTimer';
+import { JobStore, genJobId } from '$lib/server/jobStore';
 
 type RunSuccess = Array<{
     output: string | null;
@@ -29,22 +30,16 @@ type RunJob = {
     id: string;
     status: JobStatus;
     createdAt: number;
+    completedAt?: number;
     results?: RunSuccess;
     timeout?: boolean;
     error?: string;
-    /** 0-based index into the requested testCases of the test that crashed the runner, if any. */
     crashedTestIndex?: number;
     executionTimeMs?: number;
     memoryKB?: number;
 };
 
-const jobs: Map<string, RunJob> = new Map();
-
-function genId() {
-    const g: any = globalThis as any;
-    if (g.crypto && typeof g.crypto.randomUUID === 'function') return g.crypto.randomUUID();
-    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
+const jobs = new JobStore<RunJob>();
 
 function isJavaLanguage(language: string): boolean {
     return language === 'java';
@@ -231,11 +226,13 @@ async function executeRun(problemId: string, language: string, code: string, tes
         job.status = 'judging';
         job.results = await judgeRawResults(rawResults, testCases, problemData, problemId, language);
         job.status = 'completed';
+        jobs.markCompleted(job);
         perf.end();
     } catch (error: any) {
         if (error && error.toString && error.toString().indexOf(TIMEOUT_MESSAGE) !== -1) {
             job.timeout = true;
             job.status = 'completed';
+            jobs.markCompleted(job);
             perf.end('timeout');
         } else {
             const message = annotateCrashSignal(error.message || String(error));
@@ -284,12 +281,14 @@ async function executeRun(problemId: string, language: string, code: string, tes
                     ];
                     job.crashedTestIndex = crashIdx;
                     job.status = 'completed';
+                    jobs.markCompleted(job);
                     perf.end('error');
                     return;
                 }
             }
             job.error = `Execution failed: details: ${message}`;
             job.status = 'error';
+            jobs.markCompleted(job);
             perf.end('error');
         }
     }
@@ -308,7 +307,7 @@ export const POST: RequestHandler = async ({ request }) => {
         }
     }
 
-    const id = genId();
+    const id = genJobId();
     const job: RunJob = { id, status: 'pending', createdAt: Date.now() };
     jobs.set(id, job);
     executeRun(problemId, language, code, testCases, job);
