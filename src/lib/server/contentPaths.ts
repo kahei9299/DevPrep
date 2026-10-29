@@ -84,7 +84,7 @@ export async function resolveProblemDir(slug: string): Promise<string> {
  */
 export function resolveProblemFileSync(slug: string, ...rest: string[]): string {
 	if (!isSafeSegment(slug)) throw new Error(`Invalid problem ID: ${slug}`);
-	for (const segment of rest.slice(0, -1)) {
+	for (const segment of rest) {
 		if (!isSafeSegment(segment)) throw new Error(`Invalid path segment: ${segment}`);
 	}
 	const userPath = path.join(getProblemsDir(), slug, ...rest);
@@ -104,7 +104,7 @@ export function resolveProblemFileSync(slug: string, ...rest: string[]): string 
 
 export async function resolveProblemFile(slug: string, ...rest: string[]): Promise<string> {
 	if (!isSafeSegment(slug)) throw new Error(`Invalid problem ID: ${slug}`);
-	for (const segment of rest.slice(0, -1)) {
+	for (const segment of rest) {
 		if (!isSafeSegment(segment)) throw new Error(`Invalid path segment: ${segment}`);
 	}
 	const userPath = path.join(getProblemsDir(), slug, ...rest);

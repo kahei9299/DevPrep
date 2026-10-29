@@ -2,6 +2,11 @@
  * TTL-bounded in-memory job store for Run and Submit endpoints.
  * Completed jobs are retained for COMPLETED_TTL_MS so polling retries
  * and repeated result reads work. A sweep runs every SWEEP_INTERVAL_MS.
+ *
+ * Note: the active TTL expires the tracking record only — it does not
+ * cancel the running Docker execution. A stale active job whose record
+ * is swept will return 404 on the next poll; the container finishes
+ * independently and is reclaimed by ContainerPool's cleanup cron.
  */
 
 const COMPLETED_TTL_MS = 5 * 60 * 1000

@@ -366,5 +366,23 @@ describe('contentPaths', () => {
 			await expect(mod.resolveProblemFile('two-sum', 'metadata.json')).resolves.toBeDefined();
 			await expect(mod.resolveProblemFile('3sum', 'metadata.json')).resolves.toBeDefined();
 		});
+
+		it('rejects traversal in the leaf filename', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemFile('two-sum', '..')).rejects.toThrow('Invalid path segment');
+			await expect(mod.resolveProblemFile('two-sum', '../metadata.json')).rejects.toThrow('Invalid path segment');
+		});
+
+		it('rejects traversal in leaf filename (sync)', async () => {
+			const mod = await import('./contentPaths');
+			expect(() => mod.resolveProblemFileSync('two-sum', '..')).toThrow('Invalid path segment');
+		});
+
+		it('accepts legitimate filenames with dots and hyphens', async () => {
+			const mod = await import('./contentPaths');
+			await expect(mod.resolveProblemFile('two-sum', 'official-tests.json')).resolves.toBeDefined();
+			await expect(mod.resolveProblemFile('two-sum', 'Marker.java')).resolves.toBeDefined();
+			await expect(mod.resolveProblemFile('two-sum', 'solution.md')).resolves.toBeDefined();
+		});
 	});
 });
